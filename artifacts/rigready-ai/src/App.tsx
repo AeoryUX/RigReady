@@ -73,10 +73,9 @@ const priorityOptions: { value: PcBuildInputPriority; label: string }[] = [
 
 type SoftwareCategory = 'Browsers' | 'Game libraries' | 'Communication' | 'PC utilities';
 type SoftwareFilter = 'All apps' | SoftwareCategory;
-type SoftwareSort = 'default' | 'name-asc' | 'name-desc' | 'category';
+type SoftwareSort = 'name-asc' | 'name-desc' | 'category';
 
 const softwareSortOptions: { value: SoftwareSort; label: string }[] = [
-  { value: 'default', label: 'Default order' },
   { value: 'name-asc', label: 'Name: A–Z' },
   { value: 'name-desc', label: 'Name: Z–A' },
   { value: 'category', label: 'Category' },
@@ -628,24 +627,22 @@ function SoftwarePage() {
   usePageTitle('Software guide | RigReady AI');
   const [softwareFilter, setSoftwareFilter] = useState<SoftwareFilter>('All apps');
   const [softwareSearch, setSoftwareSearch] = useState('');
-  const [softwareSort, setSoftwareSort] = useState<SoftwareSort>('default');
+  const [softwareSort, setSoftwareSort] = useState<SoftwareSort>('name-asc');
   const selectedSortLabel = softwareSortOptions.find((option) => option.value === softwareSort)?.label;
   const visibleSoftware = softwareApps.filter((software) => {
     const matchesCategory = softwareFilter === 'All apps' || software.category === softwareFilter;
     const searchText = `${software.name} ${software.category} ${software.description} ${software.bestFor}`.toLowerCase();
     return matchesCategory && searchText.includes(softwareSearch.trim().toLowerCase());
   });
-  if (softwareSort !== 'default') {
-    const compareNames = (a: typeof softwareApps[number], b: typeof softwareApps[number]) =>
-      a.name.localeCompare(b.name, 'en', { sensitivity: 'base', numeric: true });
-    visibleSoftware.sort((a, b) => {
-      if (softwareSort === 'name-desc') return compareNames(b, a);
-      if (softwareSort === 'category') {
-        return softwareFilters.indexOf(a.category) - softwareFilters.indexOf(b.category) || compareNames(a, b);
-      }
-      return compareNames(a, b);
-    });
-  }
+  const compareNames = (a: typeof softwareApps[number], b: typeof softwareApps[number]) =>
+    a.name.localeCompare(b.name, 'en', { sensitivity: 'base', numeric: true });
+  visibleSoftware.sort((a, b) => {
+    if (softwareSort === 'name-desc') return compareNames(b, a);
+    if (softwareSort === 'category') {
+      return softwareFilters.indexOf(a.category) - softwareFilters.indexOf(b.category) || compareNames(a, b);
+    }
+    return compareNames(a, b);
+  });
 
   return (
     <div className="app-shell">
