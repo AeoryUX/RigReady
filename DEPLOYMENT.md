@@ -9,7 +9,8 @@ software guide, search, and category filters work without an AI key.
 3. Leave the framework preset as Other. `vercel.json` supplies the installation
    command, build command, output directory, API routing, and client-side routing.
 4. Deploy, then open the URL Vercel provides. Check the Software guide: it should
-   contain 37 apps and the Communication category, with OBS Studio in PC utilities.
+   contain 35 apps and the Communication category, with OBS Studio in PC utilities.
+   The Operating systems tab includes official downloads and a Linux installation guide.
 5. Check `/api/healthz`. It should return `status: "ok"`; `aiConfigured` indicates
    whether an AI key is present.
 

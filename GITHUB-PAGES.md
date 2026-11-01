@@ -1,7 +1,8 @@
 # GitHub Pages preview
 
 This preview shows the RigReady website, editable PC form, and searchable
-37-app software guide. GitHub Pages serves static files: AI plans are explicitly
+35-app software guide, plus an Operating systems tab with official downloads,
+Linux recommendations, and installation guidance. GitHub Pages serves static files: AI plans are explicitly
 disabled and the preview does not send PC details to an API.
 
 From the repository root, using Node.js 24.x:

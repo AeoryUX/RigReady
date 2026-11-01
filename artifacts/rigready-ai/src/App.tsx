@@ -4,6 +4,8 @@ import { ThemeProvider, useTheme } from 'next-themes';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { OperatingSystemGuide } from '@/components/operating-system-guide';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuLabel,
   DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger,
@@ -156,22 +158,6 @@ const softwareApps: {
     officialUrl: 'https://vivaldi.com/',
   },
   {
-    name: 'Google Chrome',
-    category: 'Browsers',
-    description: 'A widely supported browser with Google account sync and a large extension library.',
-    bestFor: 'Google services and browser extensions',
-    platform: 'Windows · macOS · Linux',
-    officialUrl: 'https://www.google.com/chrome/',
-  },
-  {
-    name: 'Microsoft Edge',
-    category: 'Browsers',
-    description: 'A Chromium-based browser with Microsoft account sync, vertical tabs, and sleeping tabs.',
-    bestFor: 'Microsoft services and Windows integration',
-    platform: 'Windows · macOS · Linux',
-    officialUrl: 'https://www.microsoft.com/edge',
-  },
-  {
     name: 'Steam',
     category: 'Game libraries',
     description: 'A major PC game store and library with community features for supported games.',
@@ -284,13 +270,13 @@ const softwareApps: {
     note: 'Requires Signal on your phone to link the desktop app.',
   },
   {
-    name: 'Telegram',
+    name: 'Mumble',
     category: 'Communication',
-    description: 'Cloud-synced messaging with desktop group chats, channels, and file sharing.',
-    bestFor: 'Large groups and synced chats',
+    description: 'Free, open-source voice chat with low latency and server-based channels for gaming groups.',
+    bestFor: 'Low-latency group voice chat',
     platform: 'Windows · macOS · Linux',
-    officialUrl: 'https://desktop.telegram.org/',
-    note: 'Regular cloud chats are not end-to-end encrypted.',
+    officialUrl: 'https://www.mumble.info/downloads/',
+    note: 'Join an existing Mumble server or host one for your group.',
   },
   {
     name: 'OBS Studio',
@@ -592,7 +578,7 @@ function Home() {
           <span className="brand-name">RigReady<span> AI</span></span>
         </a>
         <div className="masthead-actions">
-          <a className="software-jump" href="#software-library">Software guide</a>
+          <a className="software-jump" href="#guides">Setup guides</a>
           <button
             type="button"
             className="theme-toggle"
@@ -828,93 +814,106 @@ function Home() {
             </section>
           )}
 
-          <section className="software-section" id="software-library" aria-labelledby="software-title">
-            <div className="software-heading">
-              <div>
-                <div className="eyebrow"><span className="eyebrow-line" /> Beyond the hardware</div>
-                <h2 id="software-title">A few good apps to start with.</h2>
-                <p>Find a browser, game library, communication app, or useful PC tool. These are optional picks, not a list of things you need to install.</p>
-              </div>
-              <span className="software-count" role="status" aria-live="polite" aria-atomic="true">
-                Showing {visibleSoftware.length} of {softwareApps.length} apps
-              </span>
-            </div>
-
-            <div className="software-toolbar">
-              <div className="software-controls">
-                <label className="software-search">
-                  <Search size={16} aria-hidden="true" />
-                  <span className="sr-only">Search software</span>
-                  <input
-                    type="search"
-                    value={softwareSearch}
-                    onChange={(event) => setSoftwareSearch(event.target.value)}
-                    placeholder="Search apps, categories, or uses…"
-                    aria-label="Search software"
-                  />
-                </label>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button type="button" className="software-sort-button" aria-label={`Sort software: ${selectedSortLabel}`}>
-                      <ArrowUpDown size={15} aria-hidden="true" />
-                      <span>Sort: {selectedSortLabel}</span>
-                      <ChevronDown size={14} aria-hidden="true" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="software-sort-menu">
-                    <DropdownMenuLabel>Sort software</DropdownMenuLabel>
-                    <DropdownMenuRadioGroup value={softwareSort} onValueChange={(value) => setSoftwareSort(value as SoftwareSort)} aria-label="Software sort order">
-                      {softwareSortOptions.map((option) => (
-                        <DropdownMenuRadioItem key={option.value} value={option.value}>
-                          {option.label}
-                        </DropdownMenuRadioItem>
-                      ))}
-                    </DropdownMenuRadioGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              <div className="software-filters" role="group" aria-label="Filter software by category">
-                {softwareFilters.map((filter) => (
-                  <button
-                    key={filter}
-                    type="button"
-                    className={`software-filter${softwareFilter === filter ? ' is-active' : ''}`}
-                    aria-pressed={softwareFilter === filter}
-                    onClick={() => setSoftwareFilter(filter)}
-                  >
-                    {filter}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {visibleSoftware.length > 0 ? (
-              <div className="software-grid">
-                {visibleSoftware.map((software) => (
-                  <article className="software-card" key={software.name}>
-                    <div className="software-card-meta">
-                      <span className="software-category">{software.category}</span>
-                      <span className="software-platform">{software.platform}</span>
+          <section className="guides-section" id="guides" aria-label="Setup guides">
+            <Tabs defaultValue="software">
+              <TabsList className="guide-tabs-list" aria-label="Setup guides">
+                <TabsTrigger className="guide-tabs-trigger" value="software">Software guide</TabsTrigger>
+                <TabsTrigger className="guide-tabs-trigger" value="operating-systems">Operating systems</TabsTrigger>
+              </TabsList>
+              <TabsContent value="software">
+                <section className="software-section" id="software-library" aria-labelledby="software-title">
+                  <div className="software-heading">
+                    <div>
+                      <div className="eyebrow"><span className="eyebrow-line" /> Beyond the hardware</div>
+                      <h2 id="software-title">A few good apps to start with.</h2>
+                      <p>Find a browser, game library, communication app, or useful PC tool. These are optional picks, not a list of things you need to install.</p>
                     </div>
-                    <h3>{software.name}</h3>
-                    <p className="software-best-for">{software.bestFor}</p>
-                    <p className="software-description">{software.description}</p>
-                    {software.note && <p className="software-note"><Info size={13} />{software.note}</p>}
-                    <a
-                      className="software-link"
-                      href={software.officialUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Official site <ExternalLink size={14} aria-hidden="true" />
-                    </a>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <div className="software-empty" role="status">No apps match that search. Try a different name or category.</div>
-            )}
-            <p className="software-disclaimer">Download from the official developer sites above, and check system requirements before installing. You do not need every app here.</p>
+                    <span className="software-count" role="status" aria-live="polite" aria-atomic="true">
+                      Showing {visibleSoftware.length} of {softwareApps.length} apps
+                    </span>
+                  </div>
+
+                  <div className="software-toolbar">
+                    <div className="software-controls">
+                      <label className="software-search">
+                        <Search size={16} aria-hidden="true" />
+                        <span className="sr-only">Search software</span>
+                        <input
+                          type="search"
+                          value={softwareSearch}
+                          onChange={(event) => setSoftwareSearch(event.target.value)}
+                          placeholder="Search apps, categories, or uses…"
+                          aria-label="Search software"
+                        />
+                      </label>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button type="button" className="software-sort-button" aria-label={`Sort software: ${selectedSortLabel}`}>
+                            <ArrowUpDown size={15} aria-hidden="true" />
+                            <span>Sort: {selectedSortLabel}</span>
+                            <ChevronDown size={14} aria-hidden="true" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="software-sort-menu">
+                          <DropdownMenuLabel>Sort software</DropdownMenuLabel>
+                          <DropdownMenuRadioGroup value={softwareSort} onValueChange={(value) => setSoftwareSort(value as SoftwareSort)} aria-label="Software sort order">
+                            {softwareSortOptions.map((option) => (
+                              <DropdownMenuRadioItem key={option.value} value={option.value}>
+                                {option.label}
+                              </DropdownMenuRadioItem>
+                            ))}
+                          </DropdownMenuRadioGroup>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                    <div className="software-filters" role="group" aria-label="Filter software by category">
+                      {softwareFilters.map((filter) => (
+                        <button
+                          key={filter}
+                          type="button"
+                          className={`software-filter${softwareFilter === filter ? ' is-active' : ''}`}
+                          aria-pressed={softwareFilter === filter}
+                          onClick={() => setSoftwareFilter(filter)}
+                        >
+                          {filter}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {visibleSoftware.length > 0 ? (
+                    <div className="software-grid">
+                      {visibleSoftware.map((software) => (
+                        <article className="software-card" key={software.name}>
+                          <div className="software-card-meta">
+                            <span className="software-category">{software.category}</span>
+                            <span className="software-platform">{software.platform}</span>
+                          </div>
+                          <h3>{software.name}</h3>
+                          <p className="software-best-for">{software.bestFor}</p>
+                          <p className="software-description">{software.description}</p>
+                          {software.note && <p className="software-note"><Info size={13} />{software.note}</p>}
+                          <a
+                            className="software-link"
+                            href={software.officialUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Official site <ExternalLink size={14} aria-hidden="true" />
+                          </a>
+                        </article>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="software-empty" role="status">No apps match that search. Try a different name or category.</div>
+                  )}
+                  <p className="software-disclaimer">Download from the official developer sites above, and check system requirements before installing. You do not need every app here.</p>
+                </section>
+              </TabsContent>
+              <TabsContent value="operating-systems">
+                <OperatingSystemGuide />
+              </TabsContent>
+            </Tabs>
           </section>
         </div>
       </main>
