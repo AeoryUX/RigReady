@@ -3,6 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <style>
+      html { background: hsl(42 32% 95%); color-scheme: light; }
+      html.dark { background: hsl(185 23% 10%); color-scheme: dark; }
+      @media (prefers-color-scheme: dark) {
+        html:not(.light) { background: hsl(185 23% 10%); color-scheme: dark; }
+      }
+    </style>
+    <script>
+      // Match next-themes before stylesheets or the React app can load.
+      (() => {
+        let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        try {
+          const savedTheme = localStorage.getItem('rigready-theme');
+          if (savedTheme === 'dark' || savedTheme === 'light') theme = savedTheme;
+        } catch {
+          // System preference still works when browser storage is unavailable.
+        }
+        const root = document.documentElement;
+        root.classList.remove('light', 'dark');
+        root.classList.add(theme);
+        root.style.colorScheme = theme;
+      })();
+    </script>
     <title>RigReady AI</title>
     <meta name="description" content="RigReady AI — built on Replit. Update this description to reflect the app." />
     <meta name="robots" content="index, follow" />
