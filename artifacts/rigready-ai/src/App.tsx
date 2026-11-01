@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import NotFound from '@/pages/not-found';
 import {
-  Activity, AlertCircle, AlertTriangle, ArrowLeft, ArrowRight, ArrowUpDown, BadgeCheck, Check, CheckCircle2,
-  ChevronDown, ChevronRight, Cpu, ExternalLink, Info, LockKeyhole, Moon, Plus, RotateCcw, Search, ShieldCheck, Sun, Zap,
+  Activity, AlertCircle, AlertTriangle, AppWindow, ArrowLeft, ArrowRight, ArrowUpDown, BadgeCheck, Check, CheckCircle2,
+  ChevronDown, ChevronRight, Cpu, ExternalLink, Info, LockKeyhole, MonitorDown, Moon, Plus, RotateCcw, Search, ShieldCheck, Sun, Zap,
 } from 'lucide-react';
 import { useCreatePcUpgradePlan, useHealthCheck } from '@workspace/api-client-react';
 import type {
@@ -398,6 +398,24 @@ const softwareApps: {
     platform: 'Windows · macOS · Linux',
     officialUrl: 'https://www.videolan.org/vlc/',
   },
+  {
+    name: 'Rufus',
+    category: 'PC utilities',
+    description: 'A free, open-source Windows utility for creating bootable USB installation media from supported disk images.',
+    bestFor: 'Preparing operating system installers on Windows',
+    platform: 'Windows',
+    officialUrl: 'https://rufus.ie/',
+    note: 'Writing installation media erases the selected USB drive. Check the target drive before starting.',
+  },
+  {
+    name: 'balenaEtcher',
+    category: 'PC utilities',
+    description: 'A graphical tool for writing supported operating system images to USB drives and SD cards.',
+    bestFor: 'Writing Linux installer images',
+    platform: 'Windows · macOS · Linux',
+    officialUrl: 'https://etcher.balena.io/',
+    note: 'Flashing erases the selected drive. Use Microsoft’s recommended tools or Rufus for Windows installation media.',
+  },
 ];
 
 function currencySymbol(value: PcBuildInputCurrency) {
@@ -428,7 +446,7 @@ function Field({ label, hint, children, testId }: { label: string; hint?: string
   );
 }
 
-function SiteHeader({ connectionLabel = staticPreview ? 'Website preview' : 'Setup guide', currentPage = 'home' }: { connectionLabel?: string; currentPage?: 'home' | 'operating-systems' }) {
+function SiteHeader({ connectionLabel = staticPreview ? 'Website preview' : 'Setup guide', currentPage = 'home' }: { connectionLabel?: string; currentPage?: 'home' | 'hardware' | 'software' | 'operating-systems' }) {
   const { resolvedTheme, setTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
   return (
@@ -439,7 +457,8 @@ function SiteHeader({ connectionLabel = staticPreview ? 'Website preview' : 'Set
       </a>
       <div className="masthead-actions">
         <nav className="masthead-nav" aria-label="Main navigation">
-          <a className="software-jump" href={`${import.meta.env.BASE_URL}#software-library`}>Software guide</a>
+          <a className="software-jump" href={`${import.meta.env.BASE_URL}hardware/`} aria-current={currentPage === 'hardware' ? 'page' : undefined}>Hardware advisor</a>
+          <a className="software-jump" href={`${import.meta.env.BASE_URL}software/`} aria-current={currentPage === 'software' ? 'page' : undefined}>Software guide</a>
           <a className="software-jump" href={`${import.meta.env.BASE_URL}operating-systems/`} aria-current={currentPage === 'operating-systems' ? 'page' : undefined}>Operating systems</a>
         </nav>
         <button
@@ -480,23 +499,68 @@ function useInitialFragmentScroll() {
   }, []);
 }
 
+function usePageTitle(title: string) {
+  useEffect(() => { document.title = title; }, [title]);
+}
+
 function Home() {
+  usePageTitle('RigReady AI');
+  useEffect(() => {
+    const redirectLegacyGuide = () => {
+      if (['#guides', '#software-library'].includes(window.location.hash)) {
+        window.location.replace(`${import.meta.env.BASE_URL}software/${window.location.hash}`);
+      }
+    };
+    redirectLegacyGuide();
+    window.addEventListener('hashchange', redirectLegacyGuide);
+    return () => window.removeEventListener('hashchange', redirectLegacyGuide);
+  }, []);
+
+  return (
+    <div className="app-shell">
+      <SiteHeader />
+      <main className="main-wrap">
+        <section className="welcome-hero" aria-labelledby="welcome-title">
+          <div className="eyebrow"><span className="eyebrow-line" /> Your setup, your next step</div>
+          <h1 id="welcome-title">Welcome to<br /><span>RigReady AI.</span></h1>
+          <p>Choose where you want to start. Explore hardware upgrades, find useful apps, or pick an operating system for your PC.</p>
+        </section>
+        <nav className="welcome-grid" aria-label="Choose where to start">
+          <a className="welcome-card" href={`${import.meta.env.BASE_URL}hardware/`} aria-labelledby="welcome-hardware-title">
+            <span className="welcome-card-icon"><Cpu size={24} aria-hidden="true" /></span>
+            <h2 id="welcome-hardware-title">Hardware advisor</h2>
+            <p>Review your PC components, budget, and gaming goals in one place.</p>
+            <span className="welcome-card-note">{staticPreview ? 'Explore the form. AI plans are unavailable in this preview.' : 'Get a prioritized upgrade plan for your setup.'}</span>
+            <span className="welcome-cta">Open hardware advisor <ArrowRight size={16} aria-hidden="true" /></span>
+          </a>
+          <a className="welcome-card" href={`${import.meta.env.BASE_URL}software/`} aria-labelledby="welcome-software-title">
+            <span className="welcome-card-icon"><AppWindow size={24} aria-hidden="true" /></span>
+            <h2 id="welcome-software-title">Software guide</h2>
+            <p>Discover browsers, game libraries, communication apps, and useful PC tools.</p>
+            <span className="welcome-card-note">{softwareApps.length} apps with official developer links.</span>
+            <span className="welcome-cta">Browse software <ArrowRight size={16} aria-hidden="true" /></span>
+          </a>
+          <a className="welcome-card" href={`${import.meta.env.BASE_URL}operating-systems/`} aria-labelledby="welcome-os-title">
+            <span className="welcome-card-icon"><MonitorDown size={24} aria-hidden="true" /></span>
+            <h2 id="welcome-os-title">Operating systems</h2>
+            <p>Compare Linux distributions and learn how to download and install an operating system.</p>
+            <span className="welcome-card-note">Official downloads and installation guidance.</span>
+            <span className="welcome-cta">Explore operating systems <ArrowRight size={16} aria-hidden="true" /></span>
+          </a>
+        </nav>
+      </main>
+      <SiteFooter />
+    </div>
+  );
+}
+
+function SoftwarePage() {
   useInitialFragmentScroll();
-  const [values, setValues] = useState<FormValues>(initialValues);
-  const [games, setGames] = useState<string[]>([]);
-  const [gameDraft, setGameDraft] = useState('');
-  const [formError, setFormError] = useState('');
-  const [validationError, setValidationError] = useState('');
-  const [plan, setPlan] = useState<PcUpgradePlan | null>(null);
+  usePageTitle('Software guide | RigReady AI');
   const [softwareFilter, setSoftwareFilter] = useState<SoftwareFilter>('All apps');
   const [softwareSearch, setSoftwareSearch] = useState('');
   const [softwareSort, setSoftwareSort] = useState<SoftwareSort>('default');
   const selectedSortLabel = softwareSortOptions.find((option) => option.value === softwareSort)?.label;
-  const resultsRef = useRef<HTMLElement>(null);
-  const gameInputRef = useRef<HTMLInputElement>(null);
-  const health = useHealthCheck({ query: { staleTime: 60_000, retry: false, enabled: !staticPreview } });
-  const createPlan = useCreatePcUpgradePlan();
-  const selectedCurrency = currencies.find((currency) => currency.value === values.currency);
   const visibleSoftware = softwareApps.filter((software) => {
     const matchesCategory = softwareFilter === 'All apps' || software.category === softwareFilter;
     const searchText = `${software.name} ${software.category} ${software.description} ${software.bestFor}`.toLowerCase();
@@ -513,6 +577,121 @@ function Home() {
       return compareNames(a, b);
     });
   }
+
+  return (
+    <div className="app-shell">
+      <SiteHeader currentPage="software" />
+      <main className="main-wrap software-page">
+        <div className="guides-section" id="guides">
+          <section className="software-section" id="software-library" aria-labelledby="software-title">
+            <div className="software-heading">
+              <div>
+                <div className="eyebrow"><span className="eyebrow-line" /> Beyond the hardware</div>
+                <h1 id="software-title">A few good apps to start with.</h1>
+                <p>Find a browser, game library, communication app, or useful PC tool. These are optional picks, not a list of things you need to install.</p>
+              </div>
+              <span className="software-count" role="status" aria-live="polite" aria-atomic="true">
+                Showing {visibleSoftware.length} of {softwareApps.length} apps
+              </span>
+            </div>
+
+            <div className="software-toolbar">
+              <div className="software-controls">
+                <label className="software-search">
+                  <Search size={16} aria-hidden="true" />
+                  <span className="sr-only">Search software</span>
+                  <input
+                    type="search"
+                    value={softwareSearch}
+                    onChange={(event) => setSoftwareSearch(event.target.value)}
+                    placeholder="Search apps, categories, or uses…"
+                    aria-label="Search software"
+                  />
+                </label>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button type="button" className="software-sort-button" aria-label={`Sort software: ${selectedSortLabel}`}>
+                      <ArrowUpDown size={15} aria-hidden="true" />
+                      <span>Sort: {selectedSortLabel}</span>
+                      <ChevronDown size={14} aria-hidden="true" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="software-sort-menu">
+                    <DropdownMenuLabel>Sort software</DropdownMenuLabel>
+                    <DropdownMenuRadioGroup value={softwareSort} onValueChange={(value) => setSoftwareSort(value as SoftwareSort)} aria-label="Software sort order">
+                      {softwareSortOptions.map((option) => (
+                        <DropdownMenuRadioItem key={option.value} value={option.value}>
+                          {option.label}
+                        </DropdownMenuRadioItem>
+                      ))}
+                    </DropdownMenuRadioGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div className="software-filters" role="group" aria-label="Filter software by category">
+                {softwareFilters.map((filter) => (
+                  <button
+                    key={filter}
+                    type="button"
+                    className={`software-filter${softwareFilter === filter ? ' is-active' : ''}`}
+                    aria-pressed={softwareFilter === filter}
+                    onClick={() => setSoftwareFilter(filter)}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {visibleSoftware.length > 0 ? (
+              <div className="software-grid">
+                {visibleSoftware.map((software) => (
+                  <article className="software-card" key={software.name}>
+                    <div className="software-card-meta">
+                      <span className="software-category">{software.category}</span>
+                      <span className="software-platform">{software.platform}</span>
+                    </div>
+                    <h3>{software.name}</h3>
+                    <p className="software-best-for">{software.bestFor}</p>
+                    <p className="software-description">{software.description}</p>
+                    {software.note && <p className="software-note"><Info size={13} />{software.note}</p>}
+                    <a
+                      className="software-link"
+                      href={software.officialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Official site <ExternalLink size={14} aria-hidden="true" />
+                    </a>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="software-empty" role="status">No apps match that search. Try a different name or category.</div>
+            )}
+            <p className="software-disclaimer">Download from the official developer sites above, and check system requirements before installing. You do not need every app here.</p>
+          </section>
+        </div>
+      </main>
+      <SiteFooter />
+    </div>
+  );
+}
+
+function HardwarePage() {
+  useInitialFragmentScroll();
+  usePageTitle('Hardware advisor | RigReady AI');
+  const [values, setValues] = useState<FormValues>(initialValues);
+  const [games, setGames] = useState<string[]>([]);
+  const [gameDraft, setGameDraft] = useState('');
+  const [formError, setFormError] = useState('');
+  const [validationError, setValidationError] = useState('');
+  const [plan, setPlan] = useState<PcUpgradePlan | null>(null);
+  const resultsRef = useRef<HTMLElement>(null);
+  const gameInputRef = useRef<HTMLInputElement>(null);
+  const health = useHealthCheck({ query: { staleTime: 60_000, retry: false, enabled: !staticPreview } });
+  const createPlan = useCreatePcUpgradePlan();
+  const selectedCurrency = currencies.find((currency) => currency.value === values.currency);
 
   useEffect(() => {
     if (plan && !createPlan.isPending) {
@@ -622,7 +801,7 @@ function Home() {
 
   return (
     <div className="app-shell">
-      <SiteHeader connectionLabel={connectionLabel} />
+      <SiteHeader connectionLabel={connectionLabel} currentPage="hardware" />
 
       <main>
         <div className="main-wrap">
@@ -842,96 +1021,6 @@ function Home() {
             </section>
           )}
 
-          <div className="guides-section" id="guides">
-            <section className="software-section" id="software-library" aria-labelledby="software-title">
-              <div className="software-heading">
-                <div>
-                  <div className="eyebrow"><span className="eyebrow-line" /> Beyond the hardware</div>
-                  <h2 id="software-title">A few good apps to start with.</h2>
-                  <p>Find a browser, game library, communication app, or useful PC tool. These are optional picks, not a list of things you need to install.</p>
-                </div>
-                <span className="software-count" role="status" aria-live="polite" aria-atomic="true">
-                  Showing {visibleSoftware.length} of {softwareApps.length} apps
-                </span>
-              </div>
-
-              <div className="software-toolbar">
-                <div className="software-controls">
-                  <label className="software-search">
-                    <Search size={16} aria-hidden="true" />
-                    <span className="sr-only">Search software</span>
-                    <input
-                      type="search"
-                      value={softwareSearch}
-                      onChange={(event) => setSoftwareSearch(event.target.value)}
-                      placeholder="Search apps, categories, or uses…"
-                      aria-label="Search software"
-                    />
-                  </label>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button type="button" className="software-sort-button" aria-label={`Sort software: ${selectedSortLabel}`}>
-                        <ArrowUpDown size={15} aria-hidden="true" />
-                        <span>Sort: {selectedSortLabel}</span>
-                        <ChevronDown size={14} aria-hidden="true" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="software-sort-menu">
-                      <DropdownMenuLabel>Sort software</DropdownMenuLabel>
-                      <DropdownMenuRadioGroup value={softwareSort} onValueChange={(value) => setSoftwareSort(value as SoftwareSort)} aria-label="Software sort order">
-                        {softwareSortOptions.map((option) => (
-                          <DropdownMenuRadioItem key={option.value} value={option.value}>
-                            {option.label}
-                          </DropdownMenuRadioItem>
-                        ))}
-                      </DropdownMenuRadioGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-                <div className="software-filters" role="group" aria-label="Filter software by category">
-                  {softwareFilters.map((filter) => (
-                    <button
-                      key={filter}
-                      type="button"
-                      className={`software-filter${softwareFilter === filter ? ' is-active' : ''}`}
-                      aria-pressed={softwareFilter === filter}
-                      onClick={() => setSoftwareFilter(filter)}
-                    >
-                      {filter}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {visibleSoftware.length > 0 ? (
-                <div className="software-grid">
-                  {visibleSoftware.map((software) => (
-                    <article className="software-card" key={software.name}>
-                      <div className="software-card-meta">
-                        <span className="software-category">{software.category}</span>
-                        <span className="software-platform">{software.platform}</span>
-                      </div>
-                      <h3>{software.name}</h3>
-                      <p className="software-best-for">{software.bestFor}</p>
-                      <p className="software-description">{software.description}</p>
-                      {software.note && <p className="software-note"><Info size={13} />{software.note}</p>}
-                      <a
-                        className="software-link"
-                        href={software.officialUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Official site <ExternalLink size={14} aria-hidden="true" />
-                      </a>
-                    </article>
-                  ))}
-                </div>
-              ) : (
-                <div className="software-empty" role="status">No apps match that search. Try a different name or category.</div>
-              )}
-              <p className="software-disclaimer">Download from the official developer sites above, and check system requirements before installing. You do not need every app here.</p>
-            </section>
-          </div>
         </div>
       </main>
 
@@ -942,16 +1031,13 @@ function Home() {
 
 function OperatingSystemsPage() {
   useInitialFragmentScroll();
-  useEffect(() => {
-    document.title = 'Operating systems | RigReady AI';
-    return () => { document.title = 'RigReady AI'; };
-  }, []);
+  usePageTitle('Operating systems | RigReady AI');
 
   return (
     <div className="app-shell">
       <SiteHeader currentPage="operating-systems" />
       <main className="main-wrap os-page">
-        <a className="os-back-link" href={import.meta.env.BASE_URL}><ArrowLeft size={15} aria-hidden="true" /> Back to PC advisor</a>
+        <a className="os-back-link" href={import.meta.env.BASE_URL}><ArrowLeft size={15} aria-hidden="true" /> Back to home</a>
         <OperatingSystemGuide />
       </main>
       <SiteFooter />
@@ -964,6 +1050,10 @@ function Router() {
     <RoutedErrorBoundary>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/hardware" component={HardwarePage} />
+        <Route path="/hardware/" component={HardwarePage} />
+        <Route path="/software" component={SoftwarePage} />
+        <Route path="/software/" component={SoftwarePage} />
         <Route path="/operating-systems" component={OperatingSystemsPage} />
         <Route path="/operating-systems/" component={OperatingSystemsPage} />
         <Route component={NotFound} />

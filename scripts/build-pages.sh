@@ -8,6 +8,12 @@ PORT=5173 BASE_PATH="${PAGES_BASE_PATH:-/RigReady/}" VITE_STATIC_PREVIEW=true \
 preview_output=artifacts/rigready-ai/dist/public
 touch "$preview_output/.nojekyll"
 # Real HTML files let GitHub Pages serve this route on direct visits and refreshes.
-mkdir -p "$preview_output/operating-systems"
-sed 's#<title>RigReady AI</title>#<title>Operating systems | RigReady AI</title>#' \
-  "$preview_output/index.html" > "$preview_output/operating-systems/index.html"
+while IFS='|' read -r preview_route preview_title; do
+  mkdir -p "$preview_output/$preview_route"
+  sed "s#<title>RigReady AI</title>#<title>$preview_title | RigReady AI</title>#" \
+    "$preview_output/index.html" > "$preview_output/$preview_route/index.html"
+done <<'PAGES'
+hardware|Hardware advisor
+software|Software guide
+operating-systems|Operating systems
+PAGES

@@ -43,12 +43,12 @@ const linuxPicks: {
     docs: 'https://docs.bazzite.gg/',
   },
   {
-    name: 'Fedora KDE Plasma Desktop',
+    name: 'Fedora',
     bestFor: 'A current desktop for gaming and everyday work',
-    description: 'Combines the customizable KDE Plasma desktop with regularly updated Linux software. A flexible option for a PC used for both work and play.',
+    description: 'A regularly updated Linux system with a choice of desktops, including Workstation with GNOME and KDE Plasma Desktop. Flexible for a PC used for both work and play.',
     note: 'Expect regular release upgrades. Proprietary drivers and some media codecs may need additional setup.',
     uses: ['Gaming'],
-    download: 'https://fedoraproject.org/kde/download',
+    download: 'https://fedoraproject.org/',
     docs: 'https://docs.fedoraproject.org/en-US/quick-docs/creating-and-using-a-live-installation-image/',
   },
   {
@@ -68,6 +68,33 @@ const linuxPicks: {
     uses: ['Advanced'],
     download: 'https://endeavouros.com/',
     docs: 'https://discovery.endeavouros.com/',
+  },
+  {
+    name: 'CachyOS',
+    bestFor: 'Experienced users who want a performance-focused gaming setup',
+    description: 'An Arch-based rolling-release distribution with performance-oriented packages, kernel options, and a choice of desktops.',
+    note: 'Check the supported CPU requirements and plan for regular updates and hands-on maintenance. Performance gains depend on your hardware and workload.',
+    uses: ['Gaming', 'Advanced'],
+    download: 'https://cachyos.org/download/',
+    docs: 'https://wiki.cachyos.org/',
+  },
+  {
+    name: 'Nobara Linux',
+    bestFor: 'Gaming, streaming, and content creation',
+    description: 'An independent Fedora-based distribution that brings together gaming tools, drivers, and media support for a desktop used for play and creative work.',
+    note: 'Choose an image that matches your graphics hardware and follow Nobara’s own installation, driver, and update instructions.',
+    uses: ['Gaming'],
+    download: 'https://nobaraproject.org/download-nobara/',
+    docs: 'https://wiki.nobaraproject.org/',
+  },
+  {
+    name: 'Pop!_OS',
+    bestFor: 'A desktop for gaming and everyday productivity',
+    description: 'An Ubuntu-based distribution from System76 with a productivity-focused desktop and download options for different graphics hardware.',
+    note: 'Follow System76’s current hardware, graphics, and Secure Boot guidance when choosing and installing an image.',
+    uses: ['New to Linux', 'Gaming'],
+    download: 'https://system76.com/pop/',
+    docs: 'https://support.system76.com/articles/install-pop/',
   },
 ];
 
@@ -141,7 +168,7 @@ export function OperatingSystemGuide() {
         <div className="os-section-heading">
           <div>
             <h2 id="linux-title">Linux picks, matched to your PC.</h2>
-            <p>New to Linux? Start by comparing Mint and Ubuntu LTS. For a gaming-focused setup, look at Bazzite or Fedora KDE. There is no single best distribution for everyone.</p>
+            <p>New to Linux? Start by comparing Mint, Ubuntu LTS, and Pop!_OS. Use the filters to explore gaming-focused setups and more hands-on options. There is no single best distribution for everyone.</p>
           </div>
           <span className="software-count" role="status" aria-live="polite" aria-atomic="true">{visiblePicks.length} {visiblePicks.length === 1 ? 'distribution' : 'distributions'}</span>
         </div>

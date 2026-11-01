@@ -1,8 +1,9 @@
 # GitHub Pages preview
 
-This preview shows the RigReady website, editable PC form, and searchable
-35-app software guide, plus an Operating systems page with official downloads,
-Linux recommendations, and installation guidance. GitHub Pages serves static files: AI plans are explicitly
+The homepage welcomes visitors and links to the Hardware advisor, Software guide,
+and Operating systems pages. They include the editable PC form, searchable
+37-app software guide, and nine Linux recommendations with download and
+installation guidance. GitHub Pages serves static files: AI plans are explicitly
 disabled and the preview does not send PC details to an API.
 
 From the repository root, using Node.js 24.x:
@@ -16,9 +17,11 @@ The output is `artifacts/rigready-ai/dist/public`. The default base path is
 `/RigReady/`, matching this repository. Override `PAGES_BASE_PATH` if deploying
 under another path.
 
-The header's Operating systems link opens `/RigReady/operating-systems/`.
-The build script creates an HTML entry point for that directory so direct
-visits, shared links, and browser refreshes work on GitHub Pages.
+The header links open `/RigReady/hardware/`, `/RigReady/software/`, and
+`/RigReady/operating-systems/`. The build script creates an HTML entry point for
+each directory so direct visits, shared links, and browser refreshes work on
+GitHub Pages. Older homepage links to `#guides` or `#software-library` redirect
+to the Software guide.
 
 Publish the contents of that output directory, plus an empty `.nojekyll` file,
 to a `gh-pages` branch. In the repository's Settings → Pages, select deployment

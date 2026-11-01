@@ -8,10 +8,10 @@ software guide, search, and category filters work without an AI key.
    Directory and Node.js 24.x as the Node.js version.
 3. Leave the framework preset as Other. `vercel.json` supplies the installation
    command, build command, output directory, API routing, and client-side routing.
-4. Deploy, then open the URL Vercel provides. Check the Software guide: it should
-   contain 35 apps and the Communication category, with OBS Studio in PC utilities.
-   The header's Operating systems link opens a separate page with official downloads
-   and a Linux installation guide.
+4. Deploy, then open the URL Vercel provides. The welcome page and header link to
+   Hardware advisor, Software guide, and Operating systems. The Software guide
+   contains 37 apps, including Rufus and balenaEtcher in PC utilities. The OS page
+   includes nine Linux recommendations and installation guidance.
 5. Check `/api/healthz`. It should return `status: "ok"`; `aiConfigured` indicates
    whether an AI key is present.
 
