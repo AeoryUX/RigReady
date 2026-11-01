@@ -111,7 +111,7 @@ export function OperatingSystemGuide() {
       <div className="software-heading">
         <div>
           <div className="eyebrow"><span className="eyebrow-line" /> A fresh start for your PC</div>
-          <h2 id="os-title">Start with the right operating system.</h2>
+          <h1 id="os-title">Start with the right operating system.</h1>
           <p>Find official downloads, compare Linux distributions, and learn how to prepare an installer. Pick the system that fits your hardware and the games you actually play.</p>
         </div>
       </div>
@@ -119,19 +119,19 @@ export function OperatingSystemGuide() {
       <div className="os-download-grid" aria-label="Operating system downloads">
         <article className="os-download-card">
           <span className="software-category">Microsoft</span>
-          <h3>Windows 11</h3>
+          <h2>Windows 11</h2>
           <p>Get Microsoft’s installation media or disk image. Check its hardware requirements and whether you need an activation license.</p>
           <OfficialLink href="https://www.microsoft.com/software-download/windows11">Download Windows 11</OfficialLink>
         </article>
         <article className="os-download-card">
           <span className="software-category">Choose a distribution</span>
-          <h3>Linux</h3>
+          <h2>Linux</h2>
           <p>Start with one of the picks below. The distribution’s official site supplies its ISO image, requirements, and installation instructions.</p>
           <a className="os-link" href="#linux-picks">Compare Linux picks <Download size={13} aria-hidden="true" /></a>
         </article>
         <article className="os-download-card">
           <span className="software-category">Apple hardware</span>
-          <h3>macOS</h3>
+          <h2>macOS</h2>
           <p>Use Apple’s download and update instructions on a compatible Mac. Available releases depend on the Mac model.</p>
           <OfficialLink href="https://support.apple.com/102662">Apple installation guide</OfficialLink>
         </article>
@@ -140,7 +140,7 @@ export function OperatingSystemGuide() {
       <section className="os-section" id="linux-picks" aria-labelledby="linux-title">
         <div className="os-section-heading">
           <div>
-            <h3 id="linux-title">Linux picks, matched to your PC.</h3>
+            <h2 id="linux-title">Linux picks, matched to your PC.</h2>
             <p>New to Linux? Start by comparing Mint and Ubuntu LTS. For a gaming-focused setup, look at Bazzite or Fedora KDE. There is no single best distribution for everyone.</p>
           </div>
           <span className="software-count" role="status" aria-live="polite" aria-atomic="true">{visiblePicks.length} {visiblePicks.length === 1 ? 'distribution' : 'distributions'}</span>
@@ -154,7 +154,7 @@ export function OperatingSystemGuide() {
           {visiblePicks.map((pick) => (
             <article className="os-distro-card" key={pick.name}>
               <span className="software-category">{pick.uses.join(' · ')}</span>
-              <h4>{pick.name}</h4>
+              <h3>{pick.name}</h3>
               <p className="software-best-for">{pick.bestFor}</p>
               <p className="os-copy">{pick.description}</p>
               <p className="os-note"><Info size={14} aria-hidden="true" />{pick.note}</p>
@@ -171,7 +171,7 @@ export function OperatingSystemGuide() {
       <section className="os-section" aria-labelledby="linux-install-title">
         <div className="os-section-heading">
           <div>
-            <h3 id="linux-install-title">Install Linux, step by step.</h3>
+            <h2 id="linux-install-title">Install Linux, step by step.</h2>
             <p>A starting checklist for a PC installation. Use your chosen distribution’s instructions for its exact procedure.</p>
           </div>
         </div>
@@ -180,7 +180,7 @@ export function OperatingSystemGuide() {
           {installationSteps.map((step, index) => (
             <li className="os-step" key={step.title}>
               <span className="side-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-              <div><h4>{step.title}</h4><p>{step.detail}</p></div>
+              <div><h3>{step.title}</h3><p>{step.detail}</p></div>
             </li>
           ))}
         </ol>
