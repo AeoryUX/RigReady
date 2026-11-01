@@ -321,12 +321,16 @@
 .software-jump { color: hsl(var(--primary)); font-size: 11px; font-weight: 700; text-decoration: none; }
 .software-jump:hover { text-decoration: underline; text-underline-offset: 3px; }
 .software-section { padding: 0 0 78px; scroll-margin-top: 22px; }
-.software-heading { display: flex; justify-content: space-between; align-items: end; gap: 22px; margin-bottom: 22px; }
+.software-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 22px; margin-bottom: 22px; }
+.software-heading > div { flex: 1 1 340px; min-width: 0; }
 .software-heading .eyebrow { margin-bottom: 12px; }
 .software-heading h2 { max-width: 640px; margin: 0; font: 700 clamp(26px, 4vw, 39px)/1.04 var(--app-font-serif); letter-spacing: -.05em; }
 .software-heading p { max-width: 620px; margin: 11px 0 0; color: hsl(var(--muted-foreground)); font-size: 12px; line-height: 1.65; }
-.software-count { flex: 0 0 auto; padding: 6px 9px; border: 1px solid hsl(var(--border)); border-radius: 999px; color: hsl(var(--muted-foreground)); font: 10px var(--app-font-mono); }
+.software-count { flex: 0 0 auto; margin-left: auto; padding: 6px 9px; border: 1px solid hsl(var(--border)); border-radius: 999px; color: hsl(var(--muted-foreground)); font: 10px var(--app-font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .software-toolbar { display: flex; flex-direction: column; gap: 13px; margin-bottom: 16px; }
+.software-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.software-sort { display: flex; align-items: center; gap: 8px; color: hsl(var(--muted-foreground)); font-size: 11px; }
+.software-sort-select { width: auto; min-width: 155px; min-height: 42px; }
 .software-search { width: min(100%, 360px); min-height: 42px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border: 1px solid hsl(var(--input)); border-radius: 8px; color: hsl(var(--muted-foreground)); background: hsl(var(--card)); }
 .software-search:focus-within { border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / .13); }
 .software-search input { width: 100%; min-width: 0; border: 0; outline: 0; color: hsl(var(--foreground)); background: transparent; font: inherit; font-size: 11px; }
@@ -403,7 +407,6 @@
   .side-top { min-height: 0; }
   .software-heading { gap: 10px; }
   .software-heading h2 { font-size: 29px; }
-  .software-count { margin-top: 31px; }
   .software-grid { grid-template-columns: 1fr; }
   .software-card { min-height: 0; }
   .software-filter { white-space: nowrap; }

@@ -67,6 +67,7 @@ const priorityOptions: { value: PcBuildInputPriority; label: string }[] = [
 
 type SoftwareCategory = 'Browsers' | 'Game libraries' | 'Communication' | 'PC utilities';
 type SoftwareFilter = 'All apps' | SoftwareCategory;
+type SoftwareSort = 'default' | 'name-asc' | 'name-desc' | 'category';
 
 const softwareFilters: SoftwareFilter[] = [
   'All apps',
@@ -439,6 +440,7 @@ function Home() {
   const [plan, setPlan] = useState<PcUpgradePlan | null>(null);
   const [softwareFilter, setSoftwareFilter] = useState<SoftwareFilter>('All apps');
   const [softwareSearch, setSoftwareSearch] = useState('');
+  const [softwareSort, setSoftwareSort] = useState<SoftwareSort>('default');
   const resultsRef = useRef<HTMLElement>(null);
   const gameInputRef = useRef<HTMLInputElement>(null);
   const health = useHealthCheck({ query: { staleTime: 60_000, retry: false, enabled: !staticPreview } });
@@ -449,6 +451,17 @@ function Home() {
     const searchText = `${software.name} ${software.category} ${software.description} ${software.bestFor}`.toLowerCase();
     return matchesCategory && searchText.includes(softwareSearch.trim().toLowerCase());
   });
+  if (softwareSort !== 'default') {
+    const compareNames = (a: typeof softwareApps[number], b: typeof softwareApps[number]) =>
+      a.name.localeCompare(b.name, 'en', { sensitivity: 'base', numeric: true });
+    visibleSoftware.sort((a, b) => {
+      if (softwareSort === 'name-desc') return compareNames(b, a);
+      if (softwareSort === 'category') {
+        return softwareFilters.indexOf(a.category) - softwareFilters.indexOf(b.category) || compareNames(a, b);
+      }
+      return compareNames(a, b);
+    });
+  }
 
   useEffect(() => {
     if (plan && !createPlan.isPending) {
@@ -797,21 +810,39 @@ function Home() {
                 <h2 id="software-title">A few good apps to start with.</h2>
                 <p>Find a browser, game library, communication app, or useful PC tool. These are optional picks, not a list of things you need to install.</p>
               </div>
-              <span className="software-count">{visibleSoftware.length} apps</span>
+              <span className="software-count" role="status" aria-live="polite" aria-atomic="true">
+                Showing {visibleSoftware.length} of {softwareApps.length} apps
+              </span>
             </div>
 
             <div className="software-toolbar">
-              <label className="software-search">
-                <Search size={16} aria-hidden="true" />
-                <span className="sr-only">Search software</span>
-                <input
-                  type="search"
-                  value={softwareSearch}
-                  onChange={(event) => setSoftwareSearch(event.target.value)}
-                  placeholder="Search apps, categories, or uses…"
-                  aria-label="Search software"
-                />
-              </label>
+              <div className="software-controls">
+                <label className="software-search">
+                  <Search size={16} aria-hidden="true" />
+                  <span className="sr-only">Search software</span>
+                  <input
+                    type="search"
+                    value={softwareSearch}
+                    onChange={(event) => setSoftwareSearch(event.target.value)}
+                    placeholder="Search apps, categories, or uses…"
+                    aria-label="Search software"
+                  />
+                </label>
+                <label className="software-sort">
+                  <span>Sort by</span>
+                  <select
+                    className="control software-sort-select"
+                    value={softwareSort}
+                    onChange={(event) => setSoftwareSort(event.target.value as SoftwareSort)}
+                    aria-label="Sort software"
+                  >
+                    <option value="default">Default order</option>
+                    <option value="name-asc">Name: A–Z</option>
+                    <option value="name-desc">Name: Z–A</option>
+                    <option value="category">Category</option>
+                  </select>
+                </label>
+              </div>
               <div className="software-filters" role="group" aria-label="Filter software by category">
                 {softwareFilters.map((filter) => (
                   <button
