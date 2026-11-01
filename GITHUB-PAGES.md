@@ -2,7 +2,7 @@
 
 The homepage welcomes visitors and links to the Hardware advisor, Software guide,
 and Operating systems pages. They include the editable PC form, searchable
-37-app software guide, and nine Linux recommendations with download and
+45-app software guide, and nine Linux recommendations with download and
 installation guidance. GitHub Pages serves static files: AI plans are explicitly
 disabled and the preview does not send PC details to an API.
 

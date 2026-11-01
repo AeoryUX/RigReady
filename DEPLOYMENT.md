@@ -10,7 +10,7 @@ software guide, search, and category filters work without an AI key.
    command, build command, output directory, API routing, and client-side routing.
 4. Deploy, then open the URL Vercel provides. The welcome page and header link to
    Hardware advisor, Software guide, and Operating systems. The Software guide
-   contains 37 apps, including Rufus and balenaEtcher in PC utilities. The OS page
+   contains 45 apps, including Rufus and balenaEtcher in PC utilities. The OS page
    includes nine Linux recommendations and installation guidance.
 5. Check `/api/healthz`. It should return `status: "ok"`; `aiConfigured` indicates
    whether an AI key is present.
