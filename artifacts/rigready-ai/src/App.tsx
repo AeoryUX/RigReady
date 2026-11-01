@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider, useTheme } from 'next-themes';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import {
+  DropdownMenu, DropdownMenuContent, DropdownMenuLabel,
+  DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import NotFound from '@/pages/not-found';
 import {
-  Activity, AlertCircle, AlertTriangle, ArrowRight, BadgeCheck, Check, CheckCircle2,
-  ChevronRight, Cpu, ExternalLink, Info, LockKeyhole, Plus, RotateCcw, Search, ShieldCheck, Zap,
+  Activity, AlertCircle, AlertTriangle, ArrowRight, ArrowUpDown, BadgeCheck, Check, CheckCircle2,
+  ChevronDown, ChevronRight, Cpu, ExternalLink, Info, LockKeyhole, Moon, Plus, RotateCcw, Search, ShieldCheck, Sun, Zap,
 } from 'lucide-react';
 import { useCreatePcUpgradePlan, useHealthCheck } from '@workspace/api-client-react';
 import type {
@@ -68,6 +73,13 @@ const priorityOptions: { value: PcBuildInputPriority; label: string }[] = [
 type SoftwareCategory = 'Browsers' | 'Game libraries' | 'Communication' | 'PC utilities';
 type SoftwareFilter = 'All apps' | SoftwareCategory;
 type SoftwareSort = 'default' | 'name-asc' | 'name-desc' | 'category';
+
+const softwareSortOptions: { value: SoftwareSort; label: string }[] = [
+  { value: 'default', label: 'Default order' },
+  { value: 'name-asc', label: 'Name: A–Z' },
+  { value: 'name-desc', label: 'Name: Z–A' },
+  { value: 'category', label: 'Category' },
+];
 
 const softwareFilters: SoftwareFilter[] = [
   'All apps',
@@ -432,6 +444,8 @@ function Field({ label, hint, children, testId }: { label: string; hint?: string
 }
 
 function Home() {
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   const [values, setValues] = useState<FormValues>(initialValues);
   const [games, setGames] = useState<string[]>([]);
   const [gameDraft, setGameDraft] = useState('');
@@ -441,6 +455,7 @@ function Home() {
   const [softwareFilter, setSoftwareFilter] = useState<SoftwareFilter>('All apps');
   const [softwareSearch, setSoftwareSearch] = useState('');
   const [softwareSort, setSoftwareSort] = useState<SoftwareSort>('default');
+  const selectedSortLabel = softwareSortOptions.find((option) => option.value === softwareSort)?.label;
   const resultsRef = useRef<HTMLElement>(null);
   const gameInputRef = useRef<HTMLInputElement>(null);
   const health = useHealthCheck({ query: { staleTime: 60_000, retry: false, enabled: !staticPreview } });
@@ -578,6 +593,16 @@ function Home() {
         </a>
         <div className="masthead-actions">
           <a className="software-jump" href="#software-library">Software guide</a>
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            aria-pressed={isDark}
+            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {isDark ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
+          </button>
           <div className="masthead-note" data-testid="status-api-health">
             <span className="status-dot" />
             <span>{connectionLabel}</span>
@@ -828,20 +853,25 @@ function Home() {
                     aria-label="Search software"
                   />
                 </label>
-                <label className="software-sort">
-                  <span>Sort by</span>
-                  <select
-                    className="control software-sort-select"
-                    value={softwareSort}
-                    onChange={(event) => setSoftwareSort(event.target.value as SoftwareSort)}
-                    aria-label="Sort software"
-                  >
-                    <option value="default">Default order</option>
-                    <option value="name-asc">Name: A–Z</option>
-                    <option value="name-desc">Name: Z–A</option>
-                    <option value="category">Category</option>
-                  </select>
-                </label>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button type="button" className="software-sort-button" aria-label={`Sort software: ${selectedSortLabel}`}>
+                      <ArrowUpDown size={15} aria-hidden="true" />
+                      <span>Sort: {selectedSortLabel}</span>
+                      <ChevronDown size={14} aria-hidden="true" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="software-sort-menu">
+                    <DropdownMenuLabel>Sort software</DropdownMenuLabel>
+                    <DropdownMenuRadioGroup value={softwareSort} onValueChange={(value) => setSoftwareSort(value as SoftwareSort)} aria-label="Software sort order">
+                      {softwareSortOptions.map((option) => (
+                        <DropdownMenuRadioItem key={option.value} value={option.value}>
+                          {option.label}
+                        </DropdownMenuRadioItem>
+                      ))}
+                    </DropdownMenuRadioGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
               <div className="software-filters" role="group" aria-label="Filter software by category">
                 {softwareFilters.map((filter) => (
@@ -914,14 +944,16 @@ function RoutedErrorBoundary({ children }: { children: ReactNode }) {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ThemeProvider attribute="class" storageKey="rigready-theme" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+            <Router />
+          </WouterRouter>
+          <Toaster />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 

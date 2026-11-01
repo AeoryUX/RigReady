@@ -107,6 +107,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --background: 185 23% 10%;
   --foreground: 42 28% 92%;
   --border: 184 15% 25%;
@@ -261,10 +262,10 @@
 .side-content { padding: 20px 22px 23px; }
 .side-content h4 { font: 700 11px var(--app-font-mono); text-transform: uppercase; letter-spacing: .08em; margin: 0 0 15px; }
 .side-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
-.side-list li { display: grid; grid-template-columns: 23px 1fr; gap: 10px; align-items: start; }
-.side-number { width: 23px; height: 23px; display: grid; place-items: center; border: 1px solid hsl(var(--border)); border-radius: 7px; color: hsl(var(--primary)); font: 10px var(--app-font-mono); }
+.side-list li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: start; }
+.side-number { width: 26px; height: 26px; display: grid; place-items: center; border: 1px solid hsl(var(--border)); border-radius: 7px; color: hsl(var(--primary)); font: 700 11px/1 var(--app-font-sans); font-variant-numeric: tabular-nums; }
 .side-list strong { display: block; margin: 1px 0 4px; font-size: 11px; }
-.side-list span { display: block; color: hsl(var(--muted-foreground)); font-size: 10px; line-height: 1.5; }
+.side-list li > div > span { display: block; color: hsl(var(--muted-foreground)); font-size: 10px; line-height: 1.5; }
 .side-divider { height: 1px; margin: 19px 0 15px; background: hsl(var(--border)); }
 .estimate-note { display: flex; gap: 9px; padding: 11px; border-radius: 8px; background: hsl(var(--accent) / .1); color: hsl(var(--foreground) / .77); font-size: 10px; line-height: 1.5; }
 .estimate-note svg { color: hsl(var(--accent)); flex: 0 0 auto; }
@@ -318,6 +319,10 @@
 .validation-error { color: hsl(var(--destructive)); font-size: 10px; margin-top: 5px; }
 .form-alert { margin: 0 0 16px; padding: 10px 12px; border-radius: 8px; background: hsl(var(--destructive) / .07); color: hsl(var(--destructive)); font-size: 11px; }
 .masthead-actions { display: flex; align-items: center; gap: 24px; }
+.theme-toggle { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; padding: 0; border: 1px solid hsl(var(--border)); border-radius: 10px; background: hsl(var(--card)); color: hsl(var(--primary)); cursor: pointer; }
+.theme-toggle:hover { background: hsl(var(--secondary)); }
+.theme-toggle:focus-visible, .software-sort-button:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 3px; }
+.dark .submit-button:hover:not(:disabled) { background: hsl(171 41% 64%); }
 .software-jump { color: hsl(var(--primary)); font-size: 11px; font-weight: 700; text-decoration: none; }
 .software-jump:hover { text-decoration: underline; text-underline-offset: 3px; }
 .software-section { padding: 0 0 78px; scroll-margin-top: 22px; }
@@ -329,8 +334,10 @@
 .software-count { flex: 0 0 auto; margin-left: auto; padding: 6px 9px; border: 1px solid hsl(var(--border)); border-radius: 999px; color: hsl(var(--muted-foreground)); font: 10px var(--app-font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .software-toolbar { display: flex; flex-direction: column; gap: 13px; margin-bottom: 16px; }
 .software-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-.software-sort { display: flex; align-items: center; gap: 8px; color: hsl(var(--muted-foreground)); font-size: 11px; }
-.software-sort-select { width: auto; min-width: 155px; min-height: 42px; }
+.software-sort-button { display: flex; align-items: center; gap: 9px; min-height: 42px; padding: 0 12px; border: 1px solid hsl(var(--border)); border-radius: 8px; background: hsl(var(--card)); color: hsl(var(--foreground)); font-size: 11px; cursor: pointer; }
+.software-sort-button:hover, .software-sort-button[data-state="open"] { border-color: hsl(var(--primary)); background: hsl(var(--secondary)); }
+.software-sort-button > svg { flex-shrink: 0; color: hsl(var(--primary)); }
+.software-sort-menu { min-width: 205px; }
 .software-search { width: min(100%, 360px); min-height: 42px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border: 1px solid hsl(var(--input)); border-radius: 8px; color: hsl(var(--muted-foreground)); background: hsl(var(--card)); }
 .software-search:focus-within { border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / .13); }
 .software-search input { width: 100%; min-width: 0; border: 0; outline: 0; color: hsl(var(--foreground)); background: transparent; font: inherit; font-size: 11px; }
