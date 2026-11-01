@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "RigReady AI"
+description = "An AI-powered PC gaming upgrade advisor that helps people assess their current computer, budget, and favorite games, then understand a sensible upgrade path and compatibility checks."
+version = "1.0.0"
+id = "artifacts/rigready-ai"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21508
+
+[services.development]
+run = "pnpm --filter @workspace/rigready-ai run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/rigready-ai", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/rigready-ai/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21508"
+BASE_PATH = "/"

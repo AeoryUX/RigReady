@@ -1,0 +1,232 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: pc-advisor
+    description: AI-powered PC gaming upgrade recommendations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /pc-advisor/upgrade-plan:
+    post:
+      operationId: createPcUpgradePlan
+      tags: [pc-advisor]
+      summary: Generate a PC gaming upgrade plan
+      description: Analyzes a current PC build, budget, and target games to suggest a staged upgrade plan.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PcBuildInput"
+      responses:
+        "200":
+          description: AI-generated upgrade plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PcUpgradePlan"
+        "400":
+          description: Invalid PC build details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "503":
+          description: AI provider is not configured
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "502":
+          description: AI provider could not generate a plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+        aiConfigured:
+          type: boolean
+      required:
+        - status
+        - aiConfigured
+    PcBuildInput:
+      type: object
+      additionalProperties: false
+      properties:
+        processor:
+          type: ["string", "null"]
+          maxLength: 160
+        graphicsCard:
+          type: ["string", "null"]
+          maxLength: 160
+        memoryGb:
+          type: ["integer", "null"]
+          minimum: 1
+          maximum: 512
+        memoryType:
+          type: ["string", "null"]
+          maxLength: 40
+        storage:
+          type: ["string", "null"]
+          maxLength: 160
+        motherboard:
+          type: ["string", "null"]
+          maxLength: 160
+        powerSupply:
+          type: ["string", "null"]
+          maxLength: 160
+        caseModel:
+          type: ["string", "null"]
+          maxLength: 160
+        budget:
+          type: number
+          minimum: 0
+          maximum: 50000
+        currency:
+          type: string
+          enum: [USD, SAR, EUR, GBP, CAD, AUD]
+        games:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 100
+          minItems: 1
+          maxItems: 6
+        resolution:
+          type: string
+          enum: [1080p, 1440p, 4K]
+        priority:
+          type: string
+          enum: [balanced, fps, visuals, streaming]
+      required:
+        - budget
+        - currency
+        - games
+        - resolution
+        - priority
+    PcUpgradePlan:
+      type: object
+      additionalProperties: false
+      properties:
+        headline:
+          type: string
+          maxLength: 120
+        summary:
+          type: string
+          maxLength: 1200
+        budgetNote:
+          type: string
+          maxLength: 500
+        upgrades:
+          type: array
+          items:
+            $ref: "#/components/schemas/PcUpgrade"
+          maxItems: 6
+        checks:
+          type: array
+          items:
+            $ref: "#/components/schemas/CompatibilityCheck"
+          maxItems: 8
+        buildOrder:
+          type: array
+          items:
+            type: string
+            maxLength: 300
+          maxItems: 8
+      required:
+        - headline
+        - summary
+        - budgetNote
+        - upgrades
+        - checks
+        - buildOrder
+    PcUpgrade:
+      type: object
+      additionalProperties: false
+      properties:
+        priority:
+          type: integer
+          minimum: 1
+          maximum: 6
+        category:
+          type: string
+          enum: [graphics card, processor, memory, storage, motherboard, power supply, cooling, case]
+        recommendedPart:
+          type: string
+          maxLength: 180
+        estimatedPriceLow:
+          type: ["number", "null"]
+          minimum: 0
+        estimatedPriceHigh:
+          type: ["number", "null"]
+          minimum: 0
+        reason:
+          type: string
+          maxLength: 600
+        compatibilityNote:
+          type: string
+          maxLength: 500
+        impact:
+          type: string
+          enum: [high, medium, low]
+      required:
+        - priority
+        - category
+        - recommendedPart
+        - estimatedPriceLow
+        - estimatedPriceHigh
+        - reason
+        - compatibilityNote
+        - impact
+    CompatibilityCheck:
+      type: object
+      additionalProperties: false
+      properties:
+        severity:
+          type: string
+          enum: [check, caution, critical]
+        item:
+          type: string
+          maxLength: 120
+        detail:
+          type: string
+          maxLength: 500
+      required:
+        - severity
+        - item
+        - detail
+    ApiError:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
