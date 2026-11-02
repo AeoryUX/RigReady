@@ -63,6 +63,18 @@ const desktopOptions: {
     url: 'https://hypr.land/', docs: 'https://wiki.hypr.land/',
   },
   {
+    name: 'Niri', kind: 'Compositor', bestFor: 'Scrollable tiling and a column-based workflow',
+    description: 'A Wayland compositor that arranges windows in columns on a scrollable workspace. Move through your windows without shrinking every window to fit the screen.',
+    note: 'Follow the getting-started guide for session setup, desktop tools, and support for X11 applications.',
+    url: 'https://github.com/niri-wm/niri', docs: 'https://niri-wm.github.io/niri/Getting-Started.html',
+  },
+  {
+    name: 'Mango', kind: 'Compositor', bestFor: 'A configurable, dwm-inspired Wayland desktop',
+    description: 'A Wayland compositor with tiling layouts and configurable window-management controls for building a custom Linux desktop.',
+    note: 'Use the project’s installation and configuration guides, and check which supporting desktop tools your setup needs.',
+    url: 'https://github.com/mangowm/mango', docs: 'https://mangowm.github.io/docs/installation',
+  },
+  {
     name: 'Caelestia', kind: 'Shell', bestFor: 'A fluid, customizable desktop interface',
     description: 'A Linux desktop shell from the Caelestia project, providing the interface around a compositor-driven desktop setup.',
     note: 'Read its supported setup and configuration requirements before applying its shell or related dotfiles.',

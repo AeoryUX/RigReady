@@ -51,7 +51,7 @@ const linuxPicks: {
     bestFor: 'A current desktop for gaming and everyday work',
     description: 'A regularly updated Linux system with a choice of desktops, including Workstation with GNOME and KDE Plasma Desktop. Flexible for a PC used for both work and play.',
     note: 'Expect regular release upgrades. Proprietary drivers and some media codecs may need additional setup.',
-    uses: ['Gaming'],
+    uses: ['New to Linux'],
     download: 'https://fedoraproject.org/',
     docs: 'https://docs.fedoraproject.org/en-US/quick-docs/creating-and-using-a-live-installation-image/',
   },
