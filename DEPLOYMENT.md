@@ -1,4 +1,4 @@
-# Deploy RigReady AI to Vercel
+# Deploy RigReady to Vercel
 
 The repository includes the React website and its existing Express API. The
 software guide, search, and category filters work without an AI key.

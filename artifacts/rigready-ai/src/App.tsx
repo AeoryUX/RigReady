@@ -522,9 +522,9 @@ function SiteHeader({ connectionLabel = staticPreview ? 'Website preview' : 'Set
   const isDark = resolvedTheme === 'dark';
   return (
     <header className="masthead">
-      <a className="brand-lockup" href={import.meta.env.BASE_URL} aria-label="RigReady AI home" data-testid="link-brand-home">
+      <a className="brand-lockup" href={import.meta.env.BASE_URL} aria-label="RigReady home" data-testid="link-brand-home">
         <span className="brand-mark"><Cpu size={19} strokeWidth={2.1} /></span>
-        <span className="brand-name">RigReady<span> AI</span></span>
+        <span className="brand-name">RigReady</span>
       </a>
       <div className="masthead-actions">
         <nav className="masthead-nav" aria-label="Main navigation">
@@ -554,7 +554,7 @@ function SiteHeader({ connectionLabel = staticPreview ? 'Website preview' : 'Set
 function SiteFooter() {
   return (
     <footer className="footer">
-      <div className="footer-inner"><span>RigReady AI · Built around the PC you already own.</span><span>Recommendations are guidance, not a substitute for checking your exact components.</span></div>
+      <div className="footer-inner"><span>RigReady · Built around the PC you already own.</span><span>Recommendations are guidance, not a substitute for checking your exact components.</span></div>
     </footer>
   );
 }
@@ -575,7 +575,7 @@ function usePageTitle(title: string) {
 }
 
 function Home() {
-  usePageTitle('RigReady AI');
+  usePageTitle('RigReady');
   useEffect(() => {
     const redirectLegacyGuide = () => {
       if (['#guides', '#software-library'].includes(window.location.hash)) {
@@ -593,7 +593,7 @@ function Home() {
       <main className="main-wrap">
         <section className="welcome-hero" aria-labelledby="welcome-title">
           <div className="eyebrow"><span className="eyebrow-line" /> Your setup, your next step</div>
-          <h1 id="welcome-title">Welcome to<br /><span>RigReady AI.</span></h1>
+          <h1 id="welcome-title">Welcome to<br /><span>RigReady.</span></h1>
           <p>Choose where you want to start. Explore hardware upgrades, find useful apps, or pick an operating system for your PC.</p>
         </section>
         <nav className="welcome-grid" aria-label="Choose where to start">
@@ -601,7 +601,7 @@ function Home() {
             <span className="welcome-card-icon"><Cpu size={24} aria-hidden="true" /></span>
             <h2 id="welcome-hardware-title">Hardware advisor</h2>
             <p>Find your PC specs, then review your components, budget, and gaming goals in one place.</p>
-            <span className="welcome-card-note">{staticPreview ? 'Explore the form. AI plans are unavailable in this preview.' : 'Get a prioritized upgrade plan for your setup.'}</span>
+            <span className="welcome-card-note">{staticPreview ? 'Find your PC specs and review your upgrade goals.' : 'Get a prioritized upgrade plan for your setup.'}</span>
             <span className="welcome-cta">Open hardware advisor <ArrowRight size={16} aria-hidden="true" /></span>
           </a>
           <a className="welcome-card" href={`${import.meta.env.BASE_URL}software/`} aria-labelledby="welcome-software-title">
@@ -627,7 +627,7 @@ function Home() {
 
 function SoftwarePage() {
   useInitialFragmentScroll();
-  usePageTitle('Software guide | RigReady AI');
+  usePageTitle('Software guide | RigReady');
   const [softwareFilter, setSoftwareFilter] = useState<SoftwareFilter>('All apps');
   const [softwareSearch, setSoftwareSearch] = useState('');
   const [softwareSort, setSoftwareSort] = useState<SoftwareSort>('name-asc');
@@ -767,7 +767,7 @@ function SoftwarePage() {
 
 function HardwarePage() {
   useInitialFragmentScroll();
-  usePageTitle('Hardware advisor | RigReady AI');
+  usePageTitle('Hardware advisor | RigReady');
   const [values, setValues] = useState<FormValues>(initialValues);
   const [games, setGames] = useState<string[]>([]);
   const [gameDraft, setGameDraft] = useState('');
@@ -1006,9 +1006,9 @@ function HardwarePage() {
                 {validationError && <div className="form-alert" role="alert" data-testid="status-validation-error">{validationError}</div>}
                 {formError && <div className="error-box" role="alert" data-testid="status-plan-error"><strong>Your plan didn’t come through.</strong> {formError}</div>}
                 <div className="submit-row">
-                  <div className="privacy-note"><LockKeyhole size={14} /><span>{staticPreview ? 'Explore the form and software guide. AI plans are unavailable in this preview.' : 'Your PC details are sent to OpenAI for analysis. Don’t include anything private.'}</span></div>
+                  <div className="privacy-note"><LockKeyhole size={14} /><span>{staticPreview ? 'Your entries stay on this page. Upgrade recommendations are not connected yet.' : 'Your PC details are sent to OpenAI for analysis. Don’t include anything private.'}</span></div>
                   <button type="submit" className="submit-button" disabled={staticPreview || createPlan.isPending} data-testid="button-generate-plan">
-                    {staticPreview ? 'AI plans unavailable in preview' : createPlan.isPending ? <><Activity size={15} className="spin-icon" /> Reading your build…</> : <>Build my upgrade plan <ArrowRight size={16} /></>}
+                    {staticPreview ? 'Upgrade plans unavailable in preview' : createPlan.isPending ? <><Activity size={15} className="spin-icon" /> Reading your build…</> : <>Build my upgrade plan <ArrowRight size={16} /></>}
                   </button>
                 </div>
               </form>
@@ -1120,7 +1120,7 @@ function HardwarePage() {
 
 function OperatingSystemsPage() {
   useInitialFragmentScroll();
-  usePageTitle('Operating systems | RigReady AI');
+  usePageTitle('Operating systems | RigReady');
 
   return (
     <div className="app-shell">

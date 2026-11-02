@@ -10,7 +10,7 @@ touch "$preview_output/.nojekyll"
 # Real HTML files let GitHub Pages serve this route on direct visits and refreshes.
 while IFS='|' read -r preview_route preview_title; do
   mkdir -p "$preview_output/$preview_route"
-  sed "s#<title>RigReady AI</title>#<title>$preview_title | RigReady AI</title>#" \
+  sed "s#<title>RigReady</title>#<title>$preview_title | RigReady</title>#" \
     "$preview_output/index.html" > "$preview_output/$preview_route/index.html"
 done <<'PAGES'
 hardware|Hardware advisor
