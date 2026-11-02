@@ -1,6 +1,9 @@
 import { useState, type ReactNode } from 'react';
 import { Download, ExternalLink, Info, ShieldCheck } from 'lucide-react';
 import { LinuxGamingGuide, ProtonDbButton } from '@/components/linux-gaming-guide';
+import { DesktopEnvironmentGuide } from '@/components/desktop-environment-guide';
+import { NameSortMenu, type NameSort } from '@/components/name-sort-menu';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 type LinuxUse = 'New to Linux' | 'Gaming' | 'Older PCs' | 'Advanced';
 type LinuxFilter = 'All Linux picks' | LinuxUse;
@@ -132,7 +135,9 @@ function OfficialLink({ href, children }: { href: string; children: ReactNode })
 
 export function OperatingSystemGuide() {
   const [filter, setFilter] = useState<LinuxFilter>('All Linux picks');
-  const visiblePicks = linuxPicks.filter((pick) => filter === 'All Linux picks' || pick.uses.includes(filter));
+  const [sort, setSort] = useState<NameSort>('name-asc');
+  const visiblePicks = linuxPicks.filter((pick) => filter === 'All Linux picks' || pick.uses.includes(filter))
+    .sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }) * (sort === 'name-desc' ? -1 : 1));
 
   return (
     <section className="os-guide" id="operating-systems" aria-labelledby="os-title">
@@ -140,96 +145,110 @@ export function OperatingSystemGuide() {
         <div>
           <div className="eyebrow"><span className="eyebrow-line" /> A fresh start for your PC</div>
           <h1 id="os-title">Start with the right operating system.</h1>
-          <p>Find official downloads, compare Linux distributions, and learn how to prepare an installer. Pick the system that fits your hardware and the games you actually play.</p>
+          <p>Find official downloads, compare Linux distributions, and explore desktop environments and shells. Choose a setup that fits your hardware, workflow, and the games you actually play.</p>
         </div>
       </div>
 
-      <div className="os-guide-actions">
-        <ProtonDbButton />
-        <a className="os-link" href="#linux-gaming">Read the Linux gaming guide</a>
-      </div>
-
-      <div className="os-download-grid" aria-label="Operating system downloads">
-        <article className="os-download-card">
-          <span className="software-category">Microsoft</span>
-          <h2>Windows 11</h2>
-          <p>Get Microsoft’s installation media or disk image. Check its hardware requirements and whether you need an activation license.</p>
-          <OfficialLink href="https://www.microsoft.com/software-download/windows11">Download Windows 11</OfficialLink>
-        </article>
-        <article className="os-download-card">
-          <span className="software-category">Choose a distribution</span>
-          <h2>Linux</h2>
-          <p>Start with one of the picks below. The distribution’s official site supplies its ISO image, requirements, and installation instructions.</p>
-          <a className="os-link" href="#linux-picks">Compare Linux picks <Download size={13} aria-hidden="true" /></a>
-        </article>
-        <article className="os-download-card">
-          <span className="software-category">Apple hardware</span>
-          <h2>macOS</h2>
-          <p>Use Apple’s download and update instructions on a compatible Mac. Available releases depend on the Mac model.</p>
-          <OfficialLink href="https://support.apple.com/102662">Apple installation guide</OfficialLink>
-        </article>
-      </div>
-
-      <section className="os-section" id="linux-picks" aria-labelledby="linux-title">
-        <div className="os-section-heading">
-          <div>
-            <h2 id="linux-title">Linux picks, matched to your PC.</h2>
-            <p>New to Linux? Start by comparing Mint, Ubuntu LTS, and Pop!_OS. Use the filters to explore gaming-focused setups and more hands-on options. There is no single best distribution for everyone.</p>
+      <Tabs defaultValue="systems">
+        <TabsList className="os-guide-tabs" aria-label="Operating system guides">
+          <TabsTrigger value="systems">Operating systems</TabsTrigger>
+          <TabsTrigger value="desktop">Desktop environments</TabsTrigger>
+        </TabsList>
+        <TabsContent value="systems">
+          <div className="os-guide-actions">
+            <ProtonDbButton />
+            <a className="os-link" href="#linux-gaming">Read the Linux gaming guide</a>
           </div>
-          <span className="software-count" role="status" aria-live="polite" aria-atomic="true">{visiblePicks.length} {visiblePicks.length === 1 ? 'distribution' : 'distributions'}</span>
-        </div>
-        <div className="software-filters os-filters" role="group" aria-label="Filter Linux recommendations">
-          {linuxFilters.map((option) => (
-            <button className={`software-filter${filter === option ? ' is-active' : ''}`} type="button" key={option} aria-pressed={filter === option} onClick={() => setFilter(option)}>{option}</button>
-          ))}
-        </div>
-        <div className="os-distro-grid">
-          {visiblePicks.map((pick) => (
-            <article className="os-distro-card" key={pick.name}>
-              <span className="software-category">{pick.uses.join(' · ')}</span>
-              <h3>{pick.name}</h3>
-              <p className="software-best-for">{pick.bestFor}</p>
-              <p className="os-copy">{pick.description}</p>
-              <p className="os-note"><Info size={14} aria-hidden="true" />{pick.note}</p>
-              <div className="os-card-links">
-                <OfficialLink href={pick.download}>Official download</OfficialLink>
-                <OfficialLink href={pick.docs}>Installation docs</OfficialLink>
-              </div>
+
+          <div className="os-download-grid" aria-label="Operating system downloads">
+            <article className="os-download-card">
+              <span className="software-category">Microsoft</span>
+              <h2>Windows 11</h2>
+              <p>Get Microsoft’s installation media or disk image. Check its hardware requirements and whether you need an activation license.</p>
+              <OfficialLink href="https://www.microsoft.com/software-download/windows11">Download Windows 11</OfficialLink>
             </article>
-          ))}
-        </div>
-        <div className="os-callout"><Info size={17} aria-hidden="true" /><p><strong>Check your game library first.</strong> Some Windows games and multiplayer anti-cheat systems do not work on Linux. Check the publisher’s support information for the titles you play; Proton does not guarantee compatibility.</p></div>
-      </section>
-
-      <LinuxGamingGuide />
-
-      <section className="os-section" aria-labelledby="linux-install-title">
-        <div className="os-section-heading">
-          <div>
-            <h2 id="linux-install-title">Install Linux, step by step.</h2>
-            <p>A starting checklist for a PC installation. Use your chosen distribution’s instructions for its exact procedure.</p>
+            <article className="os-download-card">
+              <span className="software-category">Choose a distribution</span>
+              <h2>Linux</h2>
+              <p>Start with one of the picks below. The distribution’s official site supplies its ISO image, requirements, and installation instructions.</p>
+              <a className="os-link" href="#linux-picks">Compare Linux picks <Download size={13} aria-hidden="true" /></a>
+            </article>
+            <article className="os-download-card">
+              <span className="software-category">Apple hardware</span>
+              <h2>macOS</h2>
+              <p>Use Apple’s download and update instructions on a compatible Mac. Available releases depend on the Mac model.</p>
+              <OfficialLink href="https://support.apple.com/102662">Apple installation guide</OfficialLink>
+            </article>
           </div>
-        </div>
-        <div className="os-callout"><ShieldCheck size={18} aria-hidden="true" /><p><strong>Before changing your system:</strong> back up important files and save any device-encryption recovery keys somewhere you can access from another device. A backup should live outside the drive you plan to change.</p></div>
-        <ol className="os-steps">
-          {installationSteps.map((step, index) => (
-            <li className="os-step" key={step.title}>
-              <span className="side-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-              <div><h3>{step.title}</h3><p>{step.detail}</p></div>
-            </li>
-          ))}
-        </ol>
-        <details className="os-checksums">
-          <summary>How to check an ISO’s SHA-256 checksum</summary>
-          <p>Replace <code>your-download.iso</code> with your downloaded file’s name and run the command from its folder. Compare the entire result with the value on the project’s official site.</p>
-          <div className="os-command"><strong>Windows (PowerShell)</strong><pre><code>{'Get-FileHash -Algorithm SHA256 .\\your-download.iso'}</code></pre></div>
-          <div className="os-command"><strong>Linux</strong><pre><code>sha256sum your-download.iso</code></pre></div>
-          <div className="os-command"><strong>macOS</strong><pre><code>shasum -a 256 your-download.iso</code></pre></div>
-        </details>
-        <div className="os-tools">
-          <p>Need a USB-writing tool? For supported Linux images, follow the distro’s recommendation or use <OfficialLink href="https://etcher.balena.io/">balenaEtcher</OfficialLink>. For Windows media, use Microsoft’s instructions above or <OfficialLink href="https://rufus.ie/">Rufus on Windows</OfficialLink>.</p>
-        </div>
-      </section>
+
+          <section className="os-section" id="linux-picks" aria-labelledby="linux-title">
+            <div className="os-section-heading">
+              <div>
+                <h2 id="linux-title">Linux picks, matched to your PC.</h2>
+                <p>New to Linux? Start by comparing Mint, Ubuntu LTS, and Pop!_OS. Use the filters to explore gaming-focused setups and more hands-on options. There is no single best distribution for everyone.</p>
+              </div>
+              <span className="software-count" role="status" aria-live="polite" aria-atomic="true">{visiblePicks.length} {visiblePicks.length === 1 ? 'distribution' : 'distributions'}</span>
+            </div>
+            <div className="os-catalog-controls">
+              <div className="software-filters os-filters" role="group" aria-label="Filter Linux recommendations">
+                {linuxFilters.map((option) => (
+                  <button className={`software-filter${filter === option ? ' is-active' : ''}`} type="button" key={option} aria-pressed={filter === option} onClick={() => setFilter(option)}>{option}</button>
+                ))}
+              </div>
+              <NameSortMenu value={sort} onChange={setSort} label="Sort Linux distributions" />
+            </div>
+            <div className="os-distro-grid">
+              {visiblePicks.map((pick) => (
+                <article className="os-distro-card" key={pick.name}>
+                  <span className="software-category">{pick.uses.join(' · ')}</span>
+                  <h3>{pick.name}</h3>
+                  <p className="software-best-for">{pick.bestFor}</p>
+                  <p className="os-copy">{pick.description}</p>
+                  <p className="os-note"><Info size={14} aria-hidden="true" />{pick.note}</p>
+                  <div className="os-card-links">
+                    <OfficialLink href={pick.download}>Official download</OfficialLink>
+                    <OfficialLink href={pick.docs}>Installation docs</OfficialLink>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div className="os-callout"><Info size={17} aria-hidden="true" /><p><strong>Check your game library first.</strong> Some Windows games and multiplayer anti-cheat systems do not work on Linux. Check the publisher’s support information for the titles you play; Proton does not guarantee compatibility.</p></div>
+          </section>
+
+          <LinuxGamingGuide />
+
+          <section className="os-section" aria-labelledby="linux-install-title">
+            <div className="os-section-heading">
+              <div>
+                <h2 id="linux-install-title">Install Linux, step by step.</h2>
+                <p>A starting checklist for a PC installation. Use your chosen distribution’s instructions for its exact procedure.</p>
+              </div>
+            </div>
+            <div className="os-callout"><ShieldCheck size={18} aria-hidden="true" /><p><strong>Before changing your system:</strong> back up important files and save any device-encryption recovery keys somewhere you can access from another device. A backup should live outside the drive you plan to change.</p></div>
+            <ol className="os-steps">
+              {installationSteps.map((step, index) => (
+                <li className="os-step" key={step.title}>
+                  <span className="side-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                  <div><h3>{step.title}</h3><p>{step.detail}</p></div>
+                </li>
+              ))}
+            </ol>
+            <details className="os-checksums">
+              <summary>How to check an ISO’s SHA-256 checksum</summary>
+              <p>Replace <code>your-download.iso</code> with your downloaded file’s name and run the command from its folder. Compare the entire result with the value on the project’s official site.</p>
+              <div className="os-command"><strong>Windows (PowerShell)</strong><pre><code>{'Get-FileHash -Algorithm SHA256 .\\your-download.iso'}</code></pre></div>
+              <div className="os-command"><strong>Linux</strong><pre><code>sha256sum your-download.iso</code></pre></div>
+              <div className="os-command"><strong>macOS</strong><pre><code>shasum -a 256 your-download.iso</code></pre></div>
+            </details>
+            <div className="os-tools">
+              <p>Need a USB-writing tool? For supported Linux images, follow the distro’s recommendation or use <OfficialLink href="https://etcher.balena.io/">balenaEtcher</OfficialLink>. For Windows media, use Microsoft’s instructions above or <OfficialLink href="https://rufus.ie/">Rufus on Windows</OfficialLink>.</p>
+            </div>
+          </section>
+        </TabsContent>
+        <TabsContent value="desktop">
+          <DesktopEnvironmentGuide />
+        </TabsContent>
+      </Tabs>
     </section>
   );
 }

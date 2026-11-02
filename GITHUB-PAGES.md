@@ -13,6 +13,11 @@ a manual Windows/Linux/macOS specs guide. The OS page includes a Linux gaming
 guide and an external ProtonDB button; compatibility reports are not fetched or
 scored by this site.
 
+The OS page offers A–Z and Z–A sorting for Linux recommendations, plus a
+Desktop environments tab covering full desktops, Hyprland, and desktop shells.
+That catalog has type filters and alphabetical sorting; all project links lead
+to official project pages or documentation.
+
 From the repository root, using Node.js 24.x:
 
 ```sh
