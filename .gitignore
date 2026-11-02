@@ -53,3 +53,8 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Cloudflare build state and local secrets
+.wrangler/
+.dev.vars
+.dev.vars.*

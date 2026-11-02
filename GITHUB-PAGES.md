@@ -1,10 +1,15 @@
 # RigReady on GitHub Pages
 
 The homepage welcomes visitors and links to the Hardware advisor, Software guide,
-and Operating systems pages. They include the editable PC form, searchable
-45-app software guide, and nine Linux recommendations with download and
-installation guidance. GitHub Pages serves static files: upgrade plans are
-disabled and the preview does not send PC details to an API.
+and Operating systems pages. They include the PC specs guide, country-based shop
+search, searchable 45-app software guide, and nine Linux recommendations with
+download and installation guidance. GitHub Pages serves the website's static
+files; shop searches run on a separate Cloudflare Worker.
+
+The bot is not connected until `artifacts/rigready-ai/public/shop-bot.json`
+contains its deployed HTTPS origin (or `VITE_SHOP_BOT_URL` is set at build time).
+The default configuration shows an unavailable state and sends no search to a
+provider. See [HOSTING.md](HOSTING.md) for setup entirely through cloud services.
 
 The Software guide's checklist opens selected official app websites and provides
 individual links if the browser blocks multiple tabs. Selections stay in page
@@ -46,6 +51,8 @@ from the `gh-pages` branch's root. The repository must be eligible for Pages
 under the user's GitHub plan. Follow GitHub's URL and deployment status; a local
 build does not mean a site has been published.
 
-Ordinary builds without `VITE_STATIC_PREVIEW=true` retain the existing AI API
-behavior for hosts that support the backend. A server and provider configuration
-are required to generate AI upgrade plans.
+The old AI upgrade-plan endpoint is retired. The website's shop bot uses a
+product-data provider, category and currency filters, and hosted request limits;
+it does not use an AI provider. Country selection is explicit and coverage
+depends on the product-data service and retailers. Software and OS guides work
+independently of the bot connection.

@@ -11,7 +11,7 @@ tags:
   - name: health
     description: Health operations
   - name: pc-advisor
-    description: AI-powered PC gaming upgrade recommendations
+    description: Legacy PC advisor endpoint, retired in favor of hosted shop search
 paths:
   /healthz:
     get:
@@ -30,8 +30,9 @@ paths:
     post:
       operationId: createPcUpgradePlan
       tags: [pc-advisor]
-      summary: Generate a PC gaming upgrade plan
-      description: Analyzes a current PC build, budget, and target games to suggest a staged upgrade plan.
+      summary: Retired PC upgrade-plan endpoint
+      description: Returns HTTP 410. New clients use the separately hosted shop-search bot.
+      deprecated: true
       requestBody:
         required: true
         content:
@@ -39,8 +40,14 @@ paths:
             schema:
               $ref: "#/components/schemas/PcBuildInput"
       responses:
+        "410":
+          description: Upgrade-plan service retired
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
         "200":
-          description: AI-generated upgrade plan
+          description: Historical upgrade-plan response retained for older generated clients
           content:
             application/json:
               schema:

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider, useTheme } from 'next-themes';
 import { ErrorBoundary } from '@/components/error-boundary';
@@ -7,6 +7,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { OperatingSystemGuide } from '@/components/operating-system-guide';
 import { AppChecklist } from '@/components/app-checklist';
 import { PcSpecsGuide } from '@/components/pc-specs-guide';
+import { ShopSearch } from '@/components/shop-search';
 import { OsSupportBadges, OsSupportLegend, allDesktopOs, windowsOnly, windowsAndMac, linuxOnly, type OsSupport } from '@/components/os-support';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuLabel,
@@ -14,19 +15,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import NotFound from '@/pages/not-found';
 import {
-  Activity, AlertCircle, AlertTriangle, AppWindow, ArrowLeft, ArrowRight, ArrowUpDown, BadgeCheck, Check, CheckCircle2,
-  ChevronDown, ChevronRight, Cpu, ExternalLink, Info, LockKeyhole, MonitorDown, Moon, Plus, RotateCcw, Search, ShieldCheck, Sun, Zap,
+  AppWindow, ArrowLeft, ArrowRight, ArrowUpDown,
+  ChevronDown, Cpu, ExternalLink, Globe, Info, MonitorDown, Moon, Search, Sun,
 } from 'lucide-react';
-import { useCreatePcUpgradePlan, useHealthCheck } from '@workspace/api-client-react';
-import type {
-  PcBuildInput, PcUpgradePlan, PcBuildInputCurrency, PcBuildInputResolution,
-  PcBuildInputPriority,
-} from '@workspace/api-client-react';
-import {
-  PcBuildInputCurrency as CurrencyValues,
-  PcBuildInputResolution as ResolutionValues,
-  PcBuildInputPriority as PriorityValues,
-} from '@workspace/api-client-react';
 import {
   Route,
   Switch,
@@ -35,45 +26,6 @@ import {
 } from 'wouter';
 
 const queryClient = new QueryClient();
-const staticPreview = import.meta.env.VITE_STATIC_PREVIEW === 'true';
-
-type FormValues = {
-  processor: string;
-  graphicsCard: string;
-  memoryGb: string;
-  memoryType: string;
-  storage: string;
-  motherboard: string;
-  powerSupply: string;
-  caseModel: string;
-  budget: string;
-  currency: PcBuildInputCurrency;
-  resolution: PcBuildInputResolution;
-  priority: PcBuildInputPriority;
-};
-
-const initialValues: FormValues = {
-  processor: '', graphicsCard: '', memoryGb: '', memoryType: '', storage: '',
-  motherboard: '', powerSupply: '', caseModel: '', budget: '500',
-  currency: CurrencyValues.USD, resolution: ResolutionValues['1080p'], priority: PriorityValues.balanced,
-};
-
-const currencies: { value: PcBuildInputCurrency; label: string; symbol: string }[] = [
-  { value: CurrencyValues.USD, label: 'USD', symbol: '$' },
-  { value: CurrencyValues.SAR, label: 'SAR', symbol: '﷼' },
-  { value: CurrencyValues.EUR, label: 'EUR', symbol: '€' },
-  { value: CurrencyValues.GBP, label: 'GBP', symbol: '£' },
-  { value: CurrencyValues.CAD, label: 'CAD', symbol: 'CA$' },
-  { value: CurrencyValues.AUD, label: 'AUD', symbol: 'A$' },
-];
-
-const priorityOptions: { value: PcBuildInputPriority; label: string }[] = [
-  { value: PriorityValues.balanced, label: 'Balanced' },
-  { value: PriorityValues.fps, label: 'More FPS' },
-  { value: PriorityValues.visuals, label: 'Visuals' },
-  { value: PriorityValues.streaming, label: 'Streaming' },
-];
-
 type SoftwareCategory = 'Browsers' | 'Game libraries' | 'Communication' | 'PC utilities';
 type SoftwareFilter = 'All apps' | SoftwareCategory;
 type SoftwareSort = 'name-asc' | 'name-desc' | 'category';
@@ -489,35 +441,7 @@ const softwareApps: {
   },
 ];
 
-function currencySymbol(value: PcBuildInputCurrency) {
-  return currencies.find((currency) => currency.value === value)?.symbol ?? '$';
-}
-
-function moneyRange(low: number | null, high: number | null, currency: PcBuildInputCurrency) {
-  const symbol = currencySymbol(currency);
-  const format = (value: number) => {
-    try {
-      return new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 }).format(value);
-    } catch {
-      return String(value);
-    }
-  };
-  if (low !== null && high !== null) return `${symbol}${format(low)}–${symbol}${format(high)}`;
-  if (low !== null) return `From ${symbol}${format(low)}`;
-  if (high !== null) return `Up to ${symbol}${format(high)}`;
-  return 'Price not estimated';
-}
-
-function Field({ label, hint, children, testId }: { label: string; hint?: string; children: ReactNode; testId?: string }) {
-  return (
-    <div className="field" data-testid={testId}>
-      <label>{label}{hint && <span className="field-hint">{hint}</span>}</label>
-      {children}
-    </div>
-  );
-}
-
-function SiteHeader({ connectionLabel = staticPreview ? 'Website preview' : 'Setup guide', currentPage = 'home' }: { connectionLabel?: string; currentPage?: 'home' | 'hardware' | 'software' | 'operating-systems' }) {
+function SiteHeader({ connectionLabel = 'RigReady guide', currentPage = 'home' }: { connectionLabel?: string; currentPage?: 'home' | 'hardware' | 'software' | 'operating-systems' }) {
   const { resolvedTheme, setTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
   return (
@@ -600,8 +524,8 @@ function Home() {
           <a className="welcome-card" href={`${import.meta.env.BASE_URL}hardware/`} aria-labelledby="welcome-hardware-title">
             <span className="welcome-card-icon"><Cpu size={24} aria-hidden="true" /></span>
             <h2 id="welcome-hardware-title">Hardware advisor</h2>
-            <p>Find your PC specs, then review your components, budget, and gaming goals in one place.</p>
-            <span className="welcome-card-note">{staticPreview ? 'Find your PC specs and review your upgrade goals.' : 'Get a prioritized upgrade plan for your setup.'}</span>
+            <p>Find your PC specs, then compare shop listings for the parts you need.</p>
+            <span className="welcome-card-note">Choose your country, part type, and maximum item price.</span>
             <span className="welcome-cta">Open hardware advisor <ArrowRight size={16} aria-hidden="true" /></span>
           </a>
           <a className="welcome-card" href={`${import.meta.env.BASE_URL}software/`} aria-labelledby="welcome-software-title">
@@ -768,351 +692,19 @@ function SoftwarePage() {
 function HardwarePage() {
   useInitialFragmentScroll();
   usePageTitle('Hardware advisor | RigReady');
-  const [values, setValues] = useState<FormValues>(initialValues);
-  const [games, setGames] = useState<string[]>([]);
-  const [gameDraft, setGameDraft] = useState('');
-  const [formError, setFormError] = useState('');
-  const [validationError, setValidationError] = useState('');
-  const [plan, setPlan] = useState<PcUpgradePlan | null>(null);
-  const resultsRef = useRef<HTMLElement>(null);
-  const gameInputRef = useRef<HTMLInputElement>(null);
-  const health = useHealthCheck({ query: { staleTime: 60_000, retry: false, enabled: !staticPreview } });
-  const createPlan = useCreatePcUpgradePlan();
-  const selectedCurrency = currencies.find((currency) => currency.value === values.currency);
-
-  useEffect(() => {
-    if (plan && !createPlan.isPending) {
-      resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, [plan, createPlan.isPending]);
-
-  function update<K extends keyof FormValues>(key: K, value: FormValues[K]) {
-    setValues((current) => ({ ...current, [key]: value }));
-    setValidationError('');
-  }
-
-  function addGame() {
-    const game = gameDraft.trim();
-    if (!game) {
-      gameInputRef.current?.focus();
-      return;
-    }
-    if (games.length >= 6) {
-      setValidationError('Add up to 6 games so the plan can stay focused.');
-      return;
-    }
-    if (game.length > 100) {
-      setValidationError('Game names must be 100 characters or fewer.');
-      return;
-    }
-    if (games.some((existing) => existing.toLowerCase() === game.toLowerCase())) {
-      setGameDraft('');
-      return;
-    }
-    setGames((current) => [...current, game]);
-    setGameDraft('');
-    setValidationError('');
-    gameInputRef.current?.focus();
-  }
-
-  function removeGame(game: string) {
-    setGames((current) => current.filter((item) => item !== game));
-    setValidationError('');
-  }
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (staticPreview) return;
-    setFormError('');
-    setValidationError('');
-    const budget = Number(values.budget);
-    if (!Number.isFinite(budget) || budget < 0 || budget > 50_000) {
-      setValidationError('Enter a budget between 0 and 50,000.');
-      return;
-    }
-    if (values.memoryGb && (!Number.isFinite(Number(values.memoryGb)) || Number(values.memoryGb) < 1 || Number(values.memoryGb) > 512)) {
-      setValidationError('Memory must be between 1 and 512 GB, or leave it blank.');
-      return;
-    }
-    if (games.length === 0) {
-      setValidationError('Add at least one game you want to play.');
-      gameInputRef.current?.focus();
-      return;
-    }
-
-    const optionalText = (value: string) => value.trim() || null;
-    const payload: PcBuildInput = {
-      processor: optionalText(values.processor),
-      graphicsCard: optionalText(values.graphicsCard),
-      memoryGb: values.memoryGb ? Number(values.memoryGb) : null,
-      memoryType: optionalText(values.memoryType),
-      storage: optionalText(values.storage),
-      motherboard: optionalText(values.motherboard),
-      powerSupply: optionalText(values.powerSupply),
-      caseModel: optionalText(values.caseModel),
-      budget,
-      currency: values.currency,
-      games,
-      resolution: values.resolution,
-      priority: values.priority,
-    };
-    setPlan(null);
-    createPlan.mutate({ data: payload }, {
-      onSuccess: (result) => setPlan(result),
-      onError: (error) => {
-        const message = error instanceof Error ? error.message : 'Something went wrong while building your plan.';
-        setFormError(message || 'We couldn’t complete your plan. Check your connection and try again.');
-      },
-    });
-  }
-
-  function startOver() {
-    setPlan(null);
-    setFormError('');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  const hasConnection =
-    health.isSuccess &&
-    health.data?.status === 'ok' &&
-    health.data.aiConfigured;
-  const connectionLabel = staticPreview
-    ? 'Website preview'
-    : health.isLoading
-    ? 'Connecting to advisor'
-    : hasConnection
-      ? 'Advisor ready'
-      : health.isSuccess
-        ? 'AI setup needed'
-        : 'Advisor offline';
-
   return (
     <div className="app-shell">
-      <SiteHeader connectionLabel={connectionLabel} currentPage="hardware" />
-
-      <main>
-        <div className="main-wrap">
-          <section className="hero">
-            <div className="eyebrow"><span className="eyebrow-line" /> A smarter way to upgrade</div>
-            <h1>Your PC has more<br /><em>game in it.</em></h1>
-            <p className="hero-copy">
-              Tell us what you’re working with and what you want to play. Get a clear upgrade path that respects your budget and checks the details that matter.
-            </p>
-            <div className="hero-bottom">
-              <span className="hero-proof"><ShieldCheck size={15} /> Compatibility-minded advice</span>
-              <span className="hero-proof"><Zap size={14} /> Prioritized for your goals</span>
-            </div>
-          </section>
-
-          <PcSpecsGuide />
-
-          <div className="workspace">
-            <section className="form-panel" aria-labelledby="form-title">
-              <div className="form-head">
-                <div>
-                  <h2 id="form-title">Let’s get to know your PC</h2>
-                  <p>A little detail goes a long way. Leave anything unknown blank.</p>
-                </div>
-                <span className="step-badge">ONE QUICK CHECK-IN</span>
-              </div>
-              <form className="form-content" onSubmit={handleSubmit} noValidate>
-                <div className="part-section">
-                  <h3 className="section-label"><span className="section-index">01</span> What’s inside your PC?</h3>
-                  <p className="optional-intro">The more you know, the more precise the compatibility checks. Every component here is optional.</p>
-                  <div className="parts-grid">
-                    <Field label="Processor" testId="field-processor">
-                      <input id="processor" className="control" value={values.processor} onChange={(event) => update('processor', event.target.value)} placeholder="e.g. Ryzen 5 5600X" maxLength={160} data-testid="input-processor" />
-                    </Field>
-                    <Field label="Graphics card" testId="field-graphics-card">
-                      <input id="graphics-card" className="control" value={values.graphicsCard} onChange={(event) => update('graphicsCard', event.target.value)} placeholder="e.g. GeForce RTX 3060" maxLength={160} data-testid="input-graphics-card" />
-                    </Field>
-                    <Field label="Memory" hint="(RAM)" testId="field-memory">
-                      <input id="memory" className="control" type="number" min="1" max="512" value={values.memoryGb} onChange={(event) => update('memoryGb', event.target.value)} placeholder="e.g. 16 GB" data-testid="input-memory-gb" />
-                    </Field>
-                    <Field label="Memory type" testId="field-memory-type">
-                      <select id="memory-type" className="control" value={values.memoryType} onChange={(event) => update('memoryType', event.target.value)} data-testid="select-memory-type">
-                        <option value="">Not sure</option><option value="DDR3">DDR3</option><option value="DDR4">DDR4</option><option value="DDR5">DDR5</option>
-                      </select>
-                    </Field>
-                    <Field label="Storage" testId="field-storage">
-                      <input id="storage" className="control" value={values.storage} onChange={(event) => update('storage', event.target.value)} placeholder="e.g. 1 TB NVMe SSD" maxLength={160} data-testid="input-storage" />
-                    </Field>
-                    <Field label="Motherboard" testId="field-motherboard">
-                      <input id="motherboard" className="control" value={values.motherboard} onChange={(event) => update('motherboard', event.target.value)} placeholder="Model, if you know it" maxLength={160} data-testid="input-motherboard" />
-                    </Field>
-                    <Field label="Power supply" testId="field-power-supply">
-                      <input id="power-supply" className="control" value={values.powerSupply} onChange={(event) => update('powerSupply', event.target.value)} placeholder="e.g. 650W Corsair RM650" maxLength={160} data-testid="input-power-supply" />
-                    </Field>
-                    <Field label="PC case" testId="field-case">
-                      <input id="case-model" className="control" value={values.caseModel} onChange={(event) => update('caseModel', event.target.value)} placeholder="Model or size, if known" maxLength={160} data-testid="input-case-model" />
-                    </Field>
-                  </div>
-                </div>
-
-                <div className="form-divider" />
-
-                <div className="goals-section">
-                  <div className="goal-block">
-                    <h3 className="section-label"><span className="section-index">02</span> What can you spend?</h3>
-                    <div className="budget-row">
-                      <select aria-label="Currency" className="control currency-select" value={values.currency} onChange={(event) => update('currency', event.target.value as PcBuildInputCurrency)} data-testid="select-currency">
-                        {currencies.map((currency) => <option key={currency.value} value={currency.value}>{currency.label}</option>)}
-                      </select>
-                      <div className="budget-input-wrap">
-                        <span className="budget-prefix">{selectedCurrency?.symbol}</span>
-                        <input aria-label="Upgrade budget" className="control budget-control" type="number" min="0" max="50000" step="1" value={values.budget} onChange={(event) => update('budget', event.target.value)} data-testid="input-budget" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="goal-block">
-                    <h3 className="section-label"><span className="section-index">03</span> What do you play?</h3>
-                    <div className="game-entry">
-                      <input ref={gameInputRef} className="control" value={gameDraft} onChange={(event) => setGameDraft(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); addGame(); } }} placeholder="e.g. Baldur’s Gate 3" maxLength={100} aria-label="Game title" data-testid="input-game" />
-                      <button type="button" className="add-game" onClick={addGame} aria-label="Add game" data-testid="button-add-game"><Plus size={17} /></button>
-                    </div>
-                    {games.length > 0 && (
-                      <div className="game-chips" aria-label="Games added" data-testid="list-games">
-                        {games.map((game, index) => (
-                          <span className="game-chip" key={game} data-testid={`chip-game-${index}`}>
-                            {game}
-                            <button type="button" onClick={() => removeGame(game)} aria-label={`Remove ${game}`} data-testid={`button-remove-game-${index}`}><span aria-hidden="true">×</span></button>
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    <p className="game-helper">{games.length}/6 games · Add at least one</p>
-                  </div>
-
-                  <div className="goal-block">
-                    <h3 className="section-label"><span className="section-index">04</span> Your screen target</h3>
-                    <div className="segmented" role="group" aria-label="Desired resolution" data-testid="group-resolution">
-                      {Object.values(ResolutionValues).map((resolution) => (
-                        <button type="button" key={resolution} className="segment" aria-pressed={values.resolution === resolution} onClick={() => update('resolution', resolution)} data-testid={`button-resolution-${resolution}`}>{resolution}</button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="goal-block">
-                    <h3 className="section-label"><span className="section-index">05</span> What matters most?</h3>
-                    <div className="segmented" role="group" aria-label="Upgrade priority" data-testid="group-priority">
-                      {priorityOptions.map((option) => (
-                        <button type="button" key={option.value} className="segment" aria-pressed={values.priority === option.value} onClick={() => update('priority', option.value)} data-testid={`button-priority-${option.value}`}>{option.label}</button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {validationError && <div className="form-alert" role="alert" data-testid="status-validation-error">{validationError}</div>}
-                {formError && <div className="error-box" role="alert" data-testid="status-plan-error"><strong>Your plan didn’t come through.</strong> {formError}</div>}
-                <div className="submit-row">
-                  <div className="privacy-note"><LockKeyhole size={14} /><span>{staticPreview ? 'Your entries stay on this page. Upgrade recommendations are not connected yet.' : 'Your PC details are sent to OpenAI for analysis. Don’t include anything private.'}</span></div>
-                  <button type="submit" className="submit-button" disabled={staticPreview || createPlan.isPending} data-testid="button-generate-plan">
-                    {staticPreview ? 'Upgrade plans unavailable in preview' : createPlan.isPending ? <><Activity size={15} className="spin-icon" /> Reading your build…</> : <>Build my upgrade plan <ArrowRight size={16} /></>}
-                  </button>
-                </div>
-              </form>
-            </section>
-
-            <aside className="side-panel" aria-label="How the advisor works">
-              <div className="side-top">
-                <div className="side-overline">Good upgrades, no guesswork</div>
-                <h3>Make your next part the right part.</h3>
-                <p>A useful plan starts with what you already own—not a shopping list.</p>
-              </div>
-              <div className="side-content">
-                <h4>Here’s what you’ll get</h4>
-                <ol className="side-list">
-                  <li><span className="side-number">01</span><div><strong>A sensible order</strong><span>Put the biggest gaming gains first.</span></div></li>
-                  <li><span className="side-number">02</span><div><strong>Compatibility flags</strong><span>Know what needs a closer look before buying.</span></div></li>
-                  <li><span className="side-number">03</span><div><strong>Budget-aware picks</strong><span>See estimated ranges, not surprise totals.</span></div></li>
-                </ol>
-                <div className="side-divider" />
-                <div className="estimate-note"><Info size={14} /><span>Part prices are estimates. Always verify exact fit and compatibility before purchase.</span></div>
-              </div>
-            </aside>
-          </div>
-
-          {createPlan.isPending && (
-            <section className="loading-shell fade-up" aria-live="polite" aria-label="Analyzing your PC" data-testid="status-plan-loading">
-              <div className="eyebrow"><span className="eyebrow-line" /> Checking your upgrade path</div>
-              <h2 style={{ fontFamily: 'var(--app-font-serif)', letterSpacing: '-.04em', margin: '11px 0 17px', fontSize: 22 }}>Matching your parts to your games…</h2>
-              <p style={{ margin: '0 0 21px', color: 'hsl(var(--muted-foreground))', fontSize: 12 }}>We’re weighing your budget, target resolution, and the details you shared. This can take a moment.</p>
-              <div className="skeleton skeleton-title" /><div className="skeleton skeleton-line" /><div className="skeleton skeleton-line skeleton-short" />
-              <div className="skeleton skeleton-card" /><div className="skeleton skeleton-card" />
-            </section>
-          )}
-
-          {plan && (
-            <section ref={resultsRef} className="results-wrap fade-up" aria-labelledby="results-title" data-testid="section-upgrade-results">
-              <div className="results-head">
-                <div>
-                  <div className="eyebrow"><span className="eyebrow-line" /> Your personalized upgrade path</div>
-                  <h2 id="results-title">A clearer way forward.</h2>
-                  <p data-testid="text-plan-summary">Based on your current parts, budget, games, and {values.resolution} target.</p>
-                </div>
-                <div className="result-mark"><BadgeCheck size={23} /></div>
-              </div>
-              <div className="plan-intro" data-testid="card-plan-overview">
-                <h3>{plan.headline}</h3>
-                <p>{plan.summary}</p>
-                {plan.budgetNote && <div className="budget-callout"><Info size={15} /><span>{plan.budgetNote}</span></div>}
-              </div>
-
-              <div className="results-grid">
-                <section className="results-panel" aria-labelledby="upgrades-heading">
-                  <div className="panel-heading"><h3 id="upgrades-heading">Recommended upgrades</h3><span className="count-pill">{plan.upgrades.length} {plan.upgrades.length === 1 ? 'step' : 'steps'}</span></div>
-                  {plan.upgrades.length > 0 ? (
-                    <div className="upgrade-list">
-                      {plan.upgrades.map((upgrade, index) => (
-                        <article className="upgrade-item" key={`${upgrade.priority}-${upgrade.category}`} data-testid={`card-upgrade-${index}`}>
-                          <div className="upgrade-top">
-                            <span className="priority-num">{String(upgrade.priority).padStart(2, '0')}</span>
-                            <div className="upgrade-main"><span className="category-text">{upgrade.category}</span><h4>{upgrade.recommendedPart}</h4></div>
-                            <span className="upgrade-price">{moneyRange(upgrade.estimatedPriceLow, upgrade.estimatedPriceHigh, values.currency)}</span>
-                          </div>
-                          <p className="upgrade-reason">{upgrade.reason}</p>
-                          <div className="compatibility-note"><CheckCircle2 size={13} /><span>{upgrade.compatibilityNote}</span></div>
-                          <span className={`impact impact-${upgrade.impact}`}>{upgrade.impact} impact</span>
-                        </article>
-                      ))}
-                    </div>
-                  ) : <p className="optional-intro" style={{ padding: '18px 19px' }}>No individual upgrades were recommended for this plan.</p>}
-                </section>
-
-                <div style={{ display: 'grid', gap: 16, alignContent: 'start' }}>
-                  <section className="results-panel" aria-labelledby="checks-heading">
-                    <div className="panel-heading"><h3 id="checks-heading">Compatibility checks</h3><span className="count-pill">{plan.checks.length} checks</span></div>
-                    {plan.checks.length > 0 ? (
-                      <div className="checks-list">
-                        {plan.checks.map((check, index) => {
-                          const Icon = check.severity === 'critical' ? AlertCircle : check.severity === 'caution' ? AlertTriangle : Check;
-                          return <div className="check-item" key={`${check.item}-${index}`} data-testid={`item-compatibility-${index}`}>
-                            <span className={`check-icon check-${check.severity}`}><Icon size={13} /></span>
-                            <div><strong>{check.item}</strong><p>{check.detail}</p></div>
-                          </div>;
-                        })}
-                      </div>
-                    ) : <p className="optional-intro" style={{ padding: '16px 18px' }}>No specific compatibility checks were returned. Confirm every part manually before buying.</p>}
-                  </section>
-                  <section className="results-panel" aria-labelledby="order-heading">
-                    <div className="panel-heading"><h3 id="order-heading">Build order</h3><ChevronRight size={15} color="hsl(var(--muted-foreground))" /></div>
-                    {plan.buildOrder.length > 0 ? (
-                      <div className="build-order">
-                        {plan.buildOrder.map((step, index) => <div className="order-row" key={`${index}-${step}`} data-testid={`item-build-order-${index}`}><span className="order-index">{String(index + 1).padStart(2, '0')}</span><span>{step}</span></div>)}
-                      </div>
-                    ) : <p className="optional-intro" style={{ padding: '16px 18px' }}>No build sequence was returned.</p>}
-                  </section>
-                </div>
-              </div>
-              <div className="safety-banner" data-testid="text-purchase-safety"><AlertTriangle size={15} /><span>Prices are estimates, not live quotes. Part names and compatibility guidance are informational: verify socket, dimensions, power requirements, firmware, and exact model fit with the manufacturer before purchasing.</span></div>
-              <button className="submit-button" type="button" onClick={startOver} style={{ marginTop: 17 }} data-testid="button-start-over"><RotateCcw size={14} /> Adjust my details</button>
-            </section>
-          )}
-
-        </div>
+      <SiteHeader currentPage="hardware" connectionLabel="Shop search" />
+      <main className="main-wrap">
+        <section className="hero">
+          <div className="eyebrow"><span className="eyebrow-line" /> Parts for your next upgrade</div>
+          <h1>Find parts from shops<br /><em>in your country.</em></h1>
+          <p className="hero-copy">Choose where you live, the part you need, and a maximum item price. Compare returned shop listings, then check the exact model’s specifications against your PC.</p>
+          <div className="hero-bottom"><span className="hero-proof"><Globe size={15} aria-hidden="true" /> Your country, your choice</span><span className="hero-proof"><Search size={14} aria-hidden="true" /> Shop listings to compare</span></div>
+        </section>
+        <PcSpecsGuide />
+        <ShopSearch />
       </main>
-
       <SiteFooter />
     </div>
   );

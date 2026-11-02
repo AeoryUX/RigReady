@@ -1,37 +1,25 @@
-# Deploy RigReady to Vercel
+# RigReady deployment
 
-The repository includes the React website and its existing Express API. The
-software guide, search, and category filters work without an AI key.
+The current website is hosted on GitHub Pages at
+https://aeoryux.github.io/RigReady/. The shop bot is prepared for Cloudflare
+Workers. See [HOSTING.md](HOSTING.md) for browser-based hosting instructions and
+the product-data account needed to activate shop searches. The old AI endpoint
+is retired and no OpenAI key is required.
 
-1. Import this GitHub repository into Vercel as a new project.
-2. Select the branch containing the website. Use the repository root as the Root
-   Directory and Node.js 24.x as the Node.js version.
-3. Leave the framework preset as Other. `vercel.json` supplies the installation
-   command, build command, output directory, API routing, and client-side routing.
-4. Deploy, then open the URL Vercel provides. The welcome page and header link to
-   Hardware advisor, Software guide, and Operating systems. The Software guide
-   contains 45 apps, including Rufus and balenaEtcher in PC utilities. The OS page
-   includes nine Linux recommendations and installation guidance.
-5. Check `/api/healthz`. It should return `status: "ok"`; `aiConfigured` indicates
-   whether an AI key is present.
+## Optional Vercel website hosting
 
-AI upgrade plans remain disabled until `OPENAI_API_KEY` is configured in Vercel's
-environment settings. Keep it server-side, without a `VITE_` prefix. Replit
-Secrets do not automatically transfer to Vercel. Software-guide use does not
-require this setting. No database is needed by the currently implemented routes.
+The existing `vercel.json` and `api/index.ts` can still host the website and
+legacy health endpoint on Vercel. This is an alternative to GitHub Pages, and
+is not required for the recommended Cloudflare bot setup.
 
-## Local checks
+1. Import this repository, selecting the `website-preview` branch.
+2. Use the repository root, Node.js 24, and framework preset Other.
+3. `vercel.json` supplies the build command, output directory, and routes.
+4. Set `VITE_SHOP_BOT_URL` to the separately deployed Worker's HTTPS origin, or
+   configure the public `shop-bot.json` file. Do not put provider secrets in
+   `VITE_` variables or website files.
+5. Update the Worker's `ALLOWED_ORIGIN` to the final website origin.
 
-Use Node.js 24.x. From the repository root:
-
-```sh
-npx --yes pnpm@10.34.9 install --frozen-lockfile
-PORT=5173 BASE_PATH=/ npx --yes pnpm@10.34.9 --filter @workspace/rigready-ai run build
-```
-
-The deployment entry point is `api/index.ts`, which exports the existing Express
-application without starting a separate listening process. API requests are
-routed to that function; other application routes load the React application.
-
-Local checks validate the build and exported handler. They do not establish that
-a Vercel deployment has been published or that AI-provider requests work.
+The legacy `/api/healthz` response keeps `aiConfigured: false` for older clients.
+The old `/api/pc-advisor/upgrade-plan` route returns HTTP 410. The bot has its
+own `/health` and `/search` endpoints, deployed through Cloudflare.

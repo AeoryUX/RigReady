@@ -1,0 +1,14 @@
+{
+  "name": "@workspace/shop-bot",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/contracts.ts",
+    "./handler": "./src/handler.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node src/handler.test.mjs"
+  }
+}

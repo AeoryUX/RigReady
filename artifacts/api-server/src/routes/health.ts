@@ -6,7 +6,8 @@ const router: IRouter = Router();
 router.get("/healthz", (_req, res) => {
   const data = HealthCheckResponse.parse({
     status: "ok",
-    aiConfigured: Boolean(process.env.OPENAI_API_KEY),
+    // Deprecated field retained for older API clients.
+    aiConfigured: false,
   });
   res.json(data);
 });
