@@ -379,6 +379,54 @@
 .software-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 .software-empty { padding: 28px 18px; border: 1px dashed hsl(var(--border)); border-radius: 10px; color: hsl(var(--muted-foreground)); background: hsl(var(--card) / .55); font-size: 12px; text-align: center; }
 .software-disclaimer { margin: 15px 0 0; color: hsl(var(--muted-foreground)); font-size: 10px; line-height: 1.55; }
+.software-card-selected { border-color: hsl(var(--primary)); box-shadow: 0 0 0 1px hsl(var(--primary) / .2); }
+.software-check { display: flex; align-items: center; gap: 9px; min-height: 40px; margin-top: 13px; padding-top: 10px; border-top: 1px solid hsl(var(--border)); color: hsl(var(--foreground)); font-size: 11px; cursor: pointer; }
+.software-check input { width: 17px; height: 17px; margin: 0; flex-shrink: 0; accent-color: hsl(var(--primary)); }
+.software-check input:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 3px; }
+.app-checklist { position: sticky; top: 12px; z-index: 10; max-height: min(360px, 40vh); overflow: auto; overscroll-behavior: contain; margin-bottom: 18px; padding: 18px; border: 1px solid hsl(var(--primary) / .35); border-radius: 12px; background: hsl(var(--card)); box-shadow: var(--shadow-xs); }
+.checklist-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.checklist-heading h2 { margin: 0 0 5px; font: 700 15px var(--app-font-serif); }
+.checklist-heading p, .checklist-details > p { margin: 0; color: hsl(var(--muted-foreground)); font-size: 11px; line-height: 1.6; }
+.checklist-count { color: hsl(var(--primary)); font: 11px var(--app-font-mono); white-space: nowrap; }
+.checklist-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 13px; }
+.guide-primary-button, .guide-primary-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; padding: 10px 14px; border: 1px solid transparent; border-radius: 8px; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); font-size: 12px; font-weight: 700; text-decoration: none; cursor: pointer; }
+.guide-primary-button:disabled { opacity: .55; cursor: not-allowed; }
+.guide-primary-button:focus-visible, .guide-primary-link:focus-visible, .checklist-clear:focus-visible, .checklist-details summary:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 3px; }
+.guide-primary-button > svg, .guide-primary-link > svg { flex-shrink: 0; }
+.checklist-clear { min-height: 42px; padding: 8px 12px; border: 1px solid hsl(var(--border)); border-radius: 8px; color: hsl(var(--foreground)); background: transparent; font-size: 11px; cursor: pointer; }
+.checklist-clear:disabled { opacity: .5; cursor: not-allowed; }
+.checklist-details { margin-top: 13px; }
+.checklist-details summary { color: hsl(var(--primary)); cursor: pointer; font-size: 11px; font-weight: 700; }
+.checklist-details > p { margin-top: 9px; }
+.checklist-links { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 12px 0 0; }
+.checklist-links li { display: flex; align-items: stretch; max-width: 100%; border: 1px solid hsl(var(--border)); border-radius: 7px; background: hsl(var(--muted) / .6); }
+.checklist-links a { display: inline-flex; align-items: center; gap: 6px; min-width: 0; padding: 8px 10px; color: hsl(var(--primary)); font-size: 11px; overflow-wrap: anywhere; text-decoration: none; }
+.checklist-links a:hover { text-decoration: underline; }
+.checklist-links a > svg { flex-shrink: 0; }
+.checklist-links button { display: grid; place-items: center; width: 32px; flex-shrink: 0; border: 0; border-left: 1px solid hsl(var(--border)); background: transparent; color: hsl(var(--muted-foreground)); cursor: pointer; }
+.checklist-links a:focus-visible, .checklist-links button:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: -2px; }
+.specs-guide { margin-bottom: 26px; border: 1px solid hsl(var(--card-border)); border-radius: 12px; background: hsl(var(--card)); scroll-margin-top: 20px; }
+.specs-guide > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 64px; padding: 17px 20px; list-style: none; color: hsl(var(--foreground)); font-size: 13px; font-weight: 700; cursor: pointer; }
+.specs-guide > summary::-webkit-details-marker { display: none; }
+.specs-guide > summary > span { display: flex; align-items: center; gap: 10px; }
+.specs-guide > summary svg { color: hsl(var(--primary)); flex-shrink: 0; }
+.specs-guide > summary:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 3px; border-radius: 12px; }
+.specs-guide[open] .specs-toggle-icon { transform: rotate(180deg); }
+.specs-guide-content { padding: 0 20px 20px; }
+.specs-guide-content > h2 { margin: 0 0 9px; font: 700 20px/1.2 var(--app-font-serif); letter-spacing: -.03em; }
+.guide-intro { margin: 0 0 18px; color: hsl(var(--muted-foreground)); font-size: 12px; line-height: 1.65; }
+.specs-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: min(100%, 360px); height: auto; margin-bottom: 14px; }
+.specs-tabs > button { min-height: 40px; padding: 5px 8px; font-size: 12px; }
+.specs-tabs > button[data-state="active"] { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+.specs-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.specs-card { min-width: 0; padding: 18px; border: 1px solid hsl(var(--border)); border-radius: 10px; background: hsl(var(--background) / .55); }
+.specs-card h3 { margin: 0 0 9px; font: 700 14px/1.35 var(--app-font-serif); }
+.specs-card p { margin: 0; color: hsl(var(--muted-foreground)); font-size: 12px; line-height: 1.7; }
+.specs-card .os-link { margin-top: 12px; }
+.specs-guide-content > .os-callout { margin-bottom: 0; }
+.os-guide-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: -6px 0 24px; }
+.gaming-signals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.gaming-steps { margin-top: 20px; }
 .guides-section, #linux-picks { scroll-margin-top: 24px; }
 .os-page { padding-top: 32px; }
 .os-back-link { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 30px; color: hsl(var(--primary)); font-size: 12px; font-weight: 600; text-decoration: none; }
@@ -443,6 +491,7 @@
   .results-grid { grid-template-columns: 1fr; }
   .software-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .os-download-grid, .os-distro-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gaming-signals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 720px) {
   .main-wrap { width: min(100% - 32px, 560px); }
@@ -460,6 +509,7 @@
   .software-toolbar { align-items: stretch; }
   .software-search { width: 100%; box-sizing: border-box; }
   .os-steps { grid-template-columns: 1fr; }
+  .specs-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 500px) {
   .brand-name { font-size: 15px; }
@@ -482,6 +532,8 @@
   .software-heading h2 { font-size: 29px; }
   .software-grid { grid-template-columns: 1fr; }
   .os-download-grid, .os-distro-grid { grid-template-columns: 1fr; }
+  .gaming-signals { grid-template-columns: 1fr; }
+  .specs-guide-content { padding: 0 16px 16px; }
   .software-card { min-height: 0; }
   .software-filter { white-space: nowrap; }
   .results-head { align-items: flex-start; }

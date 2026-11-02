@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { Download, ExternalLink, Info, ShieldCheck } from 'lucide-react';
+import { LinuxGamingGuide, ProtonDbButton } from '@/components/linux-gaming-guide';
 
 type LinuxUse = 'New to Linux' | 'Gaming' | 'Older PCs' | 'Advanced';
 type LinuxFilter = 'All Linux picks' | LinuxUse;
@@ -143,6 +144,11 @@ export function OperatingSystemGuide() {
         </div>
       </div>
 
+      <div className="os-guide-actions">
+        <ProtonDbButton />
+        <a className="os-link" href="#linux-gaming">Read the Linux gaming guide</a>
+      </div>
+
       <div className="os-download-grid" aria-label="Operating system downloads">
         <article className="os-download-card">
           <span className="software-category">Microsoft</span>
@@ -194,6 +200,8 @@ export function OperatingSystemGuide() {
         </div>
         <div className="os-callout"><Info size={17} aria-hidden="true" /><p><strong>Check your game library first.</strong> Some Windows games and multiplayer anti-cheat systems do not work on Linux. Check the publisher’s support information for the titles you play; Proton does not guarantee compatibility.</p></div>
       </section>
+
+      <LinuxGamingGuide />
 
       <section className="os-section" aria-labelledby="linux-install-title">
         <div className="os-section-heading">

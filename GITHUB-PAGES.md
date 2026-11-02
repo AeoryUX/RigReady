@@ -6,6 +6,13 @@ and Operating systems pages. They include the editable PC form, searchable
 installation guidance. GitHub Pages serves static files: AI plans are explicitly
 disabled and the preview does not send PC details to an API.
 
+The Software guide's checklist opens selected official app websites and provides
+individual links if the browser blocks multiple tabs. Selections stay in page
+memory only; there is no installation-status tracking. Hardware advisor includes
+a manual Windows/Linux/macOS specs guide. The OS page includes a Linux gaming
+guide and an external ProtonDB button; compatibility reports are not fetched or
+scored by this site.
+
 From the repository root, using Node.js 24.x:
 
 ```sh

@@ -5,6 +5,8 @@ import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { OperatingSystemGuide } from '@/components/operating-system-guide';
+import { AppChecklist } from '@/components/app-checklist';
+import { PcSpecsGuide } from '@/components/pc-specs-guide';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuLabel,
   DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger,
@@ -597,21 +599,21 @@ function Home() {
           <a className="welcome-card" href={`${import.meta.env.BASE_URL}hardware/`} aria-labelledby="welcome-hardware-title">
             <span className="welcome-card-icon"><Cpu size={24} aria-hidden="true" /></span>
             <h2 id="welcome-hardware-title">Hardware advisor</h2>
-            <p>Review your PC components, budget, and gaming goals in one place.</p>
+            <p>Find your PC specs, then review your components, budget, and gaming goals in one place.</p>
             <span className="welcome-card-note">{staticPreview ? 'Explore the form. AI plans are unavailable in this preview.' : 'Get a prioritized upgrade plan for your setup.'}</span>
             <span className="welcome-cta">Open hardware advisor <ArrowRight size={16} aria-hidden="true" /></span>
           </a>
           <a className="welcome-card" href={`${import.meta.env.BASE_URL}software/`} aria-labelledby="welcome-software-title">
             <span className="welcome-card-icon"><AppWindow size={24} aria-hidden="true" /></span>
             <h2 id="welcome-software-title">Software guide</h2>
-            <p>Discover browsers, game libraries, communication apps, and useful PC tools.</p>
+            <p>Discover useful apps and build a checklist of official websites to visit.</p>
             <span className="welcome-card-note">{softwareApps.length} apps with official developer links.</span>
             <span className="welcome-cta">Browse software <ArrowRight size={16} aria-hidden="true" /></span>
           </a>
           <a className="welcome-card" href={`${import.meta.env.BASE_URL}operating-systems/`} aria-labelledby="welcome-os-title">
             <span className="welcome-card-icon"><MonitorDown size={24} aria-hidden="true" /></span>
             <h2 id="welcome-os-title">Operating systems</h2>
-            <p>Compare Linux distributions and learn how to download and install an operating system.</p>
+            <p>Compare Linux distributions, check gaming compatibility, and learn how to install an operating system.</p>
             <span className="welcome-card-note">Official downloads and installation guidance.</span>
             <span className="welcome-cta">Explore operating systems <ArrowRight size={16} aria-hidden="true" /></span>
           </a>
@@ -628,6 +630,7 @@ function SoftwarePage() {
   const [softwareFilter, setSoftwareFilter] = useState<SoftwareFilter>('All apps');
   const [softwareSearch, setSoftwareSearch] = useState('');
   const [softwareSort, setSoftwareSort] = useState<SoftwareSort>('name-asc');
+  const [selectedAppNames, setSelectedAppNames] = useState<Set<string>>(() => new Set());
   const selectedSortLabel = softwareSortOptions.find((option) => option.value === softwareSort)?.label;
   const visibleSoftware = softwareApps.filter((software) => {
     const matchesCategory = softwareFilter === 'All apps' || software.category === softwareFilter;
@@ -643,6 +646,16 @@ function SoftwarePage() {
     }
     return compareNames(a, b);
   });
+  const selectedApps = softwareApps.filter((app) => selectedAppNames.has(app.name)).sort(compareNames);
+
+  function selectApp(name: string, selected: boolean) {
+    setSelectedAppNames((previous) => {
+      const next = new Set(previous);
+      if (selected) next.add(name);
+      else next.delete(name);
+      return next;
+    });
+  }
 
   return (
     <div className="app-shell">
@@ -709,10 +722,12 @@ function SoftwarePage() {
               </div>
             </div>
 
+            <AppChecklist apps={selectedApps} onRemove={(name) => selectApp(name, false)} onClear={() => setSelectedAppNames(new Set())} />
+
             {visibleSoftware.length > 0 ? (
               <div className="software-grid">
                 {visibleSoftware.map((software) => (
-                  <article className="software-card" key={software.name}>
+                  <article className={`software-card${selectedAppNames.has(software.name) ? ' software-card-selected' : ''}`} key={software.name}>
                     <div className="software-card-meta">
                       <span className="software-category">{software.category}</span>
                       <span className="software-platform">{software.platform}</span>
@@ -729,6 +744,10 @@ function SoftwarePage() {
                     >
                       Official site <ExternalLink size={14} aria-hidden="true" />
                     </a>
+                    <label className="software-check">
+                      <input type="checkbox" checked={selectedAppNames.has(software.name)} onChange={(event) => selectApp(software.name, event.target.checked)} aria-label={`Select ${software.name} for checklist`} />
+                      <span>{selectedAppNames.has(software.name) ? 'In your checklist' : 'Add to checklist'}</span>
+                    </label>
                   </article>
                 ))}
               </div>
@@ -882,6 +901,8 @@ function HardwarePage() {
               <span className="hero-proof"><Zap size={14} /> Prioritized for your goals</span>
             </div>
           </section>
+
+          <PcSpecsGuide />
 
           <div className="workspace">
             <section className="form-panel" aria-labelledby="form-title">
