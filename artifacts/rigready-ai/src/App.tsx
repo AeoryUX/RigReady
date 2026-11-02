@@ -7,6 +7,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { OperatingSystemGuide } from '@/components/operating-system-guide';
 import { AppChecklist } from '@/components/app-checklist';
 import { PcSpecsGuide } from '@/components/pc-specs-guide';
+import { OsSupportBadges, OsSupportLegend, allDesktopOs, windowsOnly, windowsAndMac, linuxOnly, type OsSupport } from '@/components/os-support';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuLabel,
   DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger,
@@ -96,7 +97,7 @@ const softwareApps: {
   category: SoftwareCategory;
   description: string;
   bestFor: string;
-  platform: string;
+  osSupport: OsSupport;
   officialUrl: string;
   note?: string;
 }[] = [
@@ -105,7 +106,7 @@ const softwareApps: {
     category: 'Browsers',
     description: 'An everyday browser with a broad add-on ecosystem and privacy controls.',
     bestFor: 'A familiar general-purpose browser',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://www.mozilla.org/firefox/new/',
   },
   {
@@ -113,7 +114,7 @@ const softwareApps: {
     category: 'Browsers',
     description: 'A browser with built-in ad and tracker blocking for a less cluttered web.',
     bestFor: 'Built-in privacy tools',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://brave.com/download/',
   },
   {
@@ -121,7 +122,7 @@ const softwareApps: {
     category: 'Browsers',
     description: 'A gaming-focused browser with customizable controls and appearance.',
     bestFor: 'A gaming-themed browser',
-    platform: 'Windows · macOS',
+    osSupport: windowsAndMac,
     officialUrl: 'https://www.opera.com/gx',
   },
   {
@@ -129,7 +130,7 @@ const softwareApps: {
     category: 'Browsers',
     description: 'A Firefox-based browser with vertical tabs, workspaces, and a customizable interface.',
     bestFor: 'Organizing tabs into workspaces',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://zen-browser.app/',
   },
   {
@@ -137,7 +138,7 @@ const softwareApps: {
     category: 'Browsers',
     description: 'A Firefox-based browser with privacy-focused defaults and reduced telemetry.',
     bestFor: 'Privacy-focused browsing',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://librewolf.net/',
     note: 'Stricter privacy settings may need adjusting for some websites.',
   },
@@ -146,7 +147,7 @@ const softwareApps: {
     category: 'Browsers',
     description: 'A Chromium-based browser focused on privacy and a minimal browsing experience.',
     bestFor: 'A minimal Chromium alternative',
-    platform: 'Desktop · see available builds',
+    osSupport: allDesktopOs,
     officialUrl: 'https://helium.computer/',
   },
   {
@@ -154,7 +155,7 @@ const softwareApps: {
     category: 'Browsers',
     description: 'A customizable browser with tab stacks, workspaces, and built-in productivity tools.',
     bestFor: 'Customizing your browsing setup',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://vivaldi.com/',
   },
   {
@@ -162,7 +163,7 @@ const softwareApps: {
     category: 'Browsers',
     description: 'A Firefox-based desktop browser with customization options and support for Firefox extensions.',
     bestFor: 'Another customizable Firefox-based browser',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://www.waterfox.net/',
   },
   {
@@ -170,7 +171,7 @@ const softwareApps: {
     category: 'Browsers',
     description: 'A Firefox-based browser with workspace and interface customization for organizing everyday browsing.',
     bestFor: 'Organizing browsing around your workflow',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://floorp.app/',
   },
   {
@@ -178,7 +179,7 @@ const softwareApps: {
     category: 'Game libraries',
     description: 'A major PC game store and library with community features for supported games.',
     bestFor: 'A first PC game library',
-    platform: 'Windows · macOS · Linux',
+    osSupport: { ...allDesktopOs, linux: 'limited', note: 'Valve lists current Ubuntu or Ubuntu LTS for the standalone Linux client. Other distributions use their own packages and guidance.' },
     officialUrl: 'https://store.steampowered.com/about/',
   },
   {
@@ -186,7 +187,7 @@ const softwareApps: {
     category: 'Game libraries',
     description: 'Another PC game store and launcher for games in your Epic account.',
     bestFor: 'Games from Epic',
-    platform: 'Windows · macOS',
+    osSupport: windowsAndMac,
     officialUrl: 'https://store.epicgames.com/download',
   },
   {
@@ -194,7 +195,7 @@ const softwareApps: {
     category: 'Game libraries',
     description: 'A game launcher that can organize games from supported PC platforms.',
     bestFor: 'Bringing supported libraries together',
-    platform: 'Windows · macOS',
+    osSupport: windowsAndMac,
     officialUrl: 'https://www.gog.com/galaxy',
     note: 'Library integrations and features can change.',
   },
@@ -203,7 +204,7 @@ const softwareApps: {
     category: 'Game libraries',
     description: 'Browse PC games and manage your Xbox PC library from Windows.',
     bestFor: 'Xbox PC games and Game Pass',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://www.xbox.com/apps/xbox-app-on-pc',
     note: 'A Game Pass subscription is separate.',
   },
@@ -212,7 +213,7 @@ const softwareApps: {
     category: 'Game libraries',
     description: 'Download, update, and launch supported games from your EA library.',
     bestFor: 'EA games and EA Play',
-    platform: 'Windows · macOS',
+    osSupport: windowsAndMac,
     officialUrl: 'https://www.ea.com/ea-app',
     note: 'Game availability varies by platform. EA Play is a separate subscription.',
   },
@@ -221,7 +222,7 @@ const softwareApps: {
     category: 'Game libraries',
     description: 'Manage Ubisoft PC games, updates, friends, and supported in-game rewards.',
     bestFor: 'Ubisoft PC games',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://www.ubisoft.com/ubisoft-connect',
   },
   {
@@ -229,7 +230,7 @@ const softwareApps: {
     category: 'Game libraries',
     description: 'Install and launch supported Blizzard and Activision games from one desktop app.',
     bestFor: 'Blizzard and supported Activision games',
-    platform: 'Windows · macOS',
+    osSupport: windowsAndMac,
     officialUrl: 'https://download.battle.net/',
     note: 'Not every game is available on macOS.',
   },
@@ -238,7 +239,7 @@ const softwareApps: {
     category: 'Game libraries',
     description: 'Browse, install, and update independent games from itch.io.',
     bestFor: 'Indie games and smaller creators',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://itch.io/app',
   },
   {
@@ -246,7 +247,7 @@ const softwareApps: {
     category: 'Game libraries',
     description: 'An open-source library manager that organizes games from multiple launchers, with a fullscreen mode.',
     bestFor: 'One view of your PC game collection',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://playnite.link/',
     note: 'Some games still require their original launcher.',
   },
@@ -255,7 +256,7 @@ const softwareApps: {
     category: 'Game libraries',
     description: 'An open-source launcher for supported Epic Games, GOG, and Amazon Games libraries.',
     bestFor: 'Managing supported stores across platforms',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://heroicgameslauncher.com/',
     note: 'Unofficial client; game and anti-cheat compatibility varies by operating system.',
   },
@@ -264,7 +265,7 @@ const softwareApps: {
     category: 'Game libraries',
     description: 'An open-source Linux game manager for organizing installed games, emulators, and supported store integrations.',
     bestFor: 'Managing games and runners on Linux',
-    platform: 'Linux',
+    osSupport: linuxOnly,
     officialUrl: 'https://lutris.net/downloads/',
     note: 'Game and anti-cheat compatibility varies. Some games still require their original store account or launcher.',
   },
@@ -273,7 +274,7 @@ const softwareApps: {
     category: 'Game libraries',
     description: 'A community Minecraft launcher for managing separate game instances, mod loaders, and modpacks.',
     bestFor: 'Organizing Minecraft versions and modded setups',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://prismlauncher.org/download/',
     note: 'Use an account with access to Minecraft: Java Edition.',
   },
@@ -282,7 +283,7 @@ const softwareApps: {
     category: 'Communication',
     description: 'Voice, text, and community spaces for playing with friends.',
     bestFor: 'Voice chat and gaming groups',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://discord.com/download',
   },
   {
@@ -290,7 +291,7 @@ const softwareApps: {
     category: 'Communication',
     description: 'Voice chat with server-based communities and controls for gaming groups.',
     bestFor: 'Dedicated group voice chat',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://www.teamspeak.com/',
     note: 'Check platform availability for your preferred client version.',
   },
@@ -299,7 +300,7 @@ const softwareApps: {
     category: 'Communication',
     description: 'Private messaging and calls with a desktop app linked to your mobile account.',
     bestFor: 'Private conversations with friends',
-    platform: 'Windows · macOS · Linux',
+    osSupport: { ...allDesktopOs, linux: 'limited', note: 'The official Linux package targets 64-bit Debian-based distributions, such as Ubuntu and Linux Mint. Other distributions need separate packaging.' },
     officialUrl: 'https://signal.org/download/',
     note: 'Requires Signal on your phone to link the desktop app.',
   },
@@ -308,7 +309,7 @@ const softwareApps: {
     category: 'Communication',
     description: 'Free, open-source voice chat with low latency and server-based channels for gaming groups.',
     bestFor: 'Low-latency group voice chat',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://www.mumble.info/downloads/',
     note: 'Join an existing Mumble server or host one for your group.',
   },
@@ -317,7 +318,7 @@ const softwareApps: {
     category: 'Communication',
     description: 'Messaging and calls built on Matrix, with rooms and communities across compatible servers.',
     bestFor: 'Matrix rooms and community chat',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://element.io/download',
     note: 'Choose a Matrix homeserver when creating your account. Features and availability depend on the server.',
   },
@@ -326,7 +327,7 @@ const softwareApps: {
     category: 'Communication',
     description: 'An open-source communication app with distributed messaging, voice calls, and video calls.',
     bestFor: 'Decentralized messaging and calls',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://jami.net/download-jami/',
   },
   {
@@ -334,7 +335,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'Free, open-source software for recording gameplay or livestreaming.',
     bestFor: 'Recording and streaming',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://obsproject.com/download',
   },
   {
@@ -342,7 +343,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'Manage NVIDIA graphics drivers, game settings, and capture features.',
     bestFor: 'NVIDIA graphics cards',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://www.nvidia.com/en-us/software/nvidia-app/',
     note: 'Only needed for an NVIDIA GPU.',
   },
@@ -351,7 +352,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'Manage AMD Radeon graphics drivers, game settings, and capture features.',
     bestFor: 'AMD Radeon graphics cards',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://www.amd.com/en/products/software/adrenalin.html',
     note: 'Only needed for an AMD Radeon GPU.',
   },
@@ -360,7 +361,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'View hardware details and sensor readings such as temperatures.',
     bestFor: 'Checking temperatures and components',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://www.hwinfo.com/download/',
     note: 'Optional monitoring tool; it does not improve performance by itself.',
   },
@@ -369,7 +370,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'Optional GPU monitoring and tuning controls for experienced users.',
     bestFor: 'Advanced GPU monitoring',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://www.msi.com/Landing/afterburner',
     note: 'Avoid changing clock or voltage settings unless you understand the risks. Download from MSI only.',
   },
@@ -378,7 +379,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'Check your processor, motherboard, and memory details before planning an upgrade.',
     bestFor: 'Identifying CPU and RAM specifications',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://www.cpuid.com/softwares/cpu-z.html',
   },
   {
@@ -386,7 +387,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'View your graphics card specifications, firmware information, and sensor readings.',
     bestFor: 'Identifying and monitoring your GPU',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://www.techpowerup.com/gpuz/',
   },
   {
@@ -394,7 +395,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'Read supported drives’ health indicators and temperatures to help spot storage issues.',
     bestFor: 'Checking SSD and hard drive health',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://crystalmark.info/en/software/crystaldiskinfo/',
     note: 'Health indicators do not replace regular backups.',
   },
@@ -403,7 +404,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'Visualize disk usage and find large files and folders taking up storage space.',
     bestFor: 'Finding what fills your drive',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://diskanalyzer.com/',
     note: 'Free for personal use; review files before deleting them.',
   },
@@ -412,7 +413,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'Extra Windows tools for window layouts, keyboard remapping, file search, and everyday tasks.',
     bestFor: 'Making Windows easier to use',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://learn.microsoft.com/windows/powertoys/',
   },
   {
@@ -420,7 +421,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'A free, open-source tool for creating and extracting ZIP, 7z, and other archive formats.',
     bestFor: 'Opening and compressing archives',
-    platform: 'Windows · Linux · macOS',
+    osSupport: allDesktopOs,
     officialUrl: 'https://www.7-zip.org/',
     note: 'The official graphical app is for Windows; Linux and macOS builds use the command line.',
   },
@@ -429,7 +430,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'Build custom fan curves using supported temperature sensors and fan controllers.',
     bestFor: 'Adjusting cooling and fan noise',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://getfancontrol.com/',
     note: 'Hardware support varies. Monitor temperatures after changing fan curves.',
   },
@@ -438,7 +439,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'An open-source toolkit for screenshots, screen recordings, and optional sharing workflows.',
     bestFor: 'Capturing and annotating your screen',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://getsharex.com/',
     note: 'Review upload settings before capturing private content.',
   },
@@ -447,7 +448,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'A free, open-source media player for many local video and audio formats.',
     bestFor: 'Playing recordings and media files',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://www.videolan.org/vlc/',
   },
   {
@@ -455,7 +456,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'A free, open-source Windows utility for creating bootable USB installation media from supported disk images.',
     bestFor: 'Preparing operating system installers on Windows',
-    platform: 'Windows',
+    osSupport: windowsOnly,
     officialUrl: 'https://rufus.ie/',
     note: 'Writing installation media erases the selected USB drive. Check the target drive before starting.',
   },
@@ -464,7 +465,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'A graphical tool for writing supported operating system images to USB drives and SD cards.',
     bestFor: 'Writing Linux installer images',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://etcher.balena.io/',
     note: 'Flashing erases the selected drive. Use Microsoft’s recommended tools or Rufus for Windows installation media.',
   },
@@ -473,7 +474,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'An open-source password manager for keeping login details in an encrypted local database.',
     bestFor: 'Managing passwords on your own devices',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://keepassxc.org/download/',
     note: 'Back up your database and keep its master password safe.',
   },
@@ -482,7 +483,7 @@ const softwareApps: {
     category: 'PC utilities',
     description: 'An open-source app for sharing files and text between nearby devices over your local network.',
     bestFor: 'Moving files between your PCs and phones',
-    platform: 'Windows · macOS · Linux',
+    osSupport: allDesktopOs,
     officialUrl: 'https://localsend.org/download',
     note: 'Devices must be reachable on the local network. Firewall settings can affect discovery.',
   },
@@ -722,6 +723,7 @@ function SoftwarePage() {
               </div>
             </div>
 
+            <OsSupportLegend />
             <AppChecklist apps={selectedApps} onRemove={(name) => selectApp(name, false)} onClear={() => setSelectedAppNames(new Set())} />
 
             {visibleSoftware.length > 0 ? (
@@ -730,11 +732,11 @@ function SoftwarePage() {
                   <article className={`software-card${selectedAppNames.has(software.name) ? ' software-card-selected' : ''}`} key={software.name}>
                     <div className="software-card-meta">
                       <span className="software-category">{software.category}</span>
-                      <span className="software-platform">{software.platform}</span>
                     </div>
                     <h3>{software.name}</h3>
                     <p className="software-best-for">{software.bestFor}</p>
                     <p className="software-description">{software.description}</p>
+                    <OsSupportBadges support={software.osSupport} />
                     {software.note && <p className="software-note"><Info size={13} />{software.note}</p>}
                     <a
                       className="software-link"

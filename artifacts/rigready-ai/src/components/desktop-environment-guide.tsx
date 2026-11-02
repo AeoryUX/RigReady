@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ExternalLink, Info } from 'lucide-react';
 import { NameSortMenu, type NameSort } from '@/components/name-sort-menu';
+import { OsSupportBadges, OsSupportLegend, linuxOnly, type OsSupport } from '@/components/os-support';
 
 type DesktopKind = 'Desktop environment' | 'Compositor' | 'Shell';
 type DesktopFilter = 'All options' | DesktopKind;
@@ -19,6 +20,7 @@ const desktopOptions: {
   note: string;
   url: string;
   docs: string;
+  osSupport?: OsSupport;
 }[] = [
   {
     name: 'KDE Plasma', kind: 'Desktop environment', bestFor: 'A complete desktop with extensive customization',
@@ -79,18 +81,21 @@ const desktopOptions: {
     description: 'A Linux desktop shell from the Caelestia project, providing the interface around a compositor-driven desktop setup.',
     note: 'Read its supported setup and configuration requirements before applying its shell or related dotfiles.',
     url: 'https://github.com/caelestia-dots/shell', docs: 'https://caelestiashell.com/',
+    osSupport: { ...linuxOnly, linux: 'limited', note: 'Requires Hyprland and the shell’s dependencies. Official install options include Arch Linux and Nix; other distributions use the manual guide.' },
   },
   {
     name: 'Ryoku', kind: 'Shell', bestFor: 'A Hyprland desktop setup with project tooling',
     description: 'A desktop setup from the Ryoku project, with a shell experience and related tools for its supported Linux configurations.',
     note: 'Ryoku includes a broader desktop setup and project tools. Follow the official guide for your distribution and compositor; installation paths differ between supported setups.',
     url: 'https://ryoku.dev/', docs: 'https://docs.ryoku.dev/',
+    osSupport: { ...linuxOnly, linux: 'limited', note: 'Targets specific Linux editions, including Arch and CachyOS, with additional distro editions and a separate NixOS port. Support varies by edition and compositor.' },
   },
   {
     name: 'Noctalia', kind: 'Shell', bestFor: 'An integrated interface for a Wayland compositor',
     description: 'A customizable desktop shell with panels, launcher, notifications, and controls for supported Wayland compositor workflows.',
     note: 'Check the project’s current compositor integrations; available features can differ between setups.',
     url: 'https://github.com/noctalia-dev/noctalia', docs: 'https://docs.noctalia.dev/noctalia/getting-started/installation/',
+    osSupport: { ...linuxOnly, linux: 'limited', note: 'Requires a compatible Wayland compositor with layer-shell support. Integrations include Hyprland, Niri, and Mango; available features differ by compositor.' },
   },
 ];
 
@@ -112,6 +117,7 @@ export function DesktopEnvironmentGuide() {
         </div>
         <NameSortMenu value={sort} onChange={setSort} label="Sort desktop options" />
       </div>
+      <OsSupportLegend />
       <div className="os-callout"><Info size={17} aria-hidden="true" /><p>For a first setup, consider your distribution’s official desktop edition. Before applying a shell or dotfiles, check supported versions and back up your existing configuration. A shell project may replace panels, shortcuts, and other settings.</p></div>
       <div className="os-distro-grid desktop-options-grid">
         {visibleOptions.map((option) => (
@@ -119,6 +125,7 @@ export function DesktopEnvironmentGuide() {
             <span className="software-category">{option.kind}</span><h3>{option.name}</h3>
             <p className="software-best-for">{option.bestFor}</p>
             <p className="os-copy">{option.description}</p>
+            <OsSupportBadges support={option.osSupport ?? linuxOnly} />
             <p className="os-note"><Info size={14} aria-hidden="true" />{option.note}</p>
             <div className="os-card-links">
               <a className="os-link" href={option.url} target="_blank" rel="noopener noreferrer">Official project <ExternalLink size={13} aria-hidden="true" /></a>

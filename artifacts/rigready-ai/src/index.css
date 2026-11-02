@@ -369,7 +369,18 @@
 .software-card:hover { transform: translateY(-2px); border-color: hsl(var(--primary) / .3); box-shadow: 0 7px 20px hsl(var(--foreground) / .045); }
 .software-card-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .software-category { color: hsl(var(--primary)); font: 9px var(--app-font-mono); letter-spacing: .08em; text-transform: uppercase; }
-.software-platform { color: hsl(var(--muted-foreground)); font-size: 9px; text-align: right; }
+.os-support { margin-top: 12px; }
+.os-support-list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.os-support-badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 7px; border: 1px solid hsl(var(--border)); border-radius: 6px; font-size: 10px; line-height: 1.3; }
+.os-support-supported { color: hsl(var(--primary)); background: hsl(var(--primary) / .06); }
+.os-support-limited { color: hsl(var(--accent)); background: hsl(var(--accent) / .06); }
+.os-support-unavailable { color: hsl(var(--muted-foreground)); }
+.os-support-half { display: inline-block; width: 12px; height: 12px; flex: 0 0 12px; border: 1.5px solid currentColor; border-radius: 50%; background: linear-gradient(to right, currentColor 50%, transparent 50%); }
+.os-support-note { margin: 8px 0 0; color: hsl(var(--muted-foreground)); font-size: 10px; line-height: 1.6; }
+.os-support-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 9px 18px; margin: 0 0 20px; color: hsl(var(--muted-foreground)); font-size: 11px; line-height: 1.6; }
+.os-support-legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.os-support-legend p { flex-basis: 100%; margin: 0; }
+.desktop-option .os-support { margin: 0 0 16px; }
 .software-card h3 { margin: 14px 0 4px; font: 700 17px/1.25 var(--app-font-serif); letter-spacing: -.025em; }
 .software-best-for { margin: 0; color: hsl(var(--accent)); font-size: 10px; font-weight: 700; }
 .software-description { margin: 10px 0 0; color: hsl(var(--foreground) / .76); font-size: 11px; line-height: 1.6; }

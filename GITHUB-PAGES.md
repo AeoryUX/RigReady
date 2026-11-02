@@ -18,6 +18,11 @@ Desktop environments tab covering full desktops, Hyprland, and desktop shells.
 That catalog has type filters and alphabetical sorting; all project links lead
 to official project pages or documentation.
 
+Software and desktop-tool cards show Windows, Linux, and macOS support badges.
+A check indicates native support, a half-filled circle indicates support limited
+to selected Linux distributions or desktop setups (explained on the card), and
+a dash indicates no native app. These badges do not describe game compatibility.
+
 From the repository root, using Node.js 24.x:
 
 ```sh

@@ -96,7 +96,7 @@ const linuxPicks: {
     bestFor: 'A desktop for gaming and everyday productivity',
     description: 'An Ubuntu-based distribution from System76 with a productivity-focused desktop and download options for different graphics hardware.',
     note: 'Follow System76’s current hardware, graphics, and Secure Boot guidance when choosing and installing an image.',
-    uses: ['New to Linux', 'Gaming'],
+    uses: ['Gaming'],
     download: 'https://system76.com/pop/',
     docs: 'https://support.system76.com/articles/install-pop/',
   },
@@ -185,7 +185,7 @@ export function OperatingSystemGuide() {
             <div className="os-section-heading">
               <div>
                 <h2 id="linux-title">Linux picks, matched to your PC.</h2>
-                <p>New to Linux? Start by comparing Mint, Ubuntu LTS, and Pop!_OS. Use the filters to explore gaming-focused setups and more hands-on options. There is no single best distribution for everyone.</p>
+                <p>New to Linux? Start by comparing Mint, Ubuntu LTS, and Zorin OS. Use the filters to explore gaming-focused setups and more hands-on options. There is no single best distribution for everyone.</p>
               </div>
               <span className="software-count" role="status" aria-live="polite" aria-atomic="true">{visiblePicks.length} {visiblePicks.length === 1 ? 'distribution' : 'distributions'}</span>
             </div>
