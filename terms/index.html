@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <style>
+      html { background: hsl(42 32% 95%); color-scheme: light; }
+      html.dark { background: hsl(185 23% 10%); color-scheme: dark; }
+      @media (prefers-color-scheme: dark) {
+        html:not(.light) { background: hsl(185 23% 10%); color-scheme: dark; }
+      }
+    </style>
+    <script>
+      // Match next-themes before stylesheets or the React app can load.
+      (() => {
+        let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        try {
+          const savedTheme = localStorage.getItem('rigready-theme');
+          if (savedTheme === 'dark' || savedTheme === 'light') theme = savedTheme;
+        } catch {
+          // System preference still works when browser storage is unavailable.
+        }
+        const root = document.documentElement;
+        root.classList.remove('light', 'dark');
+        root.classList.add(theme);
+        root.style.colorScheme = theme;
+      })();
+    </script>
+    <title>Terms of use | RigReady</title>
+    <meta name="description" content="Explore PC hardware upgrades, useful software, and operating system guides with RigReady." />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="RigReady" />
+    <meta property="og:description" content="Explore PC hardware upgrades, useful software, and operating system guides with RigReady." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RigReady" />
+    <meta name="twitter:description" content="Explore PC hardware upgrades, useful software, and operating system guides with RigReady." />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/RigReady/favicon.svg?v=rigready-chip" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/RigReady/assets/index-BKG-h2Bm.js"></script>
+    <link rel="stylesheet" crossorigin href="/RigReady/assets/index-DVdrebyj.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
