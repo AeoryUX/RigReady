@@ -11,17 +11,33 @@ contains its deployed HTTPS origin (or `VITE_SHOP_BOT_URL` is set at build time)
 The default configuration shows an unavailable state and sends no search to a
 provider. See [HOSTING.md](HOSTING.md) for setup entirely through cloud services.
 
-The Software guide's checklist opens selected official app websites and provides
-individual links if the browser blocks multiple tabs. Selections stay in page
+The Software guide's checklist preserves selection order and provides a native
+Open next link, an optional bulk opener, and individual links. Browsers can block
+multiple tabs from one bulk click; the next-link flow uses one explicit click per site. Selections stay in page
 memory only; there is no installation-status tracking. Hardware advisor includes
 a manual Windows/Linux/macOS specs guide. The OS page includes a Linux gaming
 guide and an external ProtonDB button; compatibility reports are not fetched or
 scored by this site.
 
-The OS page offers A–Z and Z–A sorting for Linux recommendations, plus a
-Desktop environments tab covering full desktops, Hyprland, and desktop shells.
-That catalog has type filters and alphabetical sorting; all project links lead
+The OS page has three main tabs: Windows 11, Linux, and macOS. Windows 11 and
+macOS show their official download guidance. Inside Linux, four tabs organize
+Distributions, Desktop environments, Window managers, and Shells. Linux
+recommendations offer A–Z and Z–A sorting.
+Direct Linux section links select the matching main tab and Linux category before
+scrolling, including after a browser refresh.
+Linux distributions are grouped under New to Linux, Gaming, Older PCs, and
+Advanced, with dividers and alphabetical sorting within each group. A distribution
+can appear in more than one use-case group. The other tabs have separate catalogs
+and alphabetical sorting; all project links lead
 to official project pages or documentation.
+
+The desktop catalog includes six desktop environments, 25 compositors/window
+managers, and 17 shells or related interface projects. Cards distinguish Wayland,
+X11, integrated desktop components, shells, toolkits, panels, and desktop setups.
+Compatibility notes identify compositor requirements and limited Linux support.
+Source-review notes and project moves are recorded in
+[DESKTOP-CATALOG-SOURCES.md](DESKTOP-CATALOG-SOURCES.md). Upstream identity checks
+are not a security audit or a guarantee about third-party installers.
 
 Software and desktop-tool cards show Windows, Linux, and macOS support badges.
 A check indicates native support, a half-filled circle indicates support limited
@@ -56,3 +72,16 @@ product-data provider, category and currency filters, and hosted request limits;
 it does not use an AI provider. Country selection is explicit and coverage
 depends on the product-data service and retailers. Software and OS guides work
 independently of the bot connection.
+
+Each software card has an Installation section with Windows, Linux, and macOS
+choices. Linux methods cover DEB, RPM, and pacman/AUR where listed. Developer
+guides, distro repositories, and community packages are labelled separately.
+Unlisted package methods and unsupported native platforms are marked explicitly.
+Installation resources are links and instructions; the website runs no installer.
+
+The footer links to Privacy & storage and Terms pages. The privacy notice describes
+local theme storage, in-memory checklists, fonts, hosting, and conditional shop
+search data. There is no fabricated contact address, consent banner for optional
+tracking that is not configured, checkout/refund process, mailing list, age gate,
+or account-deletion form. These notices describe current behavior and are not a
+legal-compliance certification. Icon licence notices are in THIRD_PARTY_NOTICES.md.

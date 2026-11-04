@@ -95,6 +95,7 @@ export function ShopSearch() {
         </fieldset>
         {country && !currency && <p className="guide-intro">For this country, compare the currency and price shown by each shop. The numeric budget filter is not available.</p>}
         <p className="shop-search-help">Country is selected by you. Retailer coverage and delivery vary by country. Check shipping, taxes, condition, and the final total with the seller.</p>
+        <p className="shop-search-help">When connected, these search fields go to the hosted bot; the country and part-search text go to its shopping-data provider. Enter product names only. <a className="os-link" href={`${import.meta.env.BASE_URL}privacy/`}>Privacy details</a></p>
         {error && <div className="form-alert" role="alert">{error}</div>}
         <button className="guide-primary-button" type="submit" disabled={!endpoint || searching}><Search size={16} aria-hidden="true" />{searching ? 'Searching shops…' : endpoint ? 'Search shops' : 'Shop search not connected yet'}</button>
       </form>

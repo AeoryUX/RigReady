@@ -7,6 +7,7 @@ PORT=5173 BASE_PATH="${PAGES_BASE_PATH:-/RigReady/}" VITE_STATIC_PREVIEW=true \
   npx --yes pnpm@10.34.9 --filter @workspace/rigready-ai run build
 preview_output=artifacts/rigready-ai/dist/public
 touch "$preview_output/.nojekyll"
+cp THIRD_PARTY_NOTICES.md "$preview_output/third-party-notices.txt"
 # Real HTML files let GitHub Pages serve this route on direct visits and refreshes.
 while IFS='|' read -r preview_route preview_title; do
   mkdir -p "$preview_output/$preview_route"
@@ -16,4 +17,6 @@ done <<'PAGES'
 hardware|Hardware advisor
 software|Software guide
 operating-systems|Operating systems
+privacy|Privacy and storage
+terms|Terms of use
 PAGES

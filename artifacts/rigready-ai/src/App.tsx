@@ -6,8 +6,10 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { OperatingSystemGuide } from '@/components/operating-system-guide';
 import { AppChecklist } from '@/components/app-checklist';
+import { AppInstallationGuide } from '@/components/app-installation-guide';
 import { PcSpecsGuide } from '@/components/pc-specs-guide';
 import { ShopSearch } from '@/components/shop-search';
+import { SiteInformation } from '@/components/site-information';
 import { OsSupportBadges, OsSupportLegend, allDesktopOs, windowsOnly, windowsAndMac, linuxOnly, type OsSupport } from '@/components/os-support';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuLabel,
@@ -478,7 +480,7 @@ function SiteHeader({ connectionLabel = 'RigReady guide', currentPage = 'home' }
 function SiteFooter() {
   return (
     <footer className="footer">
-      <div className="footer-inner"><span>RigReady · Built around the PC you already own.</span><span>Recommendations are guidance, not a substitute for checking your exact components.</span></div>
+      <div className="footer-inner"><span>RigReady · Built around the PC you already own.</span><span>Recommendations are guidance, not a substitute for checking your exact components.</span><nav className="footer-policy-links" aria-label="Site information"><a href={`${import.meta.env.BASE_URL}privacy/`}>Privacy</a><a href={`${import.meta.env.BASE_URL}privacy/#storage`}>Cookies &amp; storage</a><a href={`${import.meta.env.BASE_URL}terms/`}>Terms</a></nav></div>
     </footer>
   );
 }
@@ -571,7 +573,6 @@ function SoftwarePage() {
     }
     return compareNames(a, b);
   });
-  const selectedApps = softwareApps.filter((app) => selectedAppNames.has(app.name)).sort(compareNames);
 
   function selectApp(name: string, selected: boolean) {
     setSelectedAppNames((previous) => {
@@ -648,7 +649,7 @@ function SoftwarePage() {
             </div>
 
             <OsSupportLegend />
-            <AppChecklist apps={selectedApps} onRemove={(name) => selectApp(name, false)} onClear={() => setSelectedAppNames(new Set())} />
+            <AppChecklist apps={softwareApps} selectedNames={selectedAppNames} onRemove={(name) => selectApp(name, false)} onClear={() => setSelectedAppNames(new Set())} />
 
             {visibleSoftware.length > 0 ? (
               <div className="software-grid">
@@ -662,6 +663,7 @@ function SoftwarePage() {
                     <p className="software-description">{software.description}</p>
                     <OsSupportBadges support={software.osSupport} />
                     {software.note && <p className="software-note"><Info size={13} />{software.note}</p>}
+                    <AppInstallationGuide name={software.name} support={software.osSupport} officialUrl={software.officialUrl} />
                     <a
                       className="software-link"
                       href={software.officialUrl}
@@ -726,11 +728,21 @@ function OperatingSystemsPage() {
   );
 }
 
+function InformationPage({ kind }: { kind: 'privacy' | 'terms' }) {
+  useInitialFragmentScroll();
+  usePageTitle(`${kind === 'privacy' ? 'Privacy & storage' : 'Terms of use'} | RigReady`);
+  return <div className="app-shell"><SiteHeader /><main className="main-wrap policy-page"><a className="os-back-link" href={import.meta.env.BASE_URL}><ArrowLeft size={14} aria-hidden="true" />Back to welcome</a><SiteInformation kind={kind} /></main><SiteFooter /></div>;
+}
+function PrivacyPage() { return <InformationPage kind="privacy" />; }
+function TermsPage() { return <InformationPage kind="terms" />; }
+
 function Router() {
   return (
     <RoutedErrorBoundary>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/privacy" component={PrivacyPage} /><Route path="/privacy/" component={PrivacyPage} />
+        <Route path="/terms" component={TermsPage} /><Route path="/terms/" component={TermsPage} />
         <Route path="/hardware" component={HardwarePage} />
         <Route path="/hardware/" component={HardwarePage} />
         <Route path="/software" component={SoftwarePage} />
