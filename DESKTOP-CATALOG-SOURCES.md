@@ -25,6 +25,12 @@ It confirms the project website, Budgie Menu, and Raven features. The card links
 the official website and README, with a note to use distribution-supported
 packages and check version-specific session and applet compatibility.
 
+The 5 November 2026 catalog expansion also adds Deepin Desktop Environment,
+Enlightenment, LXQt, and Pantheon. Their cards link to each project’s official
+site and upstream documentation, distinguish an integrated distribution
+experience from packages supplied elsewhere, and avoid making performance or
+hardware-compatibility guarantees.
+
 ## Compositors and window managers
 
 | Entry | Source checked | Scope or important distinction |
@@ -54,6 +60,10 @@ packages and check version-specific session and applet compatibility.
 | COSMIC Compositor | [System76 source](https://github.com/pop-os/cosmic-comp) | cosmic-comp is a component of the COSMIC desktop. |
 | Weston | [Source mirror README](https://github.com/wayland-mirror/weston/blob/main/README.md) | README names freedesktop GitLab as upstream and links online documentation. Desktop/kiosk shells and development use. |
 | Miracle-WM | [Upstream README](https://github.com/miracle-wm-org/miracle-wm/blob/develop/README.md) | Mir-based Wayland compositor; user wiki distinguished from developer API docs. |
+| Fluxbox | [Upstream repository](https://github.com/fluxbox/fluxbox) | Lightweight X11 window manager; separate desktop utilities are still required. |
+| FVWM3 | [Upstream README](https://github.com/fvwmorg/fvwm3/blob/main/README.md) | Current FVWM generation for X11; older configuration examples can differ. |
+| IceWM | [Upstream README](https://github.com/ice-wm/icewm/blob/master/README.md) | X11 window manager with a traditional taskbar and menu. |
+| spectrwm | [Upstream repository](https://github.com/conformal/spectrwm) | Keyboard-driven X11 tiling window manager; its manual is the configuration reference. |
 
 ## Shells and related interface projects
 
@@ -76,6 +86,10 @@ packages and check version-specific session and applet compatibility.
 | Polybar | [Upstream README](https://github.com/polybar/polybar/blob/master/README.md) | X11 panel, not a native Wayland panel or complete shell. |
 | HyDE | [Upstream README](https://github.com/HyDE-Project/HyDE/blob/master/README.md) | Main installer targets minimal Arch; desktop, boot, theme, and login settings may change. NixOS route is a separate project. |
 | ML4W OS Dotfiles | [Upstream README](https://github.com/mylinuxforwork/dotfiles/blob/main/README.md) | Current project name includes OS; distinguish dotfiles from its ISO. Supported distro families listed upstream. |
+| Dunst | [Upstream README](https://github.com/dunst-project/dunst/blob/master/README.md) | Notification daemon, not a complete shell. |
+| Fuzzel | [Official Codeberg project](https://codeberg.org/dnkl/fuzzel) | Wayland application launcher, not a complete shell. |
+| Mako | [Upstream README](https://github.com/emersion/mako/blob/master/README.md) | Wayland notification daemon; layer-shell support is required. |
+| Rofi | [Upstream README](https://github.com/davatorium/rofi/blob/next/README.md) | Application launcher and switcher; backend support depends on the release/package. |
 
 ## Exclusions and limits
 

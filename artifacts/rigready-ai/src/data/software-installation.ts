@@ -58,6 +58,16 @@ export const linuxInstallations: Record<string, LinuxInstallMethods> = {
   Vivaldi: { deb: packageDownload('deb', 'https://vivaldi.com/download/'), rpm: packageDownload('rpm', 'https://vivaldi.com/download/'), arch: repo('Arch', 'vivaldi') },
   Waterfox: { arch: aur('waterfox-bin') },
   Floorp: { deb: guide('Floorp’s Ubuntu / Mint repository', 'https://ppa.floorp.app/', 'Follow Floorp’s PPA repository instructions for supported Debian-family distributions.'), arch: aur('floorp-bin') },
+  'Mullvad Browser': {
+    deb: guide('Mullvad Browser’s Debian / Ubuntu repository', 'https://mullvad.net/en/help/install-mullvad-browser', 'Follow Mullvad’s signed APT-repository instructions for supported Debian-family distributions.'),
+    rpm: guide('Mullvad Browser’s Fedora repository', 'https://mullvad.net/en/help/install-mullvad-browser', 'Follow Mullvad’s signed Fedora-repository instructions for supported releases.'),
+    arch: aur('mullvad-browser-bin'),
+  },
+  'Tor Browser': {
+    deb: repo('Debian', 'torbrowser-launcher'),
+    rpm: repo('Fedora', 'torbrowser-launcher'),
+    arch: aur('tor-browser-bin'),
+  },
   Steam: {
     deb: guide('Valve’s Linux client instructions', 'https://github.com/ValveSoftware/steam-for-linux#readme', 'Use Valve’s current Ubuntu / Ubuntu LTS requirements and DEB installation instructions.'),
     rpm: guide('Steam on Fedora through RPM Fusion', 'https://rpmfusion.org/Howto/Steam', 'Follow the RPM Fusion instructions for your Fedora release, including any required repository setup.', 'Community repository'),
@@ -75,6 +85,7 @@ export const linuxInstallations: Record<string, LinuxInstallMethods> = {
     rpm: guide('Prism Launcher’s Fedora guide', 'https://prismlauncher.org/download/linux/', 'Use the Fedora section and review the documented COPR repository before enabling it.', 'Community repository'),
     arch: repo('Arch', 'prismlauncher'),
   },
+  Bottles: { arch: aur('bottles') },
   Discord: {
     deb: packageDownload('deb', 'https://discord.com/download'),
     rpm: guide('Discord through RPM Fusion', 'https://rpmfusion.org/Configuration', 'Enable the appropriate RPM Fusion nonfree repository for your Fedora release, then follow its Discord package instructions.', 'Community repository'),
@@ -85,10 +96,13 @@ export const linuxInstallations: Record<string, LinuxInstallMethods> = {
   Mumble: { deb: repo('Debian', 'mumble'), rpm: repo('Fedora', 'mumble'), arch: repo('Arch', 'mumble') },
   Element: { deb: guide('Element’s Linux desktop download', 'https://element.io/download', 'Choose the Debian / Ubuntu desktop instructions and follow the signing-key and repository setup shown there.'), arch: repo('Arch', 'element-desktop') },
   Jami: { deb: guide('Jami’s Debian-family packages', 'https://jami.net/download-jami/', 'Choose Linux, your Debian-family distribution, release, and architecture.'), rpm: guide('Jami’s RPM-family packages', 'https://jami.net/download-jami/', 'Choose Linux and the RPM distribution and release you use; follow its specific repository instructions.') },
+  Slack: { deb: packageDownload('deb', 'https://slack.com/downloads/linux'), rpm: packageDownload('rpm', 'https://slack.com/downloads/linux'), arch: aur('slack-desktop') },
+  'Zoom Workplace': { deb: packageDownload('deb', 'https://zoom.us/download?os=linux'), rpm: packageDownload('rpm', 'https://zoom.us/download?os=linux'), arch: aur('zoom') },
   'OBS Studio': { deb: guide('OBS Studio’s Ubuntu installation guide', 'https://obsproject.com/kb/linux-installation', 'Follow the supported Ubuntu section, including the PPA setup and current system requirements.'), rpm: repo('Fedora', 'obs-studio'), arch: repo('Arch', 'obs-studio') },
   '7-Zip': { deb: repo('Debian', '7zip'), rpm: repo('Fedora', '7zip'), arch: repo('Arch', '7zip') },
   'VLC media player': { deb: guide('VideoLAN’s Debian instructions', 'https://www.videolan.org/vlc/download-debian.html', 'Use the instructions for your supported Debian release.'), rpm: guide('VideoLAN’s Fedora instructions', 'https://www.videolan.org/vlc/download-fedora.html', 'Follow VideoLAN’s Fedora guide for the current repository and codec requirements.'), arch: repo('Arch', 'vlc') },
   balenaEtcher: { deb: packageDownload('deb', 'https://github.com/balena-io/etcher/releases/latest'), rpm: packageDownload('rpm', 'https://github.com/balena-io/etcher/releases/latest'), arch: aur('balena-etcher') },
   KeePassXC: { deb: repo('Debian', 'keepassxc'), rpm: repo('Fedora', 'keepassxc'), arch: repo('Arch', 'keepassxc') },
   LocalSend: { deb: packageDownload('deb', 'https://github.com/localsend/localsend/releases/latest'), arch: aur('localsend-bin') },
+  Ventoy: { arch: aur('ventoy-bin') },
 };

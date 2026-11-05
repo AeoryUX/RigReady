@@ -2,7 +2,7 @@
 
 The homepage welcomes visitors and links to the Hardware advisor, Software guide,
 and Operating systems pages. They include the PC specs guide, country-based shop
-search, searchable 45-app software guide, and eleven Linux recommendations with
+search, searchable 53-app software guide, and 20 Linux recommendations with
 download and installation guidance. GitHub Pages serves the website's static
 files; optional live price comparisons run on a separate Cloudflare Worker.
 
@@ -39,8 +39,8 @@ can appear in more than one use-case group. The other tabs have separate catalog
 and alphabetical sorting; all project links lead
 to official project pages or documentation.
 
-The desktop catalog includes seven desktop environments, 25 compositors/window
-managers, and 17 shells or related interface projects. Cards distinguish Wayland,
+The desktop catalog includes 11 desktop environments, 29 compositors/window
+managers, and 21 shells or related interface projects. Cards distinguish Wayland,
 X11, integrated desktop components, shells, toolkits, panels, and desktop setups.
 Compatibility notes identify compositor requirements and limited Linux support.
 Source-review notes and project moves are recorded in
