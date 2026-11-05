@@ -29,6 +29,15 @@ const linuxPicks: {
     docs: 'https://linuxmint-installation-guide.readthedocs.io/en/latest/',
   },
   {
+    name: 'Void Linux',
+    bestFor: 'A lightweight setup for older hardware',
+    description: 'An independent rolling-release distribution with the XBPS package manager and runit service management. A minimal installation lets you choose a lightweight desktop and the software you need.',
+    note: 'Expect hands-on setup and maintenance. Check the current image architecture and hardware requirements; graphical desktop images need more resources than a minimal installation.',
+    uses: ['Older PCs'],
+    download: 'https://voidlinux.org/download/',
+    docs: 'https://docs.voidlinux.org/installation/index.html',
+  },
+  {
     name: 'Ubuntu LTS',
     bestFor: 'Broad documentation and long-term support',
     description: 'A well-documented starting point for everyday use, development, and gaming. Choose an LTS release if you prefer a longer support window.',
@@ -63,6 +72,15 @@ const linuxPicks: {
     uses: ['New to Linux'],
     download: 'https://zorin.com/os/download/',
     docs: 'https://help.zorin.com/docs/getting-started/install-zorin-os/',
+  },
+  {
+    name: 'Arch Linux',
+    bestFor: 'Building and maintaining your own Linux setup',
+    description: 'A minimal rolling-release distribution with the pacman package manager and extensive Arch Wiki documentation. Choose and configure the desktop and components you want.',
+    note: 'Follow the official installation guide and check hardware requirements. Plan for regular full-system updates, configuration work, and reading project announcements before upgrades.',
+    uses: ['Advanced'],
+    download: 'https://archlinux.org/download/',
+    docs: 'https://wiki.archlinux.org/title/Installation_guide',
   },
   {
     name: 'EndeavourOS',

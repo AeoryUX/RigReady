@@ -2,7 +2,7 @@
 
 The homepage welcomes visitors and links to the Hardware advisor, Software guide,
 and Operating systems pages. They include the PC specs guide, country-based shop
-search, searchable 45-app software guide, and nine Linux recommendations with
+search, searchable 45-app software guide, and eleven Linux recommendations with
 download and installation guidance. GitHub Pages serves the website's static
 files; shop searches run on a separate Cloudflare Worker.
 
