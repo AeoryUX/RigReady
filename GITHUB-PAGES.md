@@ -4,12 +4,20 @@ The homepage welcomes visitors and links to the Hardware advisor, Software guide
 and Operating systems pages. They include the PC specs guide, country-based shop
 search, searchable 45-app software guide, and eleven Linux recommendations with
 download and installation guidance. GitHub Pages serves the website's static
-files; shop searches run on a separate Cloudflare Worker.
+files; optional live price comparisons run on a separate Cloudflare Worker.
 
-The bot is not connected until `artifacts/rigready-ai/public/shop-bot.json`
+The Hardware advisor's country-based retailer links work without an API key.
+They open official search pages for Amazon, eBay, Newegg, Best Buy, B&H,
+Micro Center, Scan, PB Tech, and Noon in the markets listed in the catalog.
+International alternatives are labelled separately. Each link opens one shop
+with the selected part and model text; prices, stock, and filters are handled on
+that shop's website. No affiliate identifiers or automatic multi-tab opener
+are used for these links.
+
+Optional live price comparison through the bot is not connected until `artifacts/rigready-ai/public/shop-bot.json`
 contains its deployed HTTPS origin (or `VITE_SHOP_BOT_URL` is set at build time).
-The default configuration shows an unavailable state and sends no search to a
-provider. See [HOSTING.md](HOSTING.md) for setup entirely through cloud services.
+The default configuration offers retailer links and sends no search to a
+live-data provider. See [HOSTING.md](HOSTING.md) for setup entirely through cloud services.
 
 The Software guide's checklist preserves selection order and provides a native
 Open next link, an optional bulk opener, and individual links. Browsers can block
@@ -31,7 +39,7 @@ can appear in more than one use-case group. The other tabs have separate catalog
 and alphabetical sorting; all project links lead
 to official project pages or documentation.
 
-The desktop catalog includes six desktop environments, 25 compositors/window
+The desktop catalog includes seven desktop environments, 25 compositors/window
 managers, and 17 shells or related interface projects. Cards distinguish Wayland,
 X11, integrated desktop components, shells, toolkits, panels, and desktop setups.
 Compatibility notes identify compositor requirements and limited Linux support.

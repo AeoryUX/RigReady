@@ -5,14 +5,25 @@ already hosts the website. The homepage opens the welcome screen, and the
 Hardware advisor opens the shop search. Visitors choose their own country;
 the site does not request GPS access or use IP geolocation.
 
-The bot runs on Cloudflare Workers. Its code is in `artifacts/shop-bot`; its
+The Hardware advisor offers direct search links to Amazon, eBay, Newegg,
+Best Buy, B&H, Micro Center, Scan, PB Tech, and Noon where a marketplace is listed
+for the selected country. These links work without a server or API key. The
+catalog is in `artifacts/rigready-ai/src/data/retailer-search.ts`. Search text is
+encoded with URLSearchParams; no affiliate identifiers are added. International
+eBay options are explicitly labelled as US-marketplace searches. Links do not
+verify seller reliability, stock, shipping, compatibility, or price. They do not
+apply the live-comparison budget field; use the retailer's own filters.
+
+Optional live price comparisons inside the site use a bot on Cloudflare Workers.
+Its code is in `artifacts/shop-bot`; its
 search and filtering code is in `lib/shop-bot`. Nothing needs to run on the
 owner's PC. The Worker queries Google Shopping through SerpApi, filters obvious
 category mismatches, and returns shop listings. No AI provider is used.
 
 The implementation is prepared, but live searches require a deployed Worker
 and a shop-data account. `public/shop-bot.json` deliberately has no endpoint
-until those are connected; the public site displays an honest unavailable state.
+until those are connected; retailer search links remain available while the
+site explains that live comparisons are not connected.
 
 ## Set up the bot through the browser
 

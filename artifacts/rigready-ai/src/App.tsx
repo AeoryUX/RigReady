@@ -527,7 +527,7 @@ function Home() {
             <span className="welcome-card-icon"><Cpu size={24} aria-hidden="true" /></span>
             <h2 id="welcome-hardware-title">Hardware advisor</h2>
             <p>Find your PC specs, then compare shop listings for the parts you need.</p>
-            <span className="welcome-card-note">Choose your country, part type, and maximum item price.</span>
+            <span className="welcome-card-note">Choose your country and the part or model you want to compare.</span>
             <span className="welcome-cta">Open hardware advisor <ArrowRight size={16} aria-hidden="true" /></span>
           </a>
           <a className="welcome-card" href={`${import.meta.env.BASE_URL}software/`} aria-labelledby="welcome-software-title">
@@ -700,8 +700,8 @@ function HardwarePage() {
       <main className="main-wrap">
         <section className="hero">
           <div className="eyebrow"><span className="eyebrow-line" /> Parts for your next upgrade</div>
-          <h1>Find parts from shops<br /><em>in your country.</em></h1>
-          <p className="hero-copy">Choose where you live, the part you need, and a maximum item price. Compare returned shop listings, then check the exact model’s specifications against your PC.</p>
+          <h1>Find parts from<br /><em>popular shops.</em></h1>
+          <p className="hero-copy">Choose your country and part, then open a search on Amazon and other listed shops. Check the exact model’s specifications, seller, and checkout total before buying.</p>
           <div className="hero-bottom"><span className="hero-proof"><Globe size={15} aria-hidden="true" /> Your country, your choice</span><span className="hero-proof"><Search size={14} aria-hidden="true" /> Shop listings to compare</span></div>
         </section>
         <PcSpecsGuide />

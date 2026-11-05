@@ -17,6 +17,12 @@ export type DesktopOption = {
 // no desktop configuration or installer is fetched or executed by the site.
 export const desktopOptions: DesktopOption[] = [
   {
+    name: 'Budgie', kind: 'Desktop environment', bestFor: 'A familiar desktop with configurable panels',
+    description: 'A Linux desktop with panels, applets, an application menu, and the Raven sidebar for notifications, calendar, and media controls.',
+    note: 'Use your distribution’s supported Budgie edition or packages. Check session requirements and applet compatibility for the Budgie version you install.',
+    url: 'https://buddiesofbudgie.org/', docs: 'https://github.com/BuddiesOfBudgie/budgie-desktop#readme',
+  },
+  {
     name: 'KDE Plasma', kind: 'Desktop environment', bestFor: 'A complete desktop with extensive customization',
     description: 'A full Linux desktop with panels, widgets, settings, and a flexible window-management workflow.',
     note: 'A distribution’s official Plasma edition is a straightforward starting point. Follow its supported packages and drivers.',

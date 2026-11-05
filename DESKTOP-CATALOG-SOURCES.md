@@ -17,6 +17,14 @@ documentation links are taken from upstream references, not presented as having
 all been HTTP-tested. The previously listed desktop environments and Ryoku entry
 remain in the catalog.
 
+## Desktop environment addition
+
+Budgie was added and reviewed on 5 November 2026 using the
+[official upstream README](https://github.com/BuddiesOfBudgie/budgie-desktop/blob/main/README.md).
+It confirms the project website, Budgie Menu, and Raven features. The card links
+the official website and README, with a note to use distribution-supported
+packages and check version-specific session and applet compatibility.
+
 ## Compositors and window managers
 
 | Entry | Source checked | Scope or important distinction |

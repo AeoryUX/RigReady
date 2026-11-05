@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { ExternalLink, Globe, Info, Search } from 'lucide-react';
 import { countryCodes, countryCurrency, isShopSearchResult, partCategories, type PartCategory, type ShopSearchResult } from '@workspace/shop-bot';
+import { retailerSearches } from '@/data/retailer-search';
 
 const names = new Intl.DisplayNames(['en'], { type: 'region' });
 const countries = countryCodes.map((code) => ({ code, name: names.of(code) ?? code })).sort((a, b) => a.name.localeCompare(b.name));
@@ -24,6 +25,8 @@ export function ShopSearch() {
   const [searching, setSearching] = useState(false);
   const activeRequest = useRef<AbortController | null>(null);
   const currency = countryCurrency(country);
+  const shopLinks = retailerSearches(country, category, query);
+  const hasLocalShops = shopLinks.some((shop) => !shop.international);
 
   useEffect(() => {
     if (endpointUrl(import.meta.env.VITE_SHOP_BOT_URL)) return;
@@ -39,12 +42,12 @@ export function ShopSearch() {
   async function search(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError('');
+    if (!endpoint) return;
     if (!country) { setError('Choose the country you live in.'); return; }
     const budget = maxPrice.trim() ? Number(maxPrice) : null;
     if (budget !== null && (!Number.isFinite(budget) || budget < 1 || budget > 1000000 || !currency)) {
       setError('Enter a maximum price between 1 and 1,000,000, or leave it blank.'); return;
     }
-    if (!endpoint) { setError('Shop search is not connected yet. Please try again later.'); return; }
     activeRequest.current?.abort();
     const controller = new AbortController();
     activeRequest.current = controller;
@@ -83,22 +86,30 @@ export function ShopSearch() {
   return (
     <section className="shop-search" aria-labelledby="shop-search-title">
       <div className="os-section-heading">
-        <div><h2 id="shop-search-title">Search shops for your next part.</h2><p>Choose your own country and compare returned listings. A listing does not confirm compatibility with your PC.</p></div>
+        <div><h2 id="shop-search-title">Search popular shops for your next part.</h2><p>Choose your country and part, then open a shop’s search page. Check the exact model’s specifications against your PC.</p></div>
       </div>
-      {!endpoint && <div className="os-callout" role="status"><Info size={18} aria-hidden="true" /><p>Shop search is being connected. You can explore the search options and use the PC specs guide above.</p></div>}
+      {!endpoint && <div className="os-callout"><Info size={18} aria-hidden="true" /><p>Shop searches open on the retailer’s website, where you can check prices, stock, and price filters. Live price comparisons inside RigReady are not connected.</p></div>}
       <form onSubmit={search} noValidate>
         <fieldset className="shop-search-fields" disabled={searching}>
           <div className="field"><label htmlFor="shop-country"><Globe size={14} aria-hidden="true" />Country you live in</label><select id="shop-country" className="control" value={country} onChange={(event) => { setCountry(event.target.value); setMaxPrice(''); setResult(null); setError(''); }}><option value="">Choose your country</option>{countries.map((option) => <option value={option.code} key={option.code}>{option.name}</option>)}</select></div>
           <div className="field"><label htmlFor="shop-category">Part type</label><select id="shop-category" className="control" value={category} onChange={(event) => { setCategory(event.target.value as PartCategory); setResult(null); }}>{partCategories.map((part) => <option value={part.value} key={part.value}>{part.label}</option>)}</select></div>
           <div className="field"><label htmlFor="shop-query">Part or model <span className="field-hint">optional</span></label><input id="shop-query" className="control" value={query} onChange={(event) => setQuery(event.target.value)} maxLength={120} placeholder="e.g. RTX 5060 Ti 16GB" /></div>
-          <div className="field"><label htmlFor="shop-budget">Maximum item price{currency ? ` (${currency})` : ''} <span className="field-hint">optional</span></label><input id="shop-budget" className="control" type="number" min="1" max="1000000" step="any" value={maxPrice} onChange={(event) => setMaxPrice(event.target.value)} disabled={!currency} placeholder={currency ? 'Leave blank to compare all returned prices' : 'Choose a country first'} /></div>
+          {endpoint && <div className="field"><label htmlFor="shop-budget">Maximum item price{currency ? ` (${currency})` : ''} <span className="field-hint">optional · live listings only</span></label><input id="shop-budget" className="control" type="number" min="1" max="1000000" step="any" value={maxPrice} onChange={(event) => setMaxPrice(event.target.value)} disabled={!currency} placeholder={currency ? 'Leave blank to compare all returned prices' : 'Choose a country first'} /></div>}
         </fieldset>
-        {country && !currency && <p className="guide-intro">For this country, compare the currency and price shown by each shop. The numeric budget filter is not available.</p>}
+        {endpoint && country && !currency && <p className="guide-intro">For this country, compare the currency and price shown by each shop. The numeric budget filter is not available.</p>}
         <p className="shop-search-help">Country is selected by you. Retailer coverage and delivery vary by country. Check shipping, taxes, condition, and the final total with the seller.</p>
-        <p className="shop-search-help">When connected, these search fields go to the hosted bot; the country and part-search text go to its shopping-data provider. Enter product names only. <a className="os-link" href={`${import.meta.env.BASE_URL}privacy/`}>Privacy details</a></p>
+        <p className="shop-search-help">Opening a shop link sends the part-search text to that retailer. Enter product names only. {endpoint && 'Comparing live listings also sends these fields to the hosted bot, and the country and part-search text to its shopping-data provider. '}<a className="os-link" href={`${import.meta.env.BASE_URL}privacy/`}>Privacy details</a></p>
         {error && <div className="form-alert" role="alert">{error}</div>}
-        <button className="guide-primary-button" type="submit" disabled={!endpoint || searching}><Search size={16} aria-hidden="true" />{searching ? 'Searching shops…' : endpoint ? 'Search shops' : 'Shop search not connected yet'}</button>
+        {endpoint && <button className="guide-primary-button" type="submit" disabled={searching}><Search size={16} aria-hidden="true" />{searching ? 'Searching shops…' : 'Compare live listings'}</button>}
       </form>
+      <section className="retailer-searches" aria-labelledby="retailer-searches-title">
+        <h3 id="retailer-searches-title">{country ? `Shop searches for ${names.of(country)}` : 'Choose your country to see shops'}</h3>
+        {country ? <>
+          <p className="shop-search-help">{hasLocalShops ? 'Country-specific shops and marketplaces are listed below. International options are labelled separately.' : 'No country-specific shops are listed here yet. The international option below uses a US marketplace; delivery and import charges vary.'} These links open search results; they do not confirm stock, delivery, compatibility, or the lowest price.</p>
+          {endpoint && <p className="shop-search-help">The maximum-price filter applies to live listings inside RigReady. Set price filters separately on each retailer’s site.</p>}
+          <div className="retailer-search-grid">{shopLinks.map((shop) => <a className="retailer-search-link" key={shop.name} href={shop.url} target="_blank" rel="noopener noreferrer"><span>Search {shop.name}<ExternalLink size={14} aria-hidden="true" /></span><small>{shop.international ? shop.market : `${names.of(shop.market)} storefront`}</small></a>)}</div>
+        </> : <p className="shop-search-help">Select the country you live in, then choose a part type or enter a model. Each shop opens from its own link.</p>}
+      </section>
       <div aria-live="polite" aria-busy={searching}>
         {searching && <p className="shop-search-help" role="status">Looking for shop listings in {names.of(country)}…</p>}
         {result && <section className="shop-results" aria-labelledby="shop-results-title">
