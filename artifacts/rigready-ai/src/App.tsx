@@ -312,15 +312,6 @@ const softwareApps: {
     note: 'Available features and message history depend on the workspace plan and administrator settings.',
   },
   {
-    name: 'Zoom Workplace',
-    category: 'Communication',
-    description: 'Video meetings, screen sharing, chat, and voice calls for groups and communities.',
-    bestFor: 'Video calls and screen sharing',
-    osSupport: { ...allDesktopOs, linux: 'limited', note: 'Zoom lists specific supported Linux distributions and versions. Choose the matching package on its download page.' },
-    officialUrl: 'https://zoom.us/download',
-    note: 'Meeting duration and features depend on the host’s plan and settings.',
-  },
-  {
     name: 'OBS Studio',
     category: 'PC utilities',
     description: 'Free, open-source software for recording gameplay or livestreaming.',
