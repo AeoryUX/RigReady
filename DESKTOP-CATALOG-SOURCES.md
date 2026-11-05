@@ -97,6 +97,7 @@ hardware-compatibility guarantees.
   says it is deprecated and will receive no further updates. It was not added.
 - No third-party dotfiles, plugins, or community install scripts are fetched or
   executed by RigReady. The guide links to the upstream setup instructions.
-- Windows and macOS are marked unavailable for these native Linux desktop
-  setups. A half-filled Linux badge identifies compositor-specific or integrated
-  desktop requirements; it is not a security rating.
+- Native Linux desktop cards omit Windows and macOS badges. They show Fully
+  supported on Linux or Semi-supported on Linux; the latter identifies
+  compositor-specific, distribution-specific, or integrated desktop requirements.
+  It is not a security rating.

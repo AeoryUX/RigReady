@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ExternalLink, Info } from 'lucide-react';
 import { NameSortMenu, type NameSort } from '@/components/name-sort-menu';
-import { OsSupportBadges, OsSupportLegend, linuxOnly } from '@/components/os-support';
+import { LinuxSupportBadge, LinuxSupportLegend, linuxOnly } from '@/components/os-support';
 import { desktopOptions, type DesktopKind } from '@/data/desktop-options';
 
 const guideCopy: Record<DesktopKind, { id: string; title: string; description: string; sortLabel: string }> = {
@@ -25,7 +25,7 @@ export function DesktopEnvironmentGuide({ kind }: { kind: DesktopKind }) {
       <div className="os-catalog-controls">
         <NameSortMenu value={sort} onChange={setSort} label={copy.sortLabel} />
       </div>
-      <OsSupportLegend />
+      <LinuxSupportLegend />
       <div className="os-callout"><Info size={17} aria-hidden="true" /><p>Entries link to upstream projects and their documentation; inclusion is not a security audit. For a first setup, consider your distribution’s official desktop edition. Before applying a shell or dotfiles, check supported versions and back up your existing configuration.</p></div>
       <div className="os-distro-grid desktop-options-grid">
         {visibleOptions.map((option) => (
@@ -33,7 +33,7 @@ export function DesktopEnvironmentGuide({ kind }: { kind: DesktopKind }) {
             <span className="software-category">{option.displayKind ?? option.kind}</span><h3>{option.name}</h3>
             <p className="software-best-for">{option.bestFor}</p>
             <p className="os-copy">{option.description}</p>
-            <OsSupportBadges support={option.osSupport ?? linuxOnly} />
+            <LinuxSupportBadge support={option.osSupport ?? linuxOnly} />
             <p className="os-note"><Info size={14} aria-hidden="true" />{option.note}</p>
             <div className="os-card-links">
               <a className="os-link" href={option.url} target="_blank" rel="noopener noreferrer">Official project <ExternalLink size={13} aria-hidden="true" /></a>

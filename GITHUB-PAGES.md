@@ -2,7 +2,7 @@
 
 The homepage welcomes visitors and links to the Hardware advisor, Software guide,
 and Operating systems pages. They include the PC specs guide, country-based shop
-search, searchable 53-app software guide, and 20 Linux recommendations with
+search, searchable 51-app software guide, and 20 Linux recommendations with
 download and installation guidance. GitHub Pages serves the website's static
 files; optional live price comparisons run on a separate Cloudflare Worker.
 
@@ -47,10 +47,11 @@ Source-review notes and project moves are recorded in
 [DESKTOP-CATALOG-SOURCES.md](DESKTOP-CATALOG-SOURCES.md). Upstream identity checks
 are not a security audit or a guarantee about third-party installers.
 
-Software and desktop-tool cards show Windows, Linux, and macOS support badges.
-A check indicates native support, a half-filled circle indicates support limited
-to selected Linux distributions or desktop setups (explained on the card), and
-a dash indicates no native app. These badges do not describe game compatibility.
+Software cards show Windows, Linux, and macOS support badges. Linux desktop,
+window-manager, and shell cards show only Fully supported on Linux or
+Semi-supported on Linux. Semi-supported entries need a particular distribution,
+compositor, desktop session, or package setup explained on the card. These badges
+do not describe game compatibility.
 
 From the repository root, using Node.js 24.x:
 

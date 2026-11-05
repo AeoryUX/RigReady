@@ -58,16 +58,6 @@ export const linuxInstallations: Record<string, LinuxInstallMethods> = {
   Vivaldi: { deb: packageDownload('deb', 'https://vivaldi.com/download/'), rpm: packageDownload('rpm', 'https://vivaldi.com/download/'), arch: repo('Arch', 'vivaldi') },
   Waterfox: { arch: aur('waterfox-bin') },
   Floorp: { deb: guide('Floorp’s Ubuntu / Mint repository', 'https://ppa.floorp.app/', 'Follow Floorp’s PPA repository instructions for supported Debian-family distributions.'), arch: aur('floorp-bin') },
-  'Mullvad Browser': {
-    deb: guide('Mullvad Browser’s Debian / Ubuntu repository', 'https://mullvad.net/en/help/install-mullvad-browser', 'Follow Mullvad’s signed APT-repository instructions for supported Debian-family distributions.'),
-    rpm: guide('Mullvad Browser’s Fedora repository', 'https://mullvad.net/en/help/install-mullvad-browser', 'Follow Mullvad’s signed Fedora-repository instructions for supported releases.'),
-    arch: aur('mullvad-browser-bin'),
-  },
-  'Tor Browser': {
-    deb: repo('Debian', 'torbrowser-launcher'),
-    rpm: repo('Fedora', 'torbrowser-launcher'),
-    arch: aur('tor-browser-bin'),
-  },
   Steam: {
     deb: guide('Valve’s Linux client instructions', 'https://github.com/ValveSoftware/steam-for-linux#readme', 'Use Valve’s current Ubuntu / Ubuntu LTS requirements and DEB installation instructions.'),
     rpm: guide('Steam on Fedora through RPM Fusion', 'https://rpmfusion.org/Howto/Steam', 'Follow the RPM Fusion instructions for your Fedora release, including any required repository setup.', 'Community repository'),

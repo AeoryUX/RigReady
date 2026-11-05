@@ -56,3 +56,28 @@ export function OsSupportLegend() {
     </div>
   );
 }
+
+export function LinuxSupportBadge({ support }: { support: OsSupport }) {
+  const level: SupportLevel = support.linux === 'limited' ? 'limited' : 'supported';
+  const label = level === 'limited' ? 'Semi-supported on Linux' : 'Fully supported on Linux';
+  return (
+    <div className="os-support">
+      <ul className="os-support-list" aria-label="Linux support">
+        <li className={`os-support-badge os-support-${level}`} title={label}>
+          <SupportMark level={level} /><span>{label}</span>
+        </li>
+      </ul>
+      {support.note && <p className="os-support-note">{support.note}</p>}
+    </div>
+  );
+}
+
+export function LinuxSupportLegend() {
+  return (
+    <div className="os-support-legend" aria-label="Linux support key">
+      <span><SupportMark level="supported" />Fully supported on Linux</span>
+      <span><SupportMark level="limited" />Semi-supported on Linux</span>
+      <p>Semi-supported entries need a particular distribution, compositor, desktop session, or package setup. Check each card’s note and official requirements.</p>
+    </div>
+  );
+}
