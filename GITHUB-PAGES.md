@@ -42,6 +42,9 @@ to official project pages or documentation.
 The desktop catalog includes 11 desktop environments, 29 compositors/window
 managers, and 21 shells or related interface projects. Cards distinguish Wayland,
 X11, integrated desktop components, shells, toolkits, panels, and desktop setups.
+The Shells tab groups entries into Desktop shells, Desktop setups, Shell-building
+tools, and Panels, launchers & notifications, with alphabetical sorting inside
+each category.
 Compatibility notes identify compositor requirements and limited Linux support.
 Source-review notes and project moves are recorded in
 [DESKTOP-CATALOG-SOURCES.md](DESKTOP-CATALOG-SOURCES.md). Upstream identity checks

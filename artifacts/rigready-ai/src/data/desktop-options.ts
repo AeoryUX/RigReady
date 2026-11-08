@@ -1,6 +1,7 @@
 import { linuxOnly, type OsSupport } from '@/components/os-support';
 
 export type DesktopKind = 'Desktop environment' | 'Compositor' | 'Shell';
+export type ShellCategory = 'Desktop shells' | 'Desktop setups' | 'Shell-building tools' | 'Panels, launchers & notifications';
 export type DesktopOption = {
   name: string;
   kind: DesktopKind;
@@ -11,6 +12,7 @@ export type DesktopOption = {
   url: string;
   docs: string;
   osSupport?: OsSupport;
+  shellCategory?: ShellCategory;
 };
 
 // Source-review notes: DESKTOP-CATALOG-SOURCES.md. These are informational links;
@@ -260,147 +262,147 @@ export const desktopOptions: DesktopOption[] = [
     url: 'https://github.com/conformal/spectrwm', docs: 'https://github.com/conformal/spectrwm/blob/master/spectrwm.1',
   },
   {
-    name: 'Caelestia', kind: 'Shell', displayKind: 'Desktop shell', bestFor: 'A fluid, customizable desktop interface',
+    name: 'Caelestia', kind: 'Shell', shellCategory: 'Desktop shells', displayKind: 'Desktop shell', bestFor: 'A fluid, customizable desktop interface',
     description: 'A Linux desktop shell from the Caelestia project, providing the interface around a compositor-driven desktop setup.',
     note: 'Read its supported setup and configuration requirements before applying its shell or related dotfiles.',
     url: 'https://github.com/caelestia-dots/shell', docs: 'https://caelestiashell.com/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Requires Hyprland and the shell’s dependencies. Official install options include Arch Linux and Nix; other distributions use the manual guide.' },
   },
   {
-    name: 'Ryoku', kind: 'Shell', displayKind: 'Hyprland desktop setup', bestFor: 'A Hyprland desktop setup with project tooling',
+    name: 'Ryoku', kind: 'Shell', shellCategory: 'Desktop setups', displayKind: 'Hyprland desktop setup', bestFor: 'A Hyprland desktop setup with project tooling',
     description: 'A desktop setup from the Ryoku project, with a shell experience and related tools for its supported Linux configurations.',
     note: 'Ryoku includes a broader desktop setup and project tools. Follow the official guide for your distribution and compositor; installation paths differ between supported setups.',
     url: 'https://ryoku.dev/', docs: 'https://docs.ryoku.dev/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Targets specific Linux editions, including Arch and CachyOS, with additional distro editions and a separate NixOS port. Support varies by edition and compositor.' },
   },
   {
-    name: 'Noctalia', kind: 'Shell', displayKind: 'Desktop shell', bestFor: 'An integrated interface for a Wayland compositor',
+    name: 'Noctalia', kind: 'Shell', shellCategory: 'Desktop shells', displayKind: 'Desktop shell', bestFor: 'An integrated interface for a Wayland compositor',
     description: 'A customizable desktop shell with panels, launcher, notifications, and controls for supported Wayland compositor workflows.',
     note: 'Check the project’s current compositor integrations; available features can differ between setups.',
     url: 'https://github.com/noctalia-dev/noctalia', docs: 'https://docs.noctalia.dev/noctalia/getting-started/installation/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Requires a compatible Wayland compositor with layer-shell support. Integrations include Hyprland, Niri, and Mango; available features differ by compositor.' },
   },
   {
-    name: 'Dux Modular Shell', kind: 'Shell', displayKind: 'Desktop shell', bestFor: 'An integrated interface across supported Wayland desktops',
+    name: 'Dux Modular Shell', kind: 'Shell', shellCategory: 'Desktop shells', displayKind: 'Desktop shell', bestFor: 'An integrated interface across supported Wayland desktops',
     description: 'Previously DankMaterialShell (DMS), this Quickshell-based desktop shell combines panels, a launcher, notifications, settings, and session controls.',
     note: 'Use the current upstream installation and compositor guides. Features and workspace integrations vary across supported compositors.',
     url: 'https://github.com/duxlabs-dev/dux-shell', docs: 'https://duxlabs.dev/docs/dms/installation',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Supports specific Wayland setups, including Niri, Hyprland, Sway, Mango, labwc, Scroll, and Miracle-WM. Check the current distro and compositor requirements.' },
   },
   {
-    name: 'illogical-impulse', kind: 'Shell', displayKind: 'Desktop shell · Hyprland setup', bestFor: 'A Quickshell interface for Hyprland',
+    name: 'illogical-impulse', kind: 'Shell', shellCategory: 'Desktop setups', displayKind: 'Desktop shell · Hyprland setup', bestFor: 'A Quickshell interface for Hyprland',
     description: 'end-4’s graphical shell and Hyprland dotfiles, with a desktop overview, launcher, widgets, and wallpaper-based theming.',
     note: 'Use the supported Quickshell edition and match its required Hyprland version. Older AGS editions are listed as unsupported by the project.',
     url: 'https://github.com/end-4/dots-hyprland', docs: 'https://ii.clsty.link/en/ii-qs/01setup/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Requires the documented Hyprland, Quickshell, and distribution dependencies. Applying dotfiles changes desktop configuration.' },
   },
   {
-    name: 'nwg-shell', kind: 'Shell', displayKind: 'Desktop shell', bestFor: 'GTK-based tools for a Sway or Hyprland desktop',
+    name: 'nwg-shell', kind: 'Shell', shellCategory: 'Desktop shells', displayKind: 'Desktop shell', bestFor: 'GTK-based tools for a Sway or Hyprland desktop',
     description: 'A collection of panels, launchers, settings, and companion tools with graphical configuration for supported Wayland sessions.',
     note: 'The shell brings together several components. Follow its wiki for the complete dependency list and session setup.',
     url: 'https://github.com/nwg-piotr/nwg-shell', docs: 'https://github.com/nwg-piotr/nwg-shell/wiki',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Designed for Sway and Hyprland. Package availability and integration differ between distributions.' },
   },
   {
-    name: 'GNOME Shell', kind: 'Shell', displayKind: 'Integrated desktop shell', bestFor: 'GNOME’s overview, app launcher, and desktop controls',
+    name: 'GNOME Shell', kind: 'Shell', shellCategory: 'Desktop shells', displayKind: 'Integrated desktop shell', bestFor: 'GNOME’s overview, app launcher, and desktop controls',
     description: 'The core graphical interface of GNOME, providing the Activities overview, application launching, notifications, and desktop controls.',
     note: 'Use it as part of a supported GNOME session. It is not an interchangeable shell for Hyprland or Niri; extensions must match its release.',
     url: 'https://github.com/GNOME/gnome-shell', docs: 'https://help.gnome.org/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Requires the matching GNOME and Mutter desktop components from your distribution.' },
   },
   {
-    name: 'Plasma Shell', kind: 'Shell', displayKind: 'Integrated desktop shell', bestFor: 'KDE Plasma’s panels, widgets, and desktop',
+    name: 'Plasma Shell', kind: 'Shell', shellCategory: 'Desktop shells', displayKind: 'Integrated desktop shell', bestFor: 'KDE Plasma’s panels, widgets, and desktop',
     description: 'The plasmashell component supplies KDE Plasma’s desktop surface, panels, application launchers, and widgets.',
     note: 'Install the supported Plasma desktop session for an integrated setup. Desktop widgets and extensions need compatible Plasma versions.',
     url: 'https://github.com/KDE/plasma-workspace', docs: 'https://userbase.kde.org/Plasma',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Part of KDE Plasma, with dependencies on its matching workspace and desktop packages.' },
   },
   {
-    name: 'Quickshell', kind: 'Shell', displayKind: 'Shell toolkit', bestFor: 'Building a desktop interface in QML',
+    name: 'Quickshell', kind: 'Shell', shellCategory: 'Shell-building tools', displayKind: 'Shell toolkit', bestFor: 'Building a desktop interface in QML',
     description: 'A Qt Quick toolkit for creating panels, overlays, launchers, and desktop shells on supported Wayland and X11 sessions.',
     note: 'Quickshell is a toolkit rather than a ready-made shell. Choose a compatible shell built with it or write your own configuration.',
     url: 'https://github.com/quickshell-mirror/quickshell', docs: 'https://quickshell.org/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Supports Linux X11 and compatible Wayland setups. Individual shells and features can require a particular compositor.' },
   },
   {
-    name: 'AGS', kind: 'Shell', displayKind: 'Shell development tool', bestFor: 'Creating an Astal-based graphical shell',
+    name: 'AGS', kind: 'Shell', shellCategory: 'Shell-building tools', displayKind: 'Shell development tool', bestFor: 'Creating an Astal-based graphical shell',
     description: 'Aylur’s command-line scaffolding tool for building desktop interfaces with Astal and Gnim.',
     note: 'This is a development tool rather than a complete desktop shell. Follow the current documentation; older AGS configurations target different APIs.',
     url: 'https://github.com/Aylur/ags', docs: 'https://aylur.github.io/ags/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Requires the documented Astal, GJS, and graphics-stack dependencies. Shell compatibility depends on the configuration you use.' },
   },
   {
-    name: 'Eww', kind: 'Shell', displayKind: 'Widget toolkit', bestFor: 'Building custom desktop bars and widgets',
+    name: 'Eww', kind: 'Shell', shellCategory: 'Shell-building tools', displayKind: 'Widget toolkit', bestFor: 'Building custom desktop bars and widgets',
     description: 'ElKowar’s Wacky Widgets is a configurable widget system used to build custom panels, dashboards, and desktop controls.',
     note: 'Eww does not provide a complete desktop shell by itself. Follow the backend-specific setup and review any third-party widget configuration.',
     url: 'https://github.com/elkowar/eww', docs: 'https://elkowar.github.io/eww/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Uses X11 or a compatible Wayland backend. Widget behavior and compositor integration depend on your configuration.' },
   },
   {
-    name: 'Fabric', kind: 'Shell', displayKind: 'Widget toolkit', bestFor: 'Building desktop widgets in Python',
+    name: 'Fabric', kind: 'Shell', shellCategory: 'Shell-building tools', displayKind: 'Widget toolkit', bestFor: 'Building desktop widgets in Python',
     description: 'A Python framework for creating bars, widgets, and graphical desktop interfaces with GTK-based components.',
     note: 'A toolkit for developers and configuration authors. It does not install a ready-made shell unless you choose a separate Fabric-based project.',
     url: 'https://github.com/Fabric-Development/fabric', docs: 'https://wiki.ffpy.org/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Supports X11 and Wayland setups with the required dependencies. Widgets can depend on compositor-specific integrations.' },
   },
   {
-    name: 'Ignis', kind: 'Shell', displayKind: 'Widget toolkit', bestFor: 'Creating a Wayland interface in Python',
+    name: 'Ignis', kind: 'Shell', shellCategory: 'Shell-building tools', displayKind: 'Widget toolkit', bestFor: 'Creating a Wayland interface in Python',
     description: 'A widget framework for building configurable graphical desktop shells and controls with Python.',
     note: 'Check the current stable documentation and breaking-change notes before choosing a configuration or development branch.',
     url: 'https://github.com/ignis-sh/ignis', docs: 'https://ignis-sh.github.io/ignis/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Requires a Wayland compositor implementing layer-shell, such as Sway or KDE Plasma. GNOME Wayland and X11 are not supported by the documented Python edition.' },
   },
   {
-    name: 'Waybar', kind: 'Shell', displayKind: 'Wayland panel', bestFor: 'A configurable status bar for a Wayland desktop',
+    name: 'Waybar', kind: 'Shell', shellCategory: 'Panels, launchers & notifications', displayKind: 'Wayland panel', bestFor: 'A configurable status bar for a Wayland desktop',
     description: 'A modular panel with workspaces, system indicators, media controls, and styling for supported Wayland compositor setups.',
     note: 'Waybar is a panel, not a complete shell. Workspace modules and other integrations differ by compositor and version.',
     url: 'https://github.com/Alexays/Waybar', docs: 'https://github.com/Alexays/Waybar/wiki',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Requires a compatible Wayland session. Check the module support table for your compositor; it is not an X11 panel.' },
   },
   {
-    name: 'Polybar', kind: 'Shell', displayKind: 'X11 panel', bestFor: 'A status bar for an X11 window manager',
+    name: 'Polybar', kind: 'Shell', shellCategory: 'Panels, launchers & notifications', displayKind: 'X11 panel', bestFor: 'A status bar for an X11 window manager',
     description: 'A configurable desktop bar with system modules, custom scripts, and workspace integrations for window managers such as i3 and bspwm.',
     note: 'Polybar is a panel rather than a complete shell. Its native target is X11; choose a Wayland-compatible panel for a Wayland session.',
     url: 'https://github.com/polybar/polybar', docs: 'https://polybar.readthedocs.io/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Requires X11. Window-manager modules and hardware integrations need the appropriate runtime dependencies.' },
   },
   {
-    name: 'HyDE', kind: 'Shell', displayKind: 'Hyprland desktop setup', bestFor: 'A themed Hyprland configuration for Arch',
+    name: 'HyDE', kind: 'Shell', shellCategory: 'Desktop setups', displayKind: 'Hyprland desktop setup', bestFor: 'A themed Hyprland configuration for Arch',
     description: 'A coordinated collection of Hyprland dotfiles, desktop tools, themes, and configuration for an integrated custom desktop.',
     note: 'This is a broader desktop setup. Its installer can change themes, login-manager and boot settings; review the installation guide and preserve your existing setup.',
     url: 'https://github.com/HyDE-Project/HyDE', docs: 'https://hydeproject.pages.dev/en/getting-started/installation',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'The main installer targets a minimal Arch Linux setup. Some Arch derivatives may work; NixOS uses the separate Hydenix project.' },
   },
   {
-    name: 'ML4W OS Dotfiles', kind: 'Shell', displayKind: 'Hyprland desktop setup', bestFor: 'A configurable Hyprland desktop with project tools',
+    name: 'ML4W OS Dotfiles', kind: 'Shell', shellCategory: 'Desktop setups', displayKind: 'Hyprland desktop setup', bestFor: 'A configurable Hyprland desktop with project tools',
     description: 'ML4W’s Hyprland dotfiles and desktop tools, with adaptive themes and configuration options for a coordinated desktop interface.',
     note: 'The project also offers an OS image. The dotfiles are a broader desktop setup, so follow the installation route for your existing distribution.',
     url: 'https://github.com/mylinuxforwork/dotfiles', docs: 'https://ml4w.com/os/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'The current guide lists Arch-based distributions, Fedora, Ubuntu, and openSUSE Tumbleweed. Other distributions need separate verification.' },
   },
   {
-    name: 'Dunst', kind: 'Shell', displayKind: 'Notification daemon', bestFor: 'Configurable desktop notifications in a custom setup',
+    name: 'Dunst', kind: 'Shell', shellCategory: 'Panels, launchers & notifications', displayKind: 'Notification daemon', bestFor: 'Configurable desktop notifications in a custom setup',
     description: 'A lightweight notification daemon with rules, keyboard controls, history, and theming for custom Linux desktops.',
     note: 'Dunst provides notifications rather than a complete shell. Disable another notification daemon before starting it to avoid conflicts.',
     url: 'https://github.com/dunst-project/dunst', docs: 'https://dunst-project.org/documentation/',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Designed for Linux desktop sessions using the notification specification. Display-server and feature support depend on the installed release.' },
   },
   {
-    name: 'Fuzzel', kind: 'Shell', displayKind: 'Wayland application launcher', bestFor: 'A fast launcher in a Wayland desktop',
+    name: 'Fuzzel', kind: 'Shell', shellCategory: 'Panels, launchers & notifications', displayKind: 'Wayland application launcher', bestFor: 'A fast launcher in a Wayland desktop',
     description: 'A compact application launcher and menu for wlroots-based Wayland compositors, with configurable matching, icons, and appearance.',
     note: 'Fuzzel is a launcher rather than a complete shell. It needs a compatible Wayland compositor and separate desktop components.',
     url: 'https://codeberg.org/dnkl/fuzzel', docs: 'https://codeberg.org/dnkl/fuzzel/src/branch/master/doc/fuzzel.1.scd',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Requires a compatible Wayland compositor. It does not run as a native X11 launcher.' },
   },
   {
-    name: 'Mako', kind: 'Shell', displayKind: 'Wayland notification daemon', bestFor: 'Notifications in a lightweight Wayland setup',
+    name: 'Mako', kind: 'Shell', shellCategory: 'Panels, launchers & notifications', displayKind: 'Wayland notification daemon', bestFor: 'Notifications in a lightweight Wayland setup',
     description: 'A notification daemon for Wayland desktops with configurable appearance, grouping, actions, and per-application criteria.',
     note: 'Mako provides notifications rather than a complete shell. Run only one notification daemon in the session.',
     url: 'https://github.com/emersion/mako', docs: 'https://man.archlinux.org/man/mako.5.en',
     osSupport: { ...linuxOnly, linux: 'limited', note: 'Requires a Wayland compositor supporting the layer-shell protocol. It is commonly used with wlroots-based compositors.' },
   },
   {
-    name: 'Rofi', kind: 'Shell', displayKind: 'Application launcher', bestFor: 'Launching apps and switching windows from the keyboard',
+    name: 'Rofi', kind: 'Shell', shellCategory: 'Panels, launchers & notifications', displayKind: 'Application launcher', bestFor: 'Launching apps and switching windows from the keyboard',
     description: 'A configurable launcher and window switcher with multiple modes, themes, scripting, and keyboard-driven selection.',
     note: 'Rofi is a launcher rather than a complete shell. Check the project documentation for the display backends supported by your installed version.',
     url: 'https://github.com/davatorium/rofi', docs: 'https://davatorium.github.io/rofi/',
